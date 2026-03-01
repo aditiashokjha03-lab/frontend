@@ -43,7 +43,18 @@ To log into the initial demo experience:
 - **Password:** (Leave blank or insert any 6+ character password)
 
 ## Screenshots
-*(Insert screenshots of the Dashboard, Habits page, Analytics, and Focus Timer here)*
+
+### Dashboard
+![Dashboard Preview](./media/dashboard.png)
+
+### Habits
+![Habits Preview](./media/habits.png)
+
+### Analytics
+![Analytics Preview](./media/analytics.png)
+
+### Focus Timer
+![Focus Timer Preview](./media/timer.png)
 
 ## Video Walkthrough Link
-*(Insert link to the video walkthrough here)*
+![Feature Walkthrough Video](./media/walkthrough.webp)
