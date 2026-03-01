@@ -1,0 +1,1 @@
+import{c as t}from"./index-Bv4zK0cn.js";const s="https://rrryitqvrxokvjbuvqmg.supabase.co",i="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJycnlpdHF2cnhva3ZqYnV2cW1nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE5NDMwNTksImV4cCI6MjA4NzUxOTA1OX0.VXiA1S0NVbJDUibYtzhWeRkmfPDPGUeY7P9tFBCNsx0",c=s.startsWith("https://")?t(s,i):null;export{c as supabase};
