@@ -32,7 +32,7 @@ HabitForge is a modern web application designed to help users build better habit
 3. Start the development server: `npm run dev`
 4. Build for production: `npm run build`
 
-## Deployed Link
+## Deployment Link
 https://habitforge-f.netlify.app
 
 ## Backend API Link
@@ -66,6 +66,7 @@ To log into the initial demo experience:
 <a href="https://drive.google.com/file/d/1uFqJjJRwo62tViK9ASy6tGcS7XQjakrB/view?usp=sharing" target="_blank">Feature Walkthrough Video</a>
 
 ![Feature Walkthrough Video](./media/walkthrough.mp4)
+
 
 
 
