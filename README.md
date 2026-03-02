@@ -44,6 +44,9 @@ To log into the initial demo experience:
 
 ## Screenshots
 
+### Landing Page
+![Landing Page Preview](./media/landing.jpeg)
+
 ### Dashboard
 ![Dashboard Preview](./media/dashboard.png)
 
@@ -57,4 +60,4 @@ To log into the initial demo experience:
 ![Focus Timer Preview](./media/timer.png)
 
 ## Video Walkthrough Link
-![Feature Walkthrough Video](./media/walkthrough.webp)
+![Feature Walkthrough Video](./media/walkthrough.mp4)
