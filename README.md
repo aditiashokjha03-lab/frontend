@@ -60,4 +60,6 @@ To log into the initial demo experience:
 ![Focus Timer Preview](./media/timer.png)
 
 ## Video Walkthrough Link
+https://drive.google.com/file/d/1uFqJjJRwo62tViK9ASy6tGcS7XQjakrB/view?usp=sharing
 ![Feature Walkthrough Video](./media/walkthrough.mp4)
+
