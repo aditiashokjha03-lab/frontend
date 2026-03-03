@@ -67,9 +67,10 @@ To log into the initial demo experience:
 ![Chhallenges Preview](./media/challenges.png)
 
 ## Video Walkthrough Link
-![Feature Walkthrough Video](https://drive.google.com/file/d/1NnM7qEww723YRaedZsS5WQ_sSe25WlL3/view?usp=sharing)
+[Feature Walkthrough Video](https://drive.google.com/file/d/1NnM7qEww723YRaedZsS5WQ_sSe25WlL3/view?usp=sharing)
 
 <!-- ![Feature Walkthrough Video](./media/walkthrough.mp4) -->
+
 
 
 
