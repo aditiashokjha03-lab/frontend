@@ -8,23 +8,20 @@ HabitForge is a modern web application designed to help users build better habit
 
 ## Features
 - **Daily Habit Tracking:** Create custom habits with icons, colors, and difficulty levels.
-- **Streak & XP Progression:** Build momentum with streak counting and level up using XP-based progression.
-- **Analytics & Reports:** Visualize progress with heatmaps and completion stats.
+- **Long-term Goals:** Set ambitious targets and track your journey with visual progress bars.
+- **Advanced Analytics:** Visualize progress with heatmaps and completion trends. Gain insights into your habits and optimize your routine.
 - **Focus Timer:** Built-in Pomodoro timer for deep work sessions.
-- **Achievements:** Unlock badges and milestones as you progress.
-- **Theme Support:** seamless switching between dark and light modes.
+- **Streak & XP Progression:** Build momentum with streak counting and level up using XP-based progression.
+- **Theme Support:** Seamless switching between dark and light modes.
 - **Offline/Demo Mode:** Seamlessly use a robust local data store if the backend or Supabase is unavailable.
 
 ## Tech Stack Used
-- React 19 (Vite)
-- Tailwind CSS v4 & Tailwind Animate
-- shadcn/ui (Radix UI)
-- Lucide React (Icons)
-- Framer Motion (Animations)
-- React Router DOM v7
-- React Query (Data Fetching/Caching)
-- Sonner (Toast Notifications)
-- Supabase JS Client
+- **Logic:** React 19 (Vite)
+- **Styling:** Tailwind CSS v4, Tailwind Animate, Framer Motion
+- **UI Components:** shadcn/ui (Radix UI), Lucide React (Icons)
+- **Data Management:** React Query (Fetching/Caching), Supabase JS Client, Axios
+- **Routing:** React Router DOM v7
+- **Notifications:** Sonner
 
 ## Installation Steps
 1. Navigate to the frontend directory: `cd frontend`
@@ -33,17 +30,18 @@ HabitForge is a modern web application designed to help users build better habit
 4. Build for production: `npm run build`
 
 ## Deployment Link
-https://habitforge-f.netlify.app
+[Frontend Live Demo](https://habitforge-f.netlify.app)
 
 ## Backend API Link
-Ensure the backend server is running locally on port 3002.
-`http://localhost:3002`
+The frontend connects to the backend API hosted at:
+[Backend API Service](https://backend-service-5igw.onrender.com)
+(For local development, ensure the backend is running on `http://localhost:3001` or as configured in `.env`)
 
 ## Login Credentials (if applicable)
-For demonstration purposes, users can click "Sign in" or "Get Started" without setting up Supabase to instantly access a local Demo Mode account. 
+For demonstration purposes, users can click "Demo Account" or "Get Started" without setting up Supabase to instantly access a local Demo Mode account. 
 To log into the initial demo experience:
-- **Email:** demo@habitforge.app
-- **Password:** (Leave blank or insert any 6+ character password)
+- **Email:** `demo@habitforge.app`
+- **Password:** (Any 6+ character password)
 
 ## Screenshots
 
@@ -56,17 +54,20 @@ To log into the initial demo experience:
 ### Habits
 ![Habits Preview](./media/habits.png)
 
+### Goals
+![Goals Preview](./media/goals.png)
+
 ### Analytics
 ![Analytics Preview](./media/analytics.png)
 
 ### Focus Timer
 ![Focus Timer Preview](./media/timer.png)
 
+### Challenges
+![Chhallenges Preview](./media/challenges.png)
+
 ## Video Walkthrough Link
-<a href="https://drive.google.com/file/d/1uFqJjJRwo62tViK9ASy6tGcS7XQjakrB/view?usp=sharing" target="_blank">Feature Walkthrough Video</a>
+<!-- ![Feature Walkthrough Video](https://drive.google.com/file/d/1uFqJjJRwo62tViK9ASy6tGcS7XQjakrB/view?usp=sharing) -->
 
 ![Feature Walkthrough Video](./media/walkthrough.mp4)
-
-
-
 

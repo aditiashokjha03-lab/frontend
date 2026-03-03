@@ -9,6 +9,7 @@ import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { OfflineProvider } from './context/OfflineContext';
 import { TimerProvider } from './context/TimerContext';
+import { NotificationProvider } from './context/NotificationContext';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -17,7 +18,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <ThemeProvider>
           <OfflineProvider>
             <TimerProvider>
-              <App />
+              <NotificationProvider>
+                <App />
+              </NotificationProvider>
             </TimerProvider>
           </OfflineProvider>
         </ThemeProvider>

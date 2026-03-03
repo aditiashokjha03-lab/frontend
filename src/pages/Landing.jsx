@@ -12,6 +12,7 @@ import {
     ArrowRight,
     Sun,
     Moon,
+    Target,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
@@ -110,14 +111,14 @@ const Landing = () => {
                         description="Build momentum with automatic streak counting. See your current and longest streaks for every habit at a glance."
                     />
                     <FeatureCard
-                        icon={Trophy}
-                        title="Achievements"
-                        description="Unlock badges as you hit milestones. From your first habit to a 100-day streak, every milestone is celebrated."
+                        icon={Target}
+                        title="Long-term Goals"
+                        description="Set ambitious targets and track your journey with visual progress bars. Break down your vision into measurable steps."
                     />
                     <FeatureCard
                         icon={BarChart3}
-                        title="Analytics & Reports"
-                        description="Visualize your progress with heatmaps, completion charts, and trend lines. Understand your patterns and grow."
+                        title="Advanced Analytics"
+                        description="Visualize your progress with heatmaps and completion trends. Gain insights into your habits and optimize your routine."
                     />
                     <FeatureCard
                         icon={TimerIcon}

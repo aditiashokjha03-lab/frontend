@@ -12,6 +12,7 @@ import Habits from './pages/Habits';
 import Analytics from './pages/Analytics';
 import Timer from './pages/Timer';
 import Challenges from './pages/Challenges';
+import Goals from './pages/Goals';
 import Profile from './pages/Profile';
 import Layout from './components/layout/Layout';
 
@@ -37,6 +38,7 @@ function App() {
           <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
           <Route path="/timer" element={<ProtectedRoute><Timer /></ProtectedRoute>} />
           <Route path="/challenges" element={<ProtectedRoute><Challenges /></ProtectedRoute>} />
+          <Route path="/goals" element={<ProtectedRoute><Goals /></ProtectedRoute>} />
           <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         </Routes>
       </div>

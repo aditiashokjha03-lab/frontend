@@ -35,10 +35,20 @@ export const useLogs = (date) => {
         onError: (err, _newLog, context) => {
             queryClient.setQueryData(['logs', date], context.previousLogs);
         },
-        onSettled: () => {
+        onSettled: (data) => {
             queryClient.invalidateQueries({ queryKey: ['logs', date] });
             // Also refresh habits so streaks update
             queryClient.invalidateQueries({ queryKey: ['habits'] });
+
+            // Always invalidate analytics summary to ensure real-time data
+            queryClient.invalidateQueries({ queryKey: ['analytics', 'summary'] });
+
+            // Refetch profile if XP was earned
+            if (data?.xp_earned > 0) {
+                // We'll handle profile refetching in the component or via a shared query if possible
+                // but for now, we'll rely on the dashboard refetching or context
+                queryClient.invalidateQueries({ queryKey: ['profile'] }); // assuming there is a profile query
+            }
         },
     });
 

@@ -11,19 +11,28 @@ import { motion } from 'framer-motion';
 
 const Habits = () => {
     const { habits, isLoading } = useHabits();
+    const [selectedHabit, setSelectedHabit] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [activeCategory, setActiveCategory] = useState('All');
 
-    if (isLoading) {
-        return <div className="p-8 flex items-center justify-center">Loading habits...</div>;
-    }
+    const categories = ['All', 'Health', 'Productivity', 'Finance', 'Social', 'Personal'];
 
-    const categories = ['All', ...new Set(habits.map(h => h.category || 'Custom'))];
+    const handleEdit = (habit) => {
+        setSelectedHabit(habit);
+        setIsModalOpen(true);
+    };
 
-    const filteredHabits = habits
-        .filter(h => h.name.toLowerCase().includes(searchQuery.toLowerCase()))
-        .filter(h => activeCategory === 'All' || h.category === activeCategory);
+    const handleModalChange = (open) => {
+        setIsModalOpen(open);
+        if (!open) setSelectedHabit(null);
+    };
+
+    const filteredHabits = (habits || []).filter(habit => {
+        const matchesSearch = habit.name.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesCategory = activeCategory === 'All' || habit.category === activeCategory;
+        return matchesSearch && matchesCategory;
+    });
 
     return (
         <div className="container py-8 max-w-5xl mx-auto space-y-8 relative">
@@ -51,7 +60,7 @@ const Habits = () => {
                 <Tabs value={activeCategory} onValueChange={setActiveCategory} className="w-full sm:w-auto">
                     <TabsList className="w-full justify-start overflow-x-auto">
                         {categories.map(c => (
-                            <TabsTrigger key={c} value={c}>{c}</TabsTrigger>
+                            <TabsTrigger key={c} value={c} className="capitalize">{c}</TabsTrigger>
                         ))}
                     </TabsList>
                 </Tabs>
@@ -83,13 +92,13 @@ const Habits = () => {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: i * 0.05 }}
                         >
-                            <HabitCard habit={habit} onEdit={() => { }} />
+                            <HabitCard habit={habit} onEdit={handleEdit} />
                         </motion.div>
                     ))}
                 </div>
             )}
 
-            <CreateHabitModal open={isModalOpen} onOpenChange={setIsModalOpen} />
+            <CreateHabitModal open={isModalOpen} onOpenChange={handleModalChange} habit={selectedHabit} />
         </div>
     );
 };

@@ -7,8 +7,22 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
     async (config) => {
+        if (!navigator.onLine && ['post', 'put', 'delete'].includes(config.method?.toLowerCase() || '')) {
+            const { offlineQueue } = await import('../services/offlineQueue');
+            await offlineQueue.enqueue({
+                method: config.method,
+                url: config.url,
+                data: config.data,
+                headers: config.headers
+            });
+            // Throw a special error to let the caller know it was queued
+            const offlineError = new Error('Offline: Action queued for sync');
+            offlineError.isOffline = true;
+            return Promise.reject(offlineError);
+        }
+
         try {
-            // Only try to get Supabase token if supabase is initialized
+            // ... original auth logic ...
             const { supabase } = await import('../lib/supabase');
             if (supabase) {
                 const { data: { session } } = await supabase.auth.getSession();
@@ -16,14 +30,15 @@ axiosInstance.interceptors.request.use(
                     config.headers.Authorization = `Bearer ${session.access_token}`;
                 }
             } else {
-                // Demo mode: attach demo flag so backend knows
                 const demo = localStorage.getItem('habitforge_demo_user');
                 if (demo) {
                     const demoUser = JSON.parse(demo);
                     config.headers['X-Demo-User-Id'] = demoUser.id;
                 }
             }
-        } catch { /* non-critical */ }
+        } catch (err) {
+            // non-critical: supabase or demo user might not be available
+        }
         return config;
     },
     (error) => Promise.reject(error)

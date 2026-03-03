@@ -9,7 +9,7 @@ const Layout = ({ children }) => {
         <div className="min-h-screen bg-transparent text-foreground flex flex-col md:flex-row">
             <Navbar />
 
-            <main className="flex-1 md:ml-64 pb-20 md:pb-0 min-h-screen overflow-x-hidden relative">
+            <main className="flex-1 md:ml-64 pb-8 md:pb-0 min-h-screen overflow-x-hidden relative">
                 {!isOnline && (
                     <div className="w-full bg-red-500 text-white text-xs font-semibold py-1.5 px-4 text-center sticky top-0 z-30 shadow-md flex justify-center items-center gap-2">
                         No internet connection. Changes saved locally.

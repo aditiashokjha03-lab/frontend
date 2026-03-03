@@ -13,7 +13,7 @@ import { format, addDays, subDays, isToday } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Dashboard = () => {
-    const { profile } = useAuth();
+    const { profile, fetchProfile } = useAuth();
     const { habits } = useHabits();
 
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -23,9 +23,15 @@ const Dashboard = () => {
 
     const bestStreakHabit = [...habits].sort((a, b) => (b.longest_streak || 0) - (a.longest_streak || 0))[0];
 
-    const habitsForSelectedDay = habits; // In a real app, filter based on frequency and selected config
+    const [selectedCategory, setSelectedCategory] = useState('All');
+    const categories = ['All', ...new Set(habits.map(h => h.category).filter(Boolean))];
 
-    const completedCount = logs.filter(l => l.completed).length;
+    const habitsForSelectedDay = selectedCategory === 'All'
+        ? habits
+        : habits.filter(h => h.category === selectedCategory);
+
+    const visibleHabitIds = new Set(habitsForSelectedDay.map(h => h.id));
+    const completedCount = logs.filter(l => l.completed && visibleHabitIds.has(l.habit_id)).length;
     const totalCount = habitsForSelectedDay.length;
 
     const handlePrevDay = () => setSelectedDate(subDays(selectedDate, 1));
@@ -33,6 +39,21 @@ const Dashboard = () => {
     const handleToday = () => setSelectedDate(new Date());
 
     const getLogForHabit = (habitId) => logs.find(l => l.habit_id === habitId);
+
+    const onToggle = async (habitId, date, status) => {
+        upsertLog({ habit_id: habitId, date, ...status }, {
+            onSuccess: (data) => {
+                if (data?.xp_earned > 0) {
+                    import('sonner').then(({ toast }) => {
+                        toast.success(`+${data.xp_earned} XP earned!`, {
+                            description: data.leveled_up ? `Level UP! You are now Level ${data.new_level}` : undefined
+                        });
+                    });
+                    if (profile?.id) fetchProfile(profile.id);
+                }
+            }
+        });
+    };
 
     return (
         <div className="container py-8 max-w-5xl mx-auto space-y-8">
@@ -85,6 +106,18 @@ const Dashboard = () => {
                         </span>
                     </h2>
 
+                    <div className="flex flex-wrap gap-2 mb-6">
+                        {categories.map(cat => (
+                            <button
+                                key={cat}
+                                onClick={() => setSelectedCategory(cat)}
+                                className={`px-4 py-1.5 rounded-full text-xs font-bold border transition-all ${selectedCategory === cat ? 'bg-primary text-primary-foreground border-primary' : 'bg-muted text-muted-foreground border-border hover:bg-card'}`}
+                            >
+                                {cat}
+                            </button>
+                        ))}
+                    </div>
+
                     <div className="space-y-4">
                         {isLoading ? (
                             <div className="flex justify-center items-center py-12"><div className="w-6 h-6 border-4 border-primary border-t-transparent rounded-full animate-spin"></div></div>
@@ -105,7 +138,7 @@ const Dashboard = () => {
                                         <DailyHabitItem
                                             habit={habit}
                                             log={getLogForHabit(habit.id)}
-                                            onToggle={upsertLog}
+                                            onToggle={(habitId, status) => onToggle(habitId, dateStr, status)}
                                         />
                                     </motion.div>
                                 ))}

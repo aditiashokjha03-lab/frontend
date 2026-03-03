@@ -45,6 +45,19 @@ export const AuthProvider = ({ children }) => {
     const [isDemoMode, setIsDemoMode] = useState(Boolean(user));
 
     async function fetchProfile(userId) {
+        if (isDemoMode) {
+            const DEMO_USERS_KEY = 'habitforge_demo_users_list';
+            try {
+                const users = JSON.parse(localStorage.getItem(DEMO_USERS_KEY)) || {};
+                const currentUser = JSON.parse(localStorage.getItem(DEMO_KEY));
+                if (currentUser && users[currentUser.email]) {
+                    setProfile(users[currentUser.email]);
+                }
+            } catch { }
+            setLoading(false);
+            return;
+        }
+
         try {
             const { data } = await supabase
                 .from('profiles').select('*').eq('id', userId).single();
@@ -179,7 +192,7 @@ export const AuthProvider = ({ children }) => {
         <AuthContext.Provider value={{
             user, profile, loading,
             isDemoMode, hasSupabase,
-            signIn, signUp, signInWithGoogle, signOut, signInDemo
+            signIn, signUp, signInWithGoogle, signOut, signInDemo, fetchProfile
         }}>
             {children}
         </AuthContext.Provider>
