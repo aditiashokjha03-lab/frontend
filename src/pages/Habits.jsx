@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useHabits } from '../hooks/useHabits';
 import HabitCard from '../components/habits/HabitCard';
 import CreateHabitModal from '../components/habits/CreateHabitModal';
+import HabitTAI from '../components/habits/HabitTAI';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -10,7 +11,7 @@ import { Plus, Search, FolderOpen } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const Habits = () => {
-    const { habits, isLoading } = useHabits();
+    const { habits } = useHabits();
     const [selectedHabit, setSelectedHabit] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
@@ -45,6 +46,8 @@ const Habits = () => {
                     <Plus className="h-4 w-4" /> Create Habit
                 </Button>
             </div>
+
+            <HabitTAI />
 
             <div className="flex flex-col sm:flex-row justify-between gap-4">
                 <div className="relative w-full sm:w-72">

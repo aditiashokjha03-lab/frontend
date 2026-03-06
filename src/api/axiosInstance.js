@@ -22,22 +22,25 @@ axiosInstance.interceptors.request.use(
         }
 
         try {
-            // ... original auth logic ...
             const { supabase } = await import('../lib/supabase');
             if (supabase) {
                 const { data: { session } } = await supabase.auth.getSession();
                 if (session?.access_token) {
+
+                    console.log('Adding auth token to request', session.access_token);
+
                     config.headers.Authorization = `Bearer ${session.access_token}`;
-                }
-            } else {
-                const demo = localStorage.getItem('habitforge_demo_user');
-                if (demo) {
-                    const demoUser = JSON.parse(demo);
-                    config.headers['X-Demo-User-Id'] = demoUser.id;
+                } else {
+                    console.warn('No auth token found. User might not be logged in.');
                 }
             }
         } catch (err) {
             // non-critical: supabase or demo user might not be available
+
+                {
+                console.warn('Auth token setup failed', err);
+            }
+
         }
         return config;
     },

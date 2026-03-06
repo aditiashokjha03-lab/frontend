@@ -1,34 +1,38 @@
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '../context/AuthContext';
-import { mockStore } from '../services/mockStore';
 import { getSummary, getHeatmap, getWeeklyReport, getMonthlyReport, getInsights } from '../api/analyticsApi';
 
 export const useAnalytics = () => {
-    const { isDemoMode } = useAuth();
+    const { user } = useAuth();
 
     const summaryQuery = useQuery({
-        queryKey: ['analytics', 'summary'],
-        queryFn: () => isDemoMode ? mockStore.getSummary() : getSummary(),
+        queryKey: ['analytics', 'summary', user?.id],
+        queryFn: () => getSummary(),
+        enabled: !!user?.id,
     });
 
     const heatmapQuery = useQuery({
-        queryKey: ['analytics', 'heatmap'],
-        queryFn: () => isDemoMode ? [] : getHeatmap(),
+        queryKey: ['analytics', 'heatmap', user?.id],
+        queryFn: () => getHeatmap(),
+        enabled: !!user?.id,
     });
 
     const weeklyReportQuery = useQuery({
-        queryKey: ['analytics', 'weekly'],
-        queryFn: () => isDemoMode ? [] : getWeeklyReport(),
+        queryKey: ['analytics', 'weekly', user?.id],
+        queryFn: () => getWeeklyReport(),
+        enabled: !!user?.id,
     });
 
     const monthlyReportQuery = useQuery({
-        queryKey: ['analytics', 'monthly'],
-        queryFn: () => isDemoMode ? [] : getMonthlyReport(),
+        queryKey: ['analytics', 'monthly', user?.id],
+        queryFn: () => getMonthlyReport(),
+        enabled: !!user?.id,
     });
 
     const insightsQuery = useQuery({
-        queryKey: ['analytics', 'insights'],
-        queryFn: () => isDemoMode ? { peak_hours: [], correlations: [] } : getInsights(),
+        queryKey: ['analytics', 'insights', user?.id],
+        queryFn: () => getInsights(),
+        enabled: !!user?.id,
     });
 
     return {

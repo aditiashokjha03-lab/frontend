@@ -5,7 +5,61 @@ import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import { useOffline } from '../../context/OfflineContext';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from 'framer-motion';
+
+const NavLinks = ({ links, mobile = false, closeMenu }) => (
+    <div className={mobile ? "flex flex-col space-y-2 mt-4" : "flex-1 px-4 space-y-2 mt-4"}>
+        {links.map((link) => (
+            <NavLink
+                key={link.to}
+                to={link.to}
+                onClick={mobile ? closeMenu : undefined}
+                className={({ isActive }) =>
+                    `flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-colors ${isActive
+                        ? 'bg-primary text-primary-foreground shadow-md'
+                        : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                    }`
+                }
+            >
+                <link.icon size={20} />
+                {link.label}
+            </NavLink>
+        ))}
+    </div>
+);
+
+const SidebarFooter = ({ theme, toggleTheme, signOut, profile, user, closeMenu }) => (
+    <div className="p-4 border-t space-y-3">
+        <button
+            onClick={toggleTheme}
+            className="w-full flex items-center gap-2.5 px-3 py-2 text-sm font-medium text-muted-foreground bg-muted/50 hover:bg-muted rounded-lg border border-border/60 transition-colors"
+        >
+            {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+        </button>
+
+        <button
+            type="button"
+            onClick={signOut}
+            className="w-full flex items-center gap-2.5 px-3 py-2 text-sm font-medium text-destructive bg-destructive/5 hover:bg-destructive/15 rounded-lg border border-destructive/20 transition-colors"
+        >
+            <LogOut className="h-4 w-4" />
+            Sign out
+        </button>
+
+        <Link to="/profile" onClick={closeMenu} className="flex items-center gap-3 px-2 py-2 hover:bg-muted rounded-lg transition-colors overflow-hidden">
+            <Avatar className="w-10 h-10 border-2 border-background">
+                <AvatarImage src={profile?.avatar_url} />
+                <AvatarFallback>{user?.email?.charAt(0).toUpperCase() || 'U'}</AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col overflow-hidden">
+                <span className="text-sm font-semibold truncate">{profile?.username || user?.email}</span>
+                <span className="text-xs text-muted-foreground">Level {profile?.level || 1}</span>
+            </div>
+        </Link>
+    </div>
+);
 
 const Navbar = () => {
     const { user, profile, signOut } = useAuth();
@@ -24,59 +78,6 @@ const Navbar = () => {
 
     const closeMenu = () => setIsMenuOpen(false);
 
-    const NavLinks = ({ mobile = false }) => (
-        <div className={mobile ? "flex flex-col space-y-2 mt-4" : "flex-1 px-4 space-y-2 mt-4"}>
-            {links.map((link) => (
-                <NavLink
-                    key={link.to}
-                    to={link.to}
-                    onClick={mobile ? closeMenu : undefined}
-                    className={({ isActive }) =>
-                        `flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-colors ${isActive
-                            ? 'bg-primary text-primary-foreground shadow-md'
-                            : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-                        }`
-                    }
-                >
-                    <link.icon size={20} />
-                    {link.label}
-                </NavLink>
-            ))}
-        </div>
-    );
-
-    const SidebarFooter = () => (
-        <div className="p-4 border-t space-y-3">
-            <button
-                onClick={toggleTheme}
-                className="w-full flex items-center gap-2.5 px-3 py-2 text-sm font-medium text-muted-foreground bg-muted/50 hover:bg-muted rounded-lg border border-border/60 transition-colors"
-            >
-                {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-                {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
-            </button>
-
-            <button
-                type="button"
-                onClick={signOut}
-                className="w-full flex items-center gap-2.5 px-3 py-2 text-sm font-medium text-destructive bg-destructive/5 hover:bg-destructive/15 rounded-lg border border-destructive/20 transition-colors"
-            >
-                <LogOut className="h-4 w-4" />
-                Sign out
-            </button>
-
-            <Link to="/profile" onClick={closeMenu} className="flex items-center gap-3 px-2 py-2 hover:bg-muted rounded-lg transition-colors overflow-hidden">
-                <Avatar className="w-10 h-10 border-2 border-background">
-                    <AvatarImage src={profile?.avatar_url} />
-                    <AvatarFallback>{user?.email?.charAt(0).toUpperCase() || 'U'}</AvatarFallback>
-                </Avatar>
-                <div className="flex flex-col overflow-hidden">
-                    <span className="text-sm font-semibold truncate">{profile?.username || user?.email}</span>
-                    <span className="text-xs text-muted-foreground">Level {profile?.level || 1}</span>
-                </div>
-            </Link>
-        </div>
-    );
-
     return (
         <>
             {/* Desktop Vertical Nav */}
@@ -90,8 +91,15 @@ const Navbar = () => {
                     </Link>
                 </div>
 
-                <NavLinks />
-                <SidebarFooter />
+                <NavLinks links={links} closeMenu={closeMenu} />
+                <SidebarFooter
+                    theme={theme}
+                    toggleTheme={toggleTheme}
+                    signOut={signOut}
+                    profile={profile}
+                    user={user}
+                    closeMenu={closeMenu}
+                />
             </nav>
 
             {/* Mobile Header (with hamburger) */}
@@ -152,10 +160,17 @@ const Navbar = () => {
                                 )}
                             </div>
 
-                            <NavLinks mobile={true} />
+                            <NavLinks links={links} mobile={true} closeMenu={closeMenu} />
 
                             <div className="mt-auto">
-                                <SidebarFooter />
+                                <SidebarFooter
+                                    theme={theme}
+                                    toggleTheme={toggleTheme}
+                                    signOut={signOut}
+                                    profile={profile}
+                                    user={user}
+                                    closeMenu={closeMenu}
+                                />
                             </div>
                         </motion.nav>
                     </>

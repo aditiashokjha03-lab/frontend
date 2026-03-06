@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useHabits } from '../hooks/useHabits';
 import { useLogs } from '../hooks/useLogs';
+import { useBadges } from '../hooks/useBadges';
 import DailyHabitItem from '../components/habits/DailyHabitItem';
 import StreakCard from '../components/habits/StreakCard';
 import TodayProgress from '../components/habits/TodayProgress';
 import XPBar from '../components/ui/XPBar';
+import XpPopup from '../components/XpPopup';
+import LevelUp from '../components/LevelUp';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, Calendar as CalendarIcon } from 'lucide-react';
 import { format, addDays, subDays, isToday } from 'date-fns';
@@ -13,13 +16,20 @@ import { format, addDays, subDays, isToday } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Dashboard = () => {
-    const { profile, fetchProfile } = useAuth();
+    const { profile, fetchProfile, user } = useAuth();
     const { habits } = useHabits();
+    const { checkAndUnlockBadges } = useBadges();
+    const username = profile?.username || user?.user_metadata?.username || user?.email?.split('@')[0] || 'friend';
 
     const [selectedDate, setSelectedDate] = useState(new Date());
     const dateStr = format(selectedDate, 'yyyy-MM-dd');
 
     const { logs, upsertLog, isLoading } = useLogs(dateStr);
+
+    const [previousXp, setPreviousXp] = useState(0);
+    const [previousLevel, setPreviousLevel] = useState(null);
+    const [xpGained, setXpGained] = useState(null);
+    const [levelUp, setLevelUp] = useState(false);
 
     const bestStreakHabit = [...habits].sort((a, b) => (b.longest_streak || 0) - (a.longest_streak || 0))[0];
 
@@ -42,25 +52,60 @@ const Dashboard = () => {
 
     const onToggle = async (habitId, date, status) => {
         upsertLog({ habit_id: habitId, date, ...status }, {
-            onSuccess: (data) => {
-                if (data?.xp_earned > 0) {
-                    import('sonner').then(({ toast }) => {
-                        toast.success(`+${data.xp_earned} XP earned!`, {
-                            description: data.leveled_up ? `Level UP! You are now Level ${data.new_level}` : undefined
-                        });
-                    });
-                    if (profile?.id) fetchProfile(profile.id);
+            onSuccess: () => {
+                if (profile?.id) {
+                    fetchProfile(profile.id);
+                }
+                if (user?.id) {
+                    checkAndUnlockBadges(user.id);
                 }
             }
         });
     };
+
+    useEffect(() => {
+        if (!profile) return;
+
+        if (previousLevel === null) {
+            setPreviousLevel(profile.level || 1);
+        }
+
+        if (previousXp === 0 && profile.xp >= 0) {
+            setPreviousXp(profile.xp || 0);
+            return;
+        }
+
+        if (profile.xp > previousXp) {
+            setXpGained(profile.xp - previousXp);
+            setPreviousXp(profile.xp);
+        } else if (profile.xp !== previousXp) {
+            setPreviousXp(profile.xp);
+        }
+
+        if (previousLevel !== null && profile.level > previousLevel) {
+            setLevelUp(true);
+            setPreviousLevel(profile.level);
+        }
+    }, [profile, previousXp, previousLevel]);
+
+    useEffect(() => {
+        if (!xpGained) return;
+        const timer = setTimeout(() => setXpGained(null), 2000);
+        return () => clearTimeout(timer);
+    }, [xpGained]);
+
+    useEffect(() => {
+        if (!levelUp) return;
+        const timer = setTimeout(() => setLevelUp(false), 3000);
+        return () => clearTimeout(timer);
+    }, [levelUp]);
 
     return (
         <div className="container py-8 max-w-5xl mx-auto space-y-8">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
                 <div>
                     <h1 className="text-4xl font-extrabold tracking-tight">Focus & Forge</h1>
-                    <p className="text-muted-foreground mt-1 text-lg">Your habits shape your future, {profile?.username?.split('@')[0] || 'friend'}.</p>
+                    <p className="text-muted-foreground mt-1 text-lg">Your habits shape your future, {username}.</p>
                 </div>
 
                 <div className="flex items-center gap-2 bg-card p-1 rounded-lg border shadow-sm">
@@ -81,8 +126,8 @@ const Dashboard = () => {
                     <XPBar xp={profile.xp} level={profile.level} />
                     <p className="text-xs text-muted-foreground">
                         You earn XP by completing habits and focus sessions. Each new level requires{' '}
-                        <strong>100 × your current level</strong> XP, so level 3 needs 300 XP, level 4 needs 400 XP,
-                        and so on. Filling this bar and leveling up is a simple way to see your long‑term consistency
+                        <strong>100 x your current level</strong> XP, so level 3 needs 300 XP, level 4 needs 400 XP,
+                        and so on. Filling this bar and leveling up is a simple way to see your long-term consistency
                         growing over time.
                     </p>
                 </div>
@@ -147,6 +192,9 @@ const Dashboard = () => {
                     </div>
                 </div>
             </div>
+
+            {xpGained && <XpPopup xp={xpGained} />}
+            {levelUp && profile && <LevelUp level={profile.level} />}
         </div>
     );
 };

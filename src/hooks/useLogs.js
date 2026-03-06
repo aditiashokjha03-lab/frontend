@@ -1,26 +1,23 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../context/AuthContext';
-import { mockStore } from '../services/mockStore';
 import { getLogsByDate, upsertLog } from '../api/logsApi';
 
 export const useLogs = (date) => {
-    const { isDemoMode } = useAuth();
+    const { user } = useAuth();
     const queryClient = useQueryClient();
 
     const query = useQuery({
-        queryKey: ['logs', date],
-        queryFn: () => isDemoMode ? mockStore.getLogsByDate(date) : getLogsByDate(date),
-        enabled: !!date,
+        queryKey: ['logs', date, user?.id],
+        queryFn: () => getLogsByDate(date),
+        enabled: !!date && !!user?.id,
     });
 
     const mutation = useMutation({
-        mutationFn: (logData) => isDemoMode
-            ? mockStore.upsertLog({ ...logData, date })
-            : upsertLog(logData),
+        mutationFn: (logData) => upsertLog(logData),
         onMutate: async (newLog) => {
-            await queryClient.cancelQueries({ queryKey: ['logs', date] });
-            const previousLogs = queryClient.getQueryData(['logs', date]);
-            queryClient.setQueryData(['logs', date], old => {
+            await queryClient.cancelQueries({ queryKey: ['logs', date, user?.id] });
+            const previousLogs = queryClient.getQueryData(['logs', date, user?.id]);
+            queryClient.setQueryData(['logs', date, user?.id], old => {
                 const list = old || [];
                 const idx = list.findIndex(l => l.habit_id === newLog.habit_id);
                 if (idx !== -1) {
@@ -33,12 +30,11 @@ export const useLogs = (date) => {
             return { previousLogs };
         },
         onError: (err, _newLog, context) => {
-            queryClient.setQueryData(['logs', date], context.previousLogs);
+            queryClient.setQueryData(['logs', date, user?.id], context.previousLogs);
         },
         onSettled: (data) => {
-            queryClient.invalidateQueries({ queryKey: ['logs', date] });
-            // Also refresh habits so streaks update
-            queryClient.invalidateQueries({ queryKey: ['habits'] });
+            queryClient.invalidateQueries({ queryKey: ['logs', date, user?.id] });
+            queryClient.invalidateQueries({ queryKey: ['habits', user?.id] });
 
             // Always invalidate analytics summary to ensure real-time data
             queryClient.invalidateQueries({ queryKey: ['analytics', 'summary'] });

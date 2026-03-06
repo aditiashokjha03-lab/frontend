@@ -66,11 +66,11 @@ To log into the initial demo experience:
 ### Challenges
 ![Chhallenges Preview](./media/challenges.png)
 
+### Profile
+![Profile Preview](./media/profile.png)
+
 ## Video Walkthrough Link
-[Feature Walkthrough Video](https://drive.google.com/file/d/1NnM7qEww723YRaedZsS5WQ_sSe25WlL3/view?usp=sharing)
+<!-- ![Feature Walkthrough Video](https://drive.google.com/file/d/1uFqJjJRwo62tViK9ASy6tGcS7XQjakrB/view?usp=sharing) -->
 
-<!-- ![Feature Walkthrough Video](./media/walkthrough.mp4) -->
-
-
-
+![Feature Walkthrough Video](./media/walkthrough.mp4)
 

@@ -1,37 +1,38 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../context/AuthContext';
-import { mockStore } from '../services/mockStore';
 import { getHabits, createHabit, updateHabit, deleteHabit } from '../api/habitsApi';
 import { toast } from 'sonner';
-
 export const useHabits = () => {
-    const { isDemoMode } = useAuth();
+    const { user } = useAuth();
     const queryClient = useQueryClient();
 
     const habitsQuery = useQuery({
-        queryKey: ['habits'],
-        queryFn: () => isDemoMode ? mockStore.getHabits() : getHabits(),
+        queryKey: ['habits', user?.id],
+        queryFn: () => getHabits(),
+        enabled: !!user?.id,
     });
 
     const createMutation = useMutation({
-        mutationFn: (data) => isDemoMode ? mockStore.createHabit(data) : createHabit(data),
+        mutationFn: (data) => createHabit(data),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['habits'] });
+            queryClient.invalidateQueries({ queryKey: ['habits', user?.id] });
             toast.success('Habit created!');
         },
         onError: () => toast.error('Failed to create habit'),
     });
 
     const updateMutation = useMutation({
-        mutationFn: ({ id, data }) => isDemoMode ? mockStore.updateHabit(id, data) : updateHabit(id, data),
-        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['habits'] }),
+        mutationFn: ({ id, data }) => updateHabit(id, data),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['habits', user?.id] });
+        },
         onError: () => toast.error('Failed to update habit'),
     });
 
     const deleteMutation = useMutation({
-        mutationFn: (id) => isDemoMode ? mockStore.deleteHabit(id) : deleteHabit(id),
+        mutationFn: (id) => deleteHabit(id),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['habits'] });
+            queryClient.invalidateQueries({ queryKey: ['habits', user?.id] });
             toast.success('Habit removed');
         },
         onError: () => toast.error('Failed to delete habit'),
@@ -42,6 +43,7 @@ export const useHabits = () => {
         isLoading: habitsQuery.isLoading,
         isError: habitsQuery.isError,
         createHabit: createMutation.mutate,
+        createHabitAsync: createMutation.mutateAsync,
         updateHabit: updateMutation.mutate,
         deleteHabit: deleteMutation.mutate,
         isCreating: createMutation.isPending,

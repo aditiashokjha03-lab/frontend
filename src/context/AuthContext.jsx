@@ -1,6 +1,7 @@
 /* eslint react-refresh/only-export-components: "off" */
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
+import { queryClient } from '../store/queryClient';
 
 // Only initialize Supabase if real keys are provided
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || '';
@@ -14,50 +15,13 @@ const hasSupabase = Boolean(
 
 const supabase = hasSupabase ? createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
-// ─── Demo user ───────────────────────────────────────────────────────
-const DEMO_KEY = 'habitforge_demo_user';
-
-const createDemoUser = (email) => ({
-    id: 'demo-' + Math.random().toString(36).slice(2),
-    email,
-    username: email.split('@')[0],
-    level: 1,
-    xp: 0,
-    avatar_url: null,
-});
-
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(() => {
-        try {
-            const saved = localStorage.getItem(DEMO_KEY);
-            if (saved) {
-                return JSON.parse(saved);
-            }
-        } catch {
-            // ignore
-        }
-        return null;
-    });
-    const [profile, setProfile] = useState(user);
-    const [loading, setLoading] = useState(!user);
-    const [isDemoMode, setIsDemoMode] = useState(Boolean(user));
-
+    const [user, setUser] = useState(null);
+    const [profile, setProfile] = useState(null);
+    const [loading, setLoading] = useState(Boolean(hasSupabase && supabase));
     async function fetchProfile(userId) {
-        if (isDemoMode) {
-            const DEMO_USERS_KEY = 'habitforge_demo_users_list';
-            try {
-                const users = JSON.parse(localStorage.getItem(DEMO_USERS_KEY)) || {};
-                const currentUser = JSON.parse(localStorage.getItem(DEMO_KEY));
-                if (currentUser && users[currentUser.email]) {
-                    setProfile(users[currentUser.email]);
-                }
-            } catch { }
-            setLoading(false);
-            return;
-        }
-
         try {
             const { data } = await supabase
                 .from('profiles').select('*').eq('id', userId).single();
@@ -66,77 +30,88 @@ export const AuthProvider = ({ children }) => {
         setLoading(false);
     }
 
-    useEffect(() => {
-        // If demo user is already restored from state initializer, no need to hit Supabase
-        if (isDemoMode) {
-            return;
-        }
+    const updateProfile = async (updates) => {
+        const newProfile = { ...profile, ...updates };
+        setProfile(newProfile);
 
-        // 1. Try real Supabase if keys are configured
+        if (user && supabase) {
+            const { error } = await supabase.from('profiles').update(updates).eq('id', user.id);
+            if (error) {
+                console.warn('[Auth] Profile update error:', error.message);
+            }
+        }
+    };
+
+    useEffect(() => {
         if (!hasSupabase || !supabase) {
             return;
         }
 
-        supabase.auth.getSession()
-            .then(({ data: { session } }) => {
-                setUser(session?.user ?? null);
-                if (session?.user) fetchProfile(session.user.id);
-                else setLoading(false);
-            })
-            .catch(() => setLoading(false));
-
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+        (async () => {
+            const { data: { session }, error } = await supabase.auth.getSession();
+            if (error) {
+                setLoading(false);
+                return;
+            }
             setUser(session?.user ?? null);
             if (session?.user) fetchProfile(session.user.id);
-            else { setProfile(null); setLoading(false); }
+            else setLoading(false);
+        })();
+
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+            const nextUser = session?.user ?? null;
+            setUser(nextUser);
+            if (nextUser) {
+                fetchProfile(nextUser.id);
+            } else {
+                setProfile(null);
+                setLoading(false);
+                queryClient.clear();
+            }
         });
 
         return () => subscription?.unsubscribe();
-    }, [isDemoMode]);
+    }, []);
 
     // ── Auth methods ─────────────────────────────────────────────────
     const signIn = async (email, password) => {
-        // If no Supabase, fall back to demo mode
         if (!hasSupabase || !supabase) {
-            return signInDemo(email, false);
+            return { error: { message: 'Supabase is not configured.' } };
         }
         const result = await supabase.auth.signInWithPassword({ email, password });
-        // If Supabase returns ANY error (e.g. email not confirmed, invalid credentials),
-        // fall back to demo mode so the user can always access the app.
-        if (result.error) {
-            console.warn('[Auth] Supabase signIn error — falling back to demo mode:', result.error.message);
-            return signInDemo(email, false);
-        }
         return result;
     };
 
-    const signUp = async (email, password) => {
-        // If no Supabase, fall back to demo mode immediately
+    const signUp = async (email, password, username) => {
+        const seed = username || Math.random().toString(36).substring(7);
+        const avatarUrl = `https://api.dicebear.com/9.x/adventurer/svg?seed=${seed}`;
+
         if (!hasSupabase || !supabase) {
-            return signInDemo(email, true);
+            return { error: { message: 'Supabase is not configured.' } };
         }
 
-        const result = await supabase.auth.signUp({ email, password });
-
-        // On any Supabase error, fall back to demo mode
-        if (result.error) {
-            console.warn('[Auth] Supabase signUp error — falling back to demo mode:', result.error.message);
-            return signInDemo(email, true);
-        }
+        const result = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+                data: { username, avatar_url: avatarUrl }
+            }
+        });
 
         // Attempt to create profile row (non-critical)
         if (result.data?.user) {
             const userId = result.data.user.id;
-            const username = email.split('@')[0] + '_' + userId.slice(0, 6);
-            await supabase.from('profiles').upsert(
-                { id: userId, username },
+            const finalUsername = username || email.split('@')[0] + '_' + userId.slice(0, 6);
+            const { error: upsertError } = await supabase.from('profiles').upsert(
+                { id: userId, username: finalUsername, avatar_url: avatarUrl },
                 { onConflict: 'id' }
-            ).catch(() => { /* non-critical */ });
+            );
+            if (upsertError) {
+                console.warn('[Auth] Non-critical profile upsert error:', upsertError.message);
+            }
         }
 
-        // Regardless of whether email verification is required, activate demo mode
-        // so the user can immediately explore the app.
-        return signInDemo(email, true);
+        return result;
     };
 
     const signInWithGoogle = async () => {
@@ -147,52 +122,19 @@ export const AuthProvider = ({ children }) => {
     };
 
     const signOut = async () => {
-        if (isDemoMode) {
-            localStorage.removeItem(DEMO_KEY);
-        } else if (supabase) {
+        if (supabase) {
             await supabase.auth.signOut();
         }
         setUser(null);
         setProfile(null);
-        setIsDemoMode(false);
-    };
-
-    // ── Demo Mode (no database needed) ──────────────────────────────
-    const signInDemo = (email = 'demo@habitforge.app', isSignUp = false) => {
-        const DEMO_USERS_KEY = 'habitforge_demo_users_list';
-        let demoUsers = {};
-        try {
-            demoUsers = JSON.parse(localStorage.getItem(DEMO_USERS_KEY)) || {};
-        } catch { }
-
-        if (isSignUp) {
-            if (demoUsers[email]) {
-                return { error: { message: 'User already exists. Please log in.' } };
-            }
-            demoUsers[email] = createDemoUser(email);
-            localStorage.setItem(DEMO_USERS_KEY, JSON.stringify(demoUsers));
-            // Ensure fresh state for new user
-            localStorage.setItem(`habitforge_store_${email}`, JSON.stringify({ habits: [], logs: {} }));
-        } else {
-            if (!demoUsers[email]) {
-                return { error: { message: 'User not found. Please sign up.' } };
-            }
-        }
-
-        const demoUser = demoUsers[email];
-        localStorage.setItem(DEMO_KEY, JSON.stringify(demoUser));
-        setUser(demoUser);
-        setProfile(demoUser);
-        setIsDemoMode(true);
-        setLoading(false);
-        return { error: null };
+        queryClient.clear();
     };
 
     return (
         <AuthContext.Provider value={{
             user, profile, loading,
-            isDemoMode, hasSupabase,
-            signIn, signUp, signInWithGoogle, signOut, signInDemo, fetchProfile
+            hasSupabase,
+            signIn, signUp, signInWithGoogle, signOut, fetchProfile, updateProfile
         }}>
             {children}
         </AuthContext.Provider>

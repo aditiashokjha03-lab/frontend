@@ -3,7 +3,7 @@ import { useAnalytics } from '../hooks/useAnalytics';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { Activity, Flame, Target, Trophy, Calendar as CalendarIcon } from 'lucide-react';
-import { format, subDays, isSameDay } from 'date-fns';
+import { format, subDays } from 'date-fns';
 // eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 

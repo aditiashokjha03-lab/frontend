@@ -1,11 +1,12 @@
 import { get, update, clear } from 'idb-keyval';
+import { v4 as uuidv4 } from 'uuid';
 
 const QUEUE_KEY = 'habitforge_offline_queue';
 
 export const offlineQueue = {
     async enqueue(action) {
         const item = {
-            id: crypto.randomUUID(),
+            id: uuidv4(),
             timestamp: Date.now(),
             ...action
         };

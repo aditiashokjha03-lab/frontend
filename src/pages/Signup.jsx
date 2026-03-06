@@ -10,6 +10,7 @@ import { toast } from 'sonner';
 import { Loader2, Flame, Sun, Moon } from 'lucide-react';
 
 const Signup = () => {
+    const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -20,10 +21,14 @@ const Signup = () => {
     const handleSignup = async (e) => {
         e.preventDefault();
         setIsLoading(true);
-        await signUp(email, password);
+        const { error } = await signUp(email, password, username);
         setIsLoading(false);
-        toast.success('Welcome to HabitForge! 🎉');
-        navigate('/dashboard');
+        if (error) {
+            toast.error(error.message);
+        } else {
+            toast.success('Welcome to HabitForge! 🎉');
+            navigate('/dashboard');
+        }
     };
 
     return (
@@ -56,6 +61,16 @@ const Signup = () => {
                     <CardContent className="space-y-4">
                         <form onSubmit={handleSignup} className="space-y-3">
                             <div className="space-y-1">
+                                <Label htmlFor="username">Username</Label>
+                                <Input
+                                    id="username" type="text"
+                                    placeholder="johndoe"
+                                    value={username}
+                                    onChange={(e) => setUsername(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <div className="space-y-1">
                                 <Label htmlFor="email">Email</Label>
                                 <Input
                                     id="email" type="email"
@@ -76,10 +91,12 @@ const Signup = () => {
                                     minLength={6}
                                 />
                             </div>
-                            <Button type="submit" variant="outline" className="w-full" disabled={isLoading}>
-                                {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                                Sign Up
-                            </Button>
+                            <div className="flex gap-2">
+                                <Button type="submit" variant="outline" className="flex-1" disabled={isLoading}>
+                                    {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                                    Sign Up
+                                </Button>
+                            </div>
                         </form>
                     </CardContent>
                     <CardFooter className="justify-center">

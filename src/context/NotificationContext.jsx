@@ -1,3 +1,4 @@
+/* eslint react-refresh/only-export-components: "off" */
 import React, { createContext, useContext, useEffect } from 'react';
 import { notificationService } from '../services/notificationService';
 import { useReminders } from '../hooks/useReminders';

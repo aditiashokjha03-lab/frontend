@@ -17,11 +17,12 @@ import {
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 
-function FeatureCard({ icon: Icon, title, description }) {
+function FeatureCard({ icon, title, description }) {
+    const IconComponent = icon;
     return (
         <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-6">
             <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10">
-                <Icon className="h-5 w-5 text-primary" />
+                <IconComponent className="h-5 w-5 text-primary" />
             </div>
             <h3 className="text-lg font-semibold text-card-foreground">{title}</h3>
             <p className="text-sm leading-relaxed text-muted-foreground">{description}</p>

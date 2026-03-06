@@ -1,11 +1,17 @@
+/* eslint react-hooks/set-state-in-effect: "off" */
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Switch } from '@/components/ui/switch';
 import { useHabits } from '../../hooks/useHabits';
+import { useAuth } from '../../context/AuthContext';
+import { useBadges } from '../../hooks/useBadges';
+
+const ICONS = ['⭐', '💧', '🏃', '📚', '🧘', '🎸', '🏋️', '🍎', '💤', '💰', '✍️', '🎨', '🎯', '🚀', '🌱', '☀️', '🌙', '🎧', '🧹', '🛠️'];
 
 const CreateHabitModal = ({ open, onOpenChange, habit = null }) => {
     const [name, setName] = useState('');
@@ -18,6 +24,19 @@ const CreateHabitModal = ({ open, onOpenChange, habit = null }) => {
     const [reminderEnabled, setReminderEnabled] = useState(false);
 
     const { createHabit, updateHabit, isCreating } = useHabits();
+    const { user } = useAuth();
+    const { checkAndUnlockBadges } = useBadges();
+
+    const resetForm = () => {
+        setName('');
+        setCategory('Health');
+        setDifficulty('medium');
+        setColor('#3b82f6');
+        setIcon('⭐');
+        setGoalTarget('');
+        setGoalFrequency('daily');
+        setReminderEnabled(false);
+    };
 
     useEffect(() => {
         if (habit && open) {
@@ -52,21 +71,14 @@ const CreateHabitModal = ({ open, onOpenChange, habit = null }) => {
         if (habit?.id) {
             updateHabit({ id: habit.id, data: habitData });
         } else {
-            createHabit(habitData);
+            createHabit(habitData, {
+                onSuccess: () => {
+                    if (user?.id) checkAndUnlockBadges(user.id);
+                }
+            });
         }
 
         onOpenChange(false);
-    };
-
-    const resetForm = () => {
-        setName('');
-        setCategory('Health');
-        setDifficulty('medium');
-        setColor('#3b82f6');
-        setIcon('⭐');
-        setGoalTarget('');
-        setGoalFrequency('daily');
-        setReminderEnabled(false);
     };
 
     return (
@@ -82,7 +94,28 @@ const CreateHabitModal = ({ open, onOpenChange, habit = null }) => {
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
                         <Label htmlFor="icon" className="text-right">Icon</Label>
-                        <Input id="icon" value={icon} onChange={e => setIcon(e.target.value)} className="col-span-3" maxLength={2} />
+                        <Popover>
+                            <PopoverTrigger asChild>
+                                <Button variant="outline" className="col-span-3 flex justify-start pl-3 text-left font-normal bg-background">
+                                    <span className="text-xl mr-2">{icon}</span>
+                                    <span>Select Icon</span>
+                                </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-64 p-2">
+                                <div className="grid grid-cols-5 gap-2">
+                                    {ICONS.map((emoji) => (
+                                        <button
+                                            key={emoji}
+                                            type="button"
+                                            onClick={() => setIcon(emoji)}
+                                            className={`flex h-10 w-10 items-center justify-center rounded-md text-xl transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 ${icon === emoji ? 'bg-primary/20 ring-2 ring-primary' : ''}`}
+                                        >
+                                            {emoji}
+                                        </button>
+                                    ))}
+                                </div>
+                            </PopoverContent>
+                        </Popover>
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
                         <Label htmlFor="color" className="text-right">Color</Label>
