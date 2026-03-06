@@ -70,9 +70,7 @@ To log into the initial demo experience:
 ![Profile Preview](./media/profile.png)
 
 ## Video Walkthrough Link
-[Feature Walkthrough Video](https://drive.google.com/file/d/1uFqJjJRwo62tViK9ASy6tGcS7XQjakrB/view?usp=sharing)
+<!-- ![Feature Walkthrough Video](https://drive.google.com/file/d/1uFqJjJRwo62tViK9ASy6tGcS7XQjakrB/view?usp=sharing) -->
 
-<!-- ![Feature Walkthrough Video](./media/walkthrough.mp4) -->
-
-
+![Feature Walkthrough Video](./media/walkthrough.mp4)
 
