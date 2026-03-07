@@ -63,7 +63,7 @@ const HabitTAI = () => {
             </div>
 
             <p className="text-sm text-muted-foreground mb-4">
-                Hi! I&apos;m HabitTAI. Based on your goal, here are some habits you can start today.
+                Holaa!! I&apos;m HabitTAI 👋 Coming Soon!! 🚀
             </p>
 
             <div className="flex gap-2">

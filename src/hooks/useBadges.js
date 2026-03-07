@@ -32,10 +32,10 @@ export const useBadges = () => {
             if (badgesError) throw badgesError;
 
             const DEFAULT_BADGES = [
-                { id: 'first_habit', key: 'first_habit', name: 'First Step', icon: '🌱', description: 'Reach 25 XP.', requirement: 25, type: 'xp' },
+                { id: 'first_habit', key: 'first_habit', name: 'First Step', icon: '🌱', description: 'Reach 10 XP.', requirement: 10, type: 'xp' },
                 { id: 'streak_7', key: 'streak_7', name: '7-Day Warrior', icon: '🔥', description: 'Maintain a 7-day streak.', requirement: 7, type: 'streak' },
                 { id: 'streak_30', key: 'streak_30', name: '30-Day Legend', icon: '🏆', description: 'Maintain a 30-day streak.', requirement: 30, type: 'streak' },
-                { id: 'habits_10', key: 'habits_10', name: 'Habit Builder', icon: '🏗️', description: 'Reach 125 XP.', requirement: 125, type: 'xp' },
+                { id: 'habits_10', key: 'habits_10', name: 'Habit Builder', icon: '🏗️', description: 'Reach 100 XP.', requirement: 100, type: 'xp' },
                 { id: 'level_5', key: 'level_5', name: 'Rising Star', icon: '⭐', description: 'Reach Level 5.', requirement: 5, type: 'level' },
                 { id: 'level_up', key: 'level_up', name: 'Level Up!', icon: '🚀', description: 'Reach 500 XP.', requirement: 500, type: 'xp' }
             ];
@@ -162,12 +162,12 @@ export const useBadges = () => {
 
             if (badgeName.localeCompare('First Step', undefined, { sensitivity: 'accent' }) === 0 || badgeKey === 'first_habit') {
                 currentValue = userXp;
-                requirement = 25;
-                isEarnedByComputation = userXp >= 25;
+                requirement = 10;
+                isEarnedByComputation = userXp >= 10;
             } else if (badgeName.localeCompare('Habit Builder', undefined, { sensitivity: 'accent' }) === 0 || badgeKey === 'habits_10') {
                 currentValue = userXp;
-                requirement = 125;
-                isEarnedByComputation = userXp >= 125;
+                requirement = 100;
+                isEarnedByComputation = userXp >= 100;
             } else if (badgeName.localeCompare('Rising Star', undefined, { sensitivity: 'accent' }) === 0 || badgeKey === 'level_5') {
                 currentValue = userXp;
                 requirement = 400;
