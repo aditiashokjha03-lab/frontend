@@ -2,11 +2,6 @@
   publish = "dist"
   command = "npm run build"
 
-# Reverse proxy API requests to the Render backend.
-# This eliminates CORS issues entirely since the browser sees same-origin requests.
-[[redirects]]
-  from = "/api/v1/*"
-  to = "https://backend-service-5igw.onrender.com/api/v1/:splat"
-  status = 200
-  force = true
-  headers = {X-From = "Netlify"}
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"

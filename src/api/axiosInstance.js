@@ -1,11 +1,8 @@
 import axios from 'axios';
 
-// In production, use relative URL so requests go through the Netlify reverse proxy
-// (defined in netlify.toml), which eliminates CORS issues entirely.
-// In development, fall back to the local backend URL.
-const baseURL = import.meta.env.PROD
-    ? '/api/v1'
-    : (import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001/api/v1');
+// Always use relative URL — requests are handled by Netlify Functions (same origin).
+// In local dev with `netlify dev`, Functions are served on the same port.
+const baseURL = '/api/v1';
 
 const axiosInstance = axios.create({
     baseURL,
@@ -33,9 +30,6 @@ axiosInstance.interceptors.request.use(
             if (supabase) {
                 const { data: { session } } = await supabase.auth.getSession();
                 if (session?.access_token) {
-
-                    console.log('Adding auth token to request', session.access_token);
-
                     config.headers.Authorization = `Bearer ${session.access_token}`;
                 } else {
                     console.warn('No auth token found. User might not be logged in.');
