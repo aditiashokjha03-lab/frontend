@@ -48,4 +48,25 @@ axiosInstance.interceptors.request.use(
     (error) => Promise.reject(error)
 );
 
+// ---- API functions ----
+
+// Habits
+export const getHabits = async () => {
+  const response = await axiosInstance.get('/habits');
+  return response.data;
+};
+
+// Logs
+export const getLogs = async (date) => {
+  const response = await axiosInstance.get(`/logs?date=${encodeURIComponent(date)}`);
+  return response.data;
+};
+
+// Goals
+export const getGoals = async () => {
+  const response = await axiosInstance.get('/goals');
+  return response.data;
+};
+
+
 export default axiosInstance;
