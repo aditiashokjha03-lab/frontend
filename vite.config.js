@@ -25,14 +25,19 @@ export default defineConfig({
         ]
       },
       workbox: {
+        // Exclude API routes from precaching
+        navigateFallbackDenylist: [/^\/api\//],
         runtimeCaching: [
           {
-            urlPattern: /^https:\/\/.*\/api\/v1\/.*/i,
+            urlPattern: /\/api\/v1\/.*/i,
             handler: 'NetworkFirst',
             options: {
               cacheName: 'api-cache',
               expiration: { maxEntries: 50, maxAgeSeconds: 60 },
-              networkTimeoutSeconds: 5
+              networkTimeoutSeconds: 5,
+              cacheableResponse: {
+                statuses: [0, 200]
+              }
             }
           }
         ]

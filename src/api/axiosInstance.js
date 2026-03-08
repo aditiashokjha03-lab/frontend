@@ -1,7 +1,14 @@
 import axios from 'axios';
 
+// In production, use relative URL so requests go through the Netlify reverse proxy
+// (defined in netlify.toml), which eliminates CORS issues entirely.
+// In development, fall back to the local backend URL.
+const baseURL = import.meta.env.PROD
+    ? '/api/v1'
+    : (import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001/api/v1');
+
 const axiosInstance = axios.create({
-    baseURL: import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001/api/v1',
+    baseURL,
     headers: { 'Content-Type': 'application/json' },
 });
 
