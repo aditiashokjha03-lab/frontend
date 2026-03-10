@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }) => {
 
     const fetchProfile = async () => {
         try {
-            const { data } = await axiosInstance.get('/profile');
+            const { data } = await axiosInstance.get('profile');
             setProfile(data);
         } catch (error) {
             console.error('Error fetching profile:', error);
@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }) => {
 
     const updateProfile = async (updates) => {
         try {
-            const { data } = await axiosInstance.put('/profile', updates);
+            const { data } = await axiosInstance.put('profile', updates);
             setProfile(data);
             return data;
         } catch (error) {
