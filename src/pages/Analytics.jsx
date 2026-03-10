@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getSummary, getTrend, getHeatmap } from '../api/analyticsApi';
 import { motion } from 'framer-motion';
@@ -24,6 +25,12 @@ const item = {
 };
 
 export default function Analytics() {
+    const [isMounted, setIsMounted] = useState(false);
+    useEffect(() => {
+        const timer = setTimeout(() => setIsMounted(true), 200);
+        return () => clearTimeout(timer);
+    }, []);
+
     const { data: summary, isLoading: summaryLoading } = useQuery({
         queryKey: ['analytics-summary'],
         queryFn: getSummary
@@ -117,40 +124,42 @@ export default function Analytics() {
                     </div>
 
                     <div className="h-[300px] w-full min-h-[300px]">
-                        <ResponsiveContainer width="100%" height="100%" minWidth={0}>
-                            <AreaChart data={trendData && trendData.length > 0 ? trendData : [{ date: new Date().toISOString(), count: 0 }]}>
-                                <defs>
-                                    <linearGradient id="colorTrend" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.3} />
-                                        <stop offset="95%" stopColor="var(--primary)" stopOpacity={0} />
-                                    </linearGradient>
-                                </defs>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border)" />
-                                <XAxis
-                                    dataKey="date"
-                                    tickFormatter={(val) => new Date(val).toLocaleDateString('en-US', { weekday: 'short' })}
-                                    stroke="var(--muted-foreground)"
-                                    fontSize={12}
-                                />
-                                <YAxis stroke="var(--muted-foreground)" fontSize={12} />
-                                <Tooltip
-                                    contentStyle={{
-                                        backgroundColor: 'var(--card)',
-                                        borderColor: 'var(--border)',
-                                        borderRadius: '12px',
-                                        fontSize: '12px'
-                                    }}
-                                />
-                                <Area
-                                    type="monotone"
-                                    dataKey="count"
-                                    stroke="var(--primary)"
-                                    strokeWidth={3}
-                                    fillOpacity={1}
-                                    fill="url(#colorTrend)"
-                                />
-                            </AreaChart>
-                        </ResponsiveContainer>
+                        {isMounted && (
+                            <ResponsiveContainer width="100%" height="100%" minWidth={0} debounce={50}>
+                                <AreaChart data={trendData && trendData.length > 0 ? trendData : [{ date: new Date().toISOString(), count: 0 }]}>
+                                    <defs>
+                                        <linearGradient id="colorTrend" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.3} />
+                                            <stop offset="95%" stopColor="var(--primary)" stopOpacity={0} />
+                                        </linearGradient>
+                                    </defs>
+                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border)" />
+                                    <XAxis
+                                        dataKey="date"
+                                        tickFormatter={(val) => new Date(val).toLocaleDateString('en-US', { weekday: 'short' })}
+                                        stroke="var(--muted-foreground)"
+                                        fontSize={12}
+                                    />
+                                    <YAxis stroke="var(--muted-foreground)" fontSize={12} />
+                                    <Tooltip
+                                        contentStyle={{
+                                            backgroundColor: 'var(--card)',
+                                            borderColor: 'var(--border)',
+                                            borderRadius: '12px',
+                                            fontSize: '12px'
+                                        }}
+                                    />
+                                    <Area
+                                        type="monotone"
+                                        dataKey="count"
+                                        stroke="var(--primary)"
+                                        strokeWidth={3}
+                                        fillOpacity={1}
+                                        fill="url(#colorTrend)"
+                                    />
+                                </AreaChart>
+                            </ResponsiveContainer>
+                        )}
                     </div>
                 </motion.div>
 
