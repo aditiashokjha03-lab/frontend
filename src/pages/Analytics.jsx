@@ -73,7 +73,6 @@ export default function Analytics() {
                 </p>
             </header>
 
-            {/* Stat Cards */}
             <motion.div
                 variants={container}
                 initial="hidden"
@@ -84,23 +83,23 @@ export default function Analytics() {
                     <motion.div
                         key={idx}
                         variants={item}
-                        whileHover={{ y: -5, scale: 1.02 }}
-                        className="relative group overflow-hidden bg-card/50 backdrop-blur-sm border-2 rounded-2xl p-6 transition-all duration-300 hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5 shadow-sm"
+                        whileHover={{ y: -8, scale: 1.02 }}
+                        className="relative group overflow-hidden bg-white/[0.03] backdrop-blur-xl border border-white/10 rounded-3xl p-8 transition-all duration-500 hover:border-white/30 hover:shadow-2xl hover:shadow-white/5"
                     >
-                        <div className="flex justify-between items-start">
-                            <div>
-                                <p className="text-sm font-medium text-muted-foreground">
-                                    {stat.label}
-                                </p>
-                                <h3 className="text-3xl font-bold mt-2 tracking-tight">
-                                    {stat.value}
-                                </h3>
-                            </div>
-                            <div className={`p-3 rounded-xl ${stat.bg}`}>
-                                <stat.icon className={`w-6 h-6 ${stat.color}`} />
+                        <div className="flex justify-between items-start mb-6">
+                            <div className={`p-4 rounded-2xl ${stat.bg} bg-opacity-20`}>
+                                <stat.icon className={`w-6 h-6 ${stat.color} filter drop-shadow-sm`} />
                             </div>
                         </div>
-                        <div className="absolute bottom-0 left-0 h-1 w-0 bg-primary group-hover:w-full transition-all duration-500" />
+                        <div className="space-y-1">
+                            <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
+                                {stat.label}
+                            </p>
+                            <h3 className="text-4xl font-black mt-2 tracking-tighter">
+                                {stat.value}
+                            </h3>
+                        </div>
+                        <div className="absolute bottom-0 left-0 h-1 w-0 bg-white group-hover:w-full transition-all duration-700" />
                     </motion.div>
                 ))}
             </motion.div>
@@ -112,51 +111,65 @@ export default function Analytics() {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.4 }}
-                    className="lg:col-span-2 bg-card/50 backdrop-blur-sm border-2 rounded-2xl p-6 shadow-sm"
+                    className="lg:col-span-2 bg-white/[0.03] backdrop-blur-md border border-white/5 rounded-3xl p-8 shadow-2xl"
                 >
                     <div className="flex items-center justify-between mb-8">
-                        <div>
-                            <h3 className="text-xl font-bold flex items-center gap-2">
-                                <TrendingUp className="w-5 h-5 text-primary" />
-                                7-Day Consistency
-                            </h3>
-                            <p className="text-sm text-muted-foreground mt-1">Growth trend across all habits</p>
+                        <div className="flex items-center gap-3">
+                            <div className="p-2 bg-primary/10 rounded-lg">
+                                <TrendingUp className="w-6 h-6 text-primary" />
+                            </div>
+                            <div>
+                                <h3 className="text-xl font-bold tracking-tight">Consistency Trend</h3>
+                                <p className="text-sm text-muted-foreground">Activities over the last 7 days</p>
+                            </div>
                         </div>
                     </div>
 
-                    <div className="h-[300px] w-full min-h-[300px]">
+                    <div className="h-[320px] w-full min-h-[320px]">
                         {isMounted && (
                             <ResponsiveContainer width="100%" height="100%" minWidth={0} debounce={50}>
                                 <AreaChart data={trendData && trendData.length > 0 ? trendData : [{ date: new Date().toISOString(), count: 0 }]}>
                                     <defs>
                                         <linearGradient id="colorTrend" x1="0" y1="0" x2="0" y2="1">
-                                            <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.3} />
-                                            <stop offset="95%" stopColor="var(--primary)" stopOpacity={0} />
+                                            <stop offset="5%" stopColor="white" stopOpacity={0.2} />
+                                            <stop offset="95%" stopColor="white" stopOpacity={0} />
                                         </linearGradient>
                                     </defs>
-                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border)" />
+                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
                                     <XAxis
                                         dataKey="date"
                                         tickFormatter={(val) => new Date(val).toLocaleDateString('en-US', { weekday: 'short' })}
-                                        stroke="var(--muted-foreground)"
-                                        fontSize={12}
+                                        stroke="rgba(255,255,255,0.4)"
+                                        fontSize={10}
+                                        fontWeight="bold"
+                                        axisLine={false}
+                                        tickLine={false}
                                     />
-                                    <YAxis stroke="var(--muted-foreground)" fontSize={12} />
+                                    <YAxis
+                                        stroke="rgba(255,255,255,0.4)"
+                                        fontSize={10}
+                                        fontWeight="bold"
+                                        axisLine={false}
+                                        tickLine={false}
+                                    />
                                     <Tooltip
                                         contentStyle={{
-                                            backgroundColor: 'var(--card)',
-                                            borderColor: 'var(--border)',
-                                            borderRadius: '12px',
-                                            fontSize: '12px'
+                                            backgroundColor: 'rgba(0,0,0,0.9)',
+                                            borderColor: 'rgba(255,255,255,0.1)',
+                                            borderRadius: '16px',
+                                            fontSize: '12px',
+                                            backdropFilter: 'blur(10px)',
+                                            boxShadow: '0 20px 50px rgba(0,0,0,0.5)'
                                         }}
                                     />
                                     <Area
                                         type="monotone"
                                         dataKey="count"
-                                        stroke="var(--primary)"
-                                        strokeWidth={3}
+                                        stroke="white"
+                                        strokeWidth={4}
                                         fillOpacity={1}
                                         fill="url(#colorTrend)"
+                                        animationDuration={2000}
                                     />
                                 </AreaChart>
                             </ResponsiveContainer>
@@ -169,45 +182,80 @@ export default function Analytics() {
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.5 }}
-                    className="bg-card/50 backdrop-blur-sm border-2 rounded-2xl p-6 shadow-sm flex flex-col"
+                    className="bg-card/30 backdrop-blur-md border-2 border-white/5 rounded-3xl p-8 shadow-2xl flex flex-col"
                 >
-                    <div className="flex items-center gap-2 mb-6">
-                        <Calendar className="w-5 h-5 text-success" />
-                        <h3 className="text-xl font-bold">Activity Heatmap</h3>
+                    <div className="flex items-center justify-between mb-10">
+                        <div className="flex items-center gap-3">
+                            <div className="p-2 bg-success/10 rounded-lg">
+                                <Calendar className="w-6 h-6 text-success" />
+                            </div>
+                            <div>
+                                <h3 className="text-xl font-bold tracking-tight">Activity Heatmap</h3>
+                                <p className="text-sm text-muted-foreground">Yearly contribution grid</p>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-2 text-[10px] text-muted-foreground uppercase font-bold tracking-widest bg-white/5 px-3 py-1.5 rounded-full">
+                            <span>Less</span>
+                            <div className="flex gap-1 mx-1">
+                                <div className="w-3 h-3 rounded-sm bg-muted" />
+                                <div className="w-3 h-3 rounded-sm bg-success/30" />
+                                <div className="w-3 h-3 rounded-sm bg-success/60" />
+                                <div className="w-3 h-3 rounded-sm bg-success" />
+                            </div>
+                            <span>More</span>
+                        </div>
                     </div>
 
-                    <div className="flex-grow flex flex-col items-center justify-center p-8 bg-accent/20 rounded-xl border-2 border-dashed border-border group relative overflow-hidden">
+                    <div className="flex-grow flex flex-col min-h-[150px]">
                         {heatmapData && heatmapData.length > 0 ? (
-                            <div className="grid grid-cols-7 gap-1">
-                                {/* Simplified Heatmap Grid */}
-                                {heatmapData.map((day, i) => (
-                                    <div
-                                        key={i}
-                                        className={`w-4 h-4 rounded-sm ${day.count === 0 ? 'bg-muted' :
-                                            day.count < 3 ? 'bg-success/30' :
-                                                day.count < 6 ? 'bg-success/60' : 'bg-success'
-                                            }`}
-                                        title={`${day.date}: ${day.count} check-ins`}
-                                    />
-                                ))}
+                            <div className="flex flex-col gap-4">
+                                <div className="flex justify-between text-[10px] text-muted-foreground uppercase font-bold tracking-tighter px-10">
+                                    <span>Jan</span>
+                                    <span>Mar</span>
+                                    <span>May</span>
+                                    <span>Jul</span>
+                                    <span>Sep</span>
+                                    <span>Nov</span>
+                                </div>
+                                <div className="flex gap-4">
+                                    {/* Day Labels */}
+                                    <div className="flex flex-col justify-between text-[9px] text-muted-foreground font-bold uppercase py-1 h-[140px]">
+                                        <span>Mon</span>
+                                        <span>Wed</span>
+                                        <span>Fri</span>
+                                    </div>
+
+                                    <div className="flex-grow overflow-x-auto pb-6 scrollbar-hide">
+                                        <div className="grid grid-flow-col grid-rows-7 gap-1.5 min-w-[700px]">
+                                            {heatmapData.map((day, i) => (
+                                                <motion.div
+                                                    key={i}
+                                                    whileHover={{ scale: 1.5, zIndex: 20 }}
+                                                    className={`w-3 h-3 md:w-4 md:h-4 rounded-[2px] transition-colors duration-500 cursor-pointer border border-white/5 ${day.count === 0 ? 'bg-white/5 hover:bg-white/10' :
+                                                        day.count < 3 ? 'bg-success/30' :
+                                                            day.count < 6 ? 'bg-success/60' : 'bg-success'
+                                                        }`}
+                                                    title={`${day.date}: ${day.count} check-ins`}
+                                                />
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         ) : (
-                            <div className="text-center space-y-4">
-                                <div className="p-4 bg-muted/50 rounded-full inline-block">
-                                    <Info className="w-8 h-8 text-muted-foreground animate-pulse" />
-                                </div>
-                                <div className="space-y-1">
-                                    <p className="font-semibold text-lg italic">The journey begins here</p>
-                                    <p className="text-sm text-muted-foreground max-w-[200px]">
-                                        Complete your first habit to start generating activity heatmaps.
-                                    </p>
+                            <div className="flex-grow flex flex-col items-center justify-center p-8 bg-white/2 rounded-2xl border-2 border-dashed border-white/5">
+                                <div className="text-center space-y-4">
+                                    <div className="p-4 bg-white/5 rounded-full inline-block">
+                                        <Info className="w-8 h-8 text-muted-foreground animate-pulse" />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <p className="font-bold text-lg">Your legacy starts today</p>
+                                        <p className="text-sm text-muted-foreground max-w-[240px]">
+                                            Complete habits to visualize your streak progress here.
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-                        )}
-
-                        {/* Decorative Background for Empty State */}
-                        {!heatmapData?.length && (
-                            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent pointer-events-none" />
                         )}
                     </div>
                 </motion.div>
