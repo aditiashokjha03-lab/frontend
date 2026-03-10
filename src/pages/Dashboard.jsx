@@ -3,6 +3,8 @@ import { useAuth } from '../context/AuthContext';
 import { useHabits } from '../hooks/useHabits';
 import { useLogs } from '../hooks/useLogs';
 import { useBadges } from '../hooks/useBadges';
+import { getTrend } from '../api/analyticsApi';
+import { useQuery } from '@tanstack/react-query';
 import DailyHabitItem from '../components/habits/DailyHabitItem';
 import StreakCard from '../components/habits/StreakCard';
 import TodayProgress from '../components/habits/TodayProgress';
@@ -27,6 +29,11 @@ const Dashboard = () => {
     const { query: logsQuery, mutation } = useLogs(dateStr);
     const logs = logsQuery.data || [];
     const isLoading = logsQuery.isLoading || habitsQuery.isLoading;
+
+    const { data: trendData } = useQuery({
+        queryKey: ['analytics-trend', 7],
+        queryFn: () => getTrend(7)
+    });
 
     const [previousXp, setPreviousXp] = useState(0);
     const [previousLevel, setPreviousLevel] = useState(null);
@@ -141,7 +148,7 @@ const Dashboard = () => {
                     <StreakCard
                         streak={bestStreakHabit?.current_streak || 0}
                         longestStreak={bestStreakHabit?.longest_streak || 0}
-                        heatmap={[true, true, false, true, true, true, false]}
+                        heatmap={(trendData || []).map(d => d.count > 0)}
                     />
                 </div>
 

@@ -36,8 +36,11 @@ export const useLogs = (dateStr) => {
         },
         onSettled: (newLog) => {
             if (newLog?.log?.log_date) {
-                queryClient.invalidateQueries(['logs', newLog.log.log_date]);
-                queryClient.invalidateQueries(['habits']);
+                queryClient.invalidateQueries({ queryKey: ['logs', newLog.log.log_date] });
+                queryClient.invalidateQueries({ queryKey: ['habits'] });
+                queryClient.invalidateQueries({ queryKey: ['analytics-summary'] });
+                queryClient.invalidateQueries({ queryKey: ['analytics-trend'] });
+                queryClient.invalidateQueries({ queryKey: ['analytics-heatmap'] });
             }
         }
     });
