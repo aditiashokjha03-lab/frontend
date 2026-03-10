@@ -1,11 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getSummary, getTrend, getHeatmap } from '../api/analyticsApi';
-import { useHabits } from '../hooks/useHabits';
-import { useLogs } from '../hooks/useLogs';
-import { format } from 'date-fns';
 import { motion } from 'framer-motion';
-import TodayProgress from '../components/analytics/TodayProgress';
 import {
     AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts';
@@ -35,15 +31,6 @@ export default function Analytics() {
         return () => clearTimeout(timer);
     }, []);
 
-    const { query: habitsQuery } = useHabits();
-    const habits = habitsQuery.data || [];
-    const todayStr = format(new Date(), 'yyyy-MM-dd');
-    const { query: logsQuery } = useLogs(todayStr);
-    const logs = logsQuery.data || [];
-
-    const completedCount = logs.filter(l => l.completed).length;
-    const habitsCount = habits.length;
-
     const { data: summary, isLoading: summaryLoading } = useQuery({
         queryKey: ['analytics-summary'],
         queryFn: getSummary
@@ -60,7 +47,7 @@ export default function Analytics() {
         queryFn: () => getHeatmap(currentYear)
     });
 
-    if (summaryLoading || trendLoading || heatmapLoading || habitsQuery.isLoading || logsQuery.isLoading) {
+    if (summaryLoading || trendLoading || heatmapLoading) {
         return (
             <div className="flex items-center justify-center min-h-[calc(100vh-4rem)]">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
@@ -77,18 +64,13 @@ export default function Analytics() {
 
     return (
         <div className="p-4 md:p-8 max-w-7xl mx-auto min-h-screen space-y-8 pb-20">
-            <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
-                <div className="space-y-2">
-                    <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">
-                        Performance Analytics
-                    </h1>
-                    <p className="text-muted-foreground text-lg">
-                        Real-time insights into your habit-building journey and consistency.
-                    </p>
-                </div>
-                <div className="w-full md:w-auto">
-                    <TodayProgress habitsCount={habitsCount} completedCount={completedCount} />
-                </div>
+            <header className="space-y-2">
+                <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">
+                    Performance Analytics
+                </h1>
+                <p className="text-muted-foreground text-lg">
+                    Real-time insights into your habit-building journey and consistency.
+                </p>
             </header>
 
             {/* Stat Cards */}
