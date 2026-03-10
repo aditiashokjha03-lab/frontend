@@ -54,9 +54,10 @@ export default function Analytics() {
         queryFn: () => getTrend(7)
     });
 
+    const currentYear = new Date().getFullYear();
     const { data: heatmapData, isLoading: heatmapLoading } = useQuery({
-        queryKey: ['analytics-heatmap', 2024], // Should ideally be dynamic
-        queryFn: () => getHeatmap(2024)
+        queryKey: ['analytics-heatmap', currentYear],
+        queryFn: () => getHeatmap(currentYear)
     });
 
     if (summaryLoading || trendLoading || heatmapLoading || habitsQuery.isLoading || logsQuery.isLoading) {

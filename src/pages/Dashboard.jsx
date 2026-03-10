@@ -7,7 +7,7 @@ import { getTrend } from '../api/analyticsApi';
 import { useQuery } from '@tanstack/react-query';
 import DailyHabitItem from '../components/habits/DailyHabitItem';
 import StreakCard from '../components/habits/StreakCard';
-import TodayProgress from '../components/habits/TodayProgress';
+import TodayProgress from '../components/analytics/TodayProgress';
 import XPBar from '../components/ui/XPBar';
 import XpPopup from '../components/XpPopup';
 import LevelUp from '../components/LevelUp';
@@ -144,7 +144,7 @@ const Dashboard = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="md:col-span-1 space-y-8">
-                    <TodayProgress completed={completedCount} total={totalCount} />
+                    <TodayProgress completedCount={completedCount} habitsCount={totalCount} />
                     <StreakCard
                         streak={bestStreakHabit?.current_streak || 0}
                         longestStreak={bestStreakHabit?.longest_streak || 0}

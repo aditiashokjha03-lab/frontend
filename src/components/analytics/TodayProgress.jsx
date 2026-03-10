@@ -2,7 +2,7 @@ export default function TodayProgress({ habitsCount, completedCount }) {
     const percentage = habitsCount === 0 ? 0 : Math.round((completedCount / habitsCount) * 100);
 
     // Svg Circle attributes
-    const radius = 50;
+    const radius = 80;
     const circumference = 2 * Math.PI * radius;
     const strokeDashoffset = circumference - (percentage / 100) * circumference;
 
@@ -11,13 +11,13 @@ export default function TodayProgress({ habitsCount, completedCount }) {
     else if (percentage >= 50) message = "Halfway there! Keep going.";
 
     return (
-        <div className="bg-card border rounded-xl p-6 flex items-center gap-6 shadow-sm min-h-[140px]">
-            <div className="relative w-32 h-32 flex items-center justify-center shrink-0">
+        <div className="bg-card border rounded-2xl p-6 flex items-center gap-8 shadow-sm min-h-[180px]">
+            <div className="relative w-44 h-44 flex items-center justify-center shrink-0">
                 {/* Background circle */}
-                <svg className="w-full h-full transform -rotate-90" viewBox="0 0 128 128">
-                    <circle cx="64" cy="64" r={radius} stroke="currentColor" strokeWidth="10" fill="transparent" className="text-muted" />
+                <svg className="w-full h-full transform -rotate-90" viewBox="0 0 200 200">
+                    <circle cx="100" cy="100" r={radius} stroke="currentColor" strokeWidth="12" fill="transparent" className="text-muted" />
                     {/* Progress circle */}
-                    <circle cx="64" cy="64" r={radius} stroke="currentColor" strokeWidth="10" fill="transparent"
+                    <circle cx="100" cy="100" r={radius} stroke="currentColor" strokeWidth="12" fill="transparent"
                         strokeDasharray={circumference}
                         strokeDashoffset={strokeDashoffset}
                         className="text-primary transition-all duration-1000 ease-out"
@@ -25,7 +25,7 @@ export default function TodayProgress({ habitsCount, completedCount }) {
                     />
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center flex-col">
-                    <span className="text-xl font-bold">{percentage}%</span>
+                    <span className="text-3xl font-bold">{percentage}%</span>
                 </div>
             </div>
 
