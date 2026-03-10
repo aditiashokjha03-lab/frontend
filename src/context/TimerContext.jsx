@@ -30,7 +30,7 @@ export const TimerProvider = ({ children }) => {
             setMuted(!tickEnabled);
             setVolume(vol);
 
-            const { data } = await axiosInstance.post('/focus/start', {
+            const { data } = await axiosInstance.post('focus/start', {
                 habit_id: habitId,
                 duration_minutes: durationMinutes,
                 tick_enabled: tickEnabled,
@@ -52,7 +52,7 @@ export const TimerProvider = ({ children }) => {
         chime(); // Success sound
         if (currentSessionId) {
             try {
-                await axiosInstance.post(`/focus/end/${currentSessionId}`, { completed: true });
+                await axiosInstance.post(`focus/end/${currentSessionId}`, { completed: true });
             } catch (error) {
                 console.error('Failed to end focus session:', error);
             }
@@ -65,7 +65,7 @@ export const TimerProvider = ({ children }) => {
         setTimeLeft(25 * 60); // Reset to default or keep previous duration? Defaulting to 25.
         if (currentSessionId) {
             try {
-                await axiosInstance.post(`/focus/end/${currentSessionId}`, { completed: false });
+                await axiosInstance.post(`focus/end/${currentSessionId}`, { completed: false });
             } catch (error) {
                 console.error('Failed to stop focus session:', error);
             }

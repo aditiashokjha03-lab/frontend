@@ -2,16 +2,16 @@ import axios from 'axios';
 import { supabase } from '../lib/supabase';
 
 const getBaseURL = () => {
-    // Development fallback
-    if (import.meta.env.DEV) {
+    // Robust runtime detection
+    const isLocal = window.location.hostname === 'localhost' ||
+        window.location.hostname === '127.0.0.1' ||
+        window.location.port === '5173';
+
+    if (isLocal) {
         return (import.meta.env.VITE_API_URL || 'http://localhost:3001/api/v1/').replace(/\/$/, '') + '/';
     }
 
-    // Production: Always use the Render URL with explicit prefix
-    // This is more reliable than Vercel environment variables which can vary
-    const prodUrl = 'https://backend-cxl4.onrender.com/api/v1/';
-    console.log('[Axios] Production Mode - Using baseURL:', prodUrl);
-    return prodUrl;
+    return 'https://backend-cxl4.onrender.com/api/v1/';
 };
 
 const axiosInstance = axios.create({
@@ -20,6 +20,12 @@ const axiosInstance = axios.create({
     headers: {
         'Content-Type': 'application/json',
     },
+});
+
+// Added for production debugging
+axiosInstance.interceptors.request.use(config => {
+    console.log(`[Axios Request] ${config.method.toUpperCase()} ${config.baseURL}${config.url}`);
+    return config;
 });
 
 axiosInstance.interceptors.request.use(
