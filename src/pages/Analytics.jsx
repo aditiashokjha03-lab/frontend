@@ -116,9 +116,9 @@ export default function Analytics() {
                         </div>
                     </div>
 
-                    <div className="h-[300px] w-full">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <AreaChart data={trendData || []}>
+                    <div className="h-[300px] w-full min-h-[300px]">
+                        <ResponsiveContainer width="100%" height="100%" minWidth={0}>
+                            <AreaChart data={trendData && trendData.length > 0 ? trendData : [{ date: new Date().toISOString(), count: 0 }]}>
                                 <defs>
                                     <linearGradient id="colorTrend" x1="0" y1="0" x2="0" y2="1">
                                         <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.3} />
@@ -174,8 +174,8 @@ export default function Analytics() {
                                     <div
                                         key={i}
                                         className={`w-4 h-4 rounded-sm ${day.count === 0 ? 'bg-muted' :
-                                                day.count < 3 ? 'bg-success/30' :
-                                                    day.count < 6 ? 'bg-success/60' : 'bg-success'
+                                            day.count < 3 ? 'bg-success/30' :
+                                                day.count < 6 ? 'bg-success/60' : 'bg-success'
                                             }`}
                                         title={`${day.date}: ${day.count} check-ins`}
                                     />
