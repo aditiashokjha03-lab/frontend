@@ -67,6 +67,21 @@ export default function Analytics() {
         { label: 'Overall Rate', value: `${summary?.completion_rate || 0}%`, icon: TrendingUp, color: 'text-achievement', bg: 'bg-achievement/10' },
     ];
 
+    const [chartSize, setChartSize] = useState({ width: 0, height: 0 });
+    const chartRef = (node) => {
+        if (node !== null) {
+            const resizeObserver = new ResizeObserver((entries) => {
+                for (let entry of entries) {
+                    const { width, height } = entry.contentRect;
+                    if (width > 0 && height > 0) {
+                        setChartSize({ width, height });
+                    }
+                }
+            });
+            resizeObserver.observe(node);
+        }
+    };
+
     return (
         <div className="p-4 md:p-8 max-w-7xl mx-auto min-h-screen space-y-8 pb-20">
             <header className="space-y-2">
@@ -104,7 +119,7 @@ export default function Analytics() {
                                 {stat.value}
                             </h3>
                         </div>
-                        <div className="absolute bottom-0 left-0 h-1 w-0 bg-white group-hover:w-full transition-all duration-700" />
+                        <div className="absolute bottom-0 left-0 h-1 w-0 bg-primary group-hover:w-full transition-all duration-700" />
                     </motion.div>
                 ))}
             </motion.div>
@@ -113,8 +128,8 @@ export default function Analytics() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 w-full">
                 {/* Trend Chart */}
                 <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 }}
                     className="lg:col-span-2 bg-card backdrop-blur-md border border-border rounded-3xl p-6 md:p-8 shadow-2xl overflow-hidden flex flex-col"
                 >
@@ -130,9 +145,9 @@ export default function Analytics() {
                         </div>
                     </div>
 
-                    {/* Permanent Chart Sizing Fix: Ensure fixed height and overflow visible for animations */}
-                    <div className="w-full h-[320px] min-h-[300px] relative mt-4">
-                        {isMounted && (
+                    {/* Permanent Chart Sizing Fix: Explicitly controlled by chartSize state */}
+                    <div ref={chartRef} className="w-full h-[320px] min-h-[300px] relative mt-4">
+                        {isMounted && chartSize.width > 0 && (
                             <ResponsiveContainer width="100%" height="100%">
                                 <AreaChart
                                     data={trendData && trendData.length > 0 ? trendData : [{ date: new Date().toISOString(), count: 0 }]}
@@ -140,15 +155,15 @@ export default function Analytics() {
                                 >
                                     <defs>
                                         <linearGradient id="colorTrend" x1="0" y1="0" x2="0" y2="1">
-                                            <stop offset="5%" stopColor="#16A34A" stopOpacity={0.4} />
-                                            <stop offset="95%" stopColor="#16A34A" stopOpacity={0} />
+                                            <stop offset="5%" stopColor="#22C55E" stopOpacity={0.4} />
+                                            <stop offset="95%" stopColor="#22C55E" stopOpacity={0} />
                                         </linearGradient>
                                     </defs>
-                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.03)" />
+                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(128,128,128,0.1)" />
                                     <XAxis
                                         dataKey="date"
                                         tickFormatter={(val) => new Date(val).toLocaleDateString('en-US', { weekday: 'short' })}
-                                        stroke="rgba(255,255,255,0.3)"
+                                        stroke="rgba(128,128,128,0.5)"
                                         fontSize={10}
                                         fontWeight="600"
                                         axisLine={false}
@@ -156,7 +171,7 @@ export default function Analytics() {
                                         dy={10}
                                     />
                                     <YAxis
-                                        stroke="rgba(255,255,255,0.3)"
+                                        stroke="rgba(128,128,128,0.5)"
                                         fontSize={10}
                                         fontWeight="600"
                                         axisLine={false}
@@ -165,27 +180,28 @@ export default function Analytics() {
                                     />
                                     <Tooltip
                                         contentStyle={{
-                                            backgroundColor: 'rgba(0,0,0,0.95)',
-                                            borderColor: 'rgba(255,255,255,0.1)',
+                                            backgroundColor: 'var(--card)',
+                                            borderColor: 'var(--border)',
                                             borderRadius: '16px',
                                             fontSize: '12px',
                                             backdropFilter: 'blur(20px)',
-                                            boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)',
-                                            border: '1px solid rgba(255,255,255,0.1)'
+                                            boxShadow: '0 25px 50px -12px rgba(0,0,0,0.2)',
+                                            border: '1px solid var(--border)'
                                         }}
-                                        cursor={{ stroke: 'rgba(255,255,255,0.1)', strokeWidth: 2 }}
+                                        itemStyle={{ color: 'var(--foreground)' }}
+                                        cursor={{ stroke: 'var(--primary)', strokeWidth: 1, strokeDasharray: '4 4' }}
                                     />
                                     <Area
                                         type="monotone"
                                         dataKey="count"
-                                        stroke="#16A34A"
-                                        strokeWidth={4}
+                                        stroke="#22C55E"
+                                        strokeWidth={3}
                                         fillOpacity={1}
                                         fill="url(#colorTrend)"
                                         animationDuration={1500}
                                         animationEasing="ease-in-out"
-                                        dot={{ fill: '#16A34A', strokeWidth: 2, r: 4, strokeWidth: 2, stroke: '#000' }}
-                                        activeDot={{ r: 8, strokeWidth: 0, fill: '#fff' }}
+                                        dot={{ fill: '#22C55E', r: 4, strokeWidth: 2, stroke: 'var(--card)' }}
+                                        activeDot={{ r: 6, strokeWidth: 0, fill: 'var(--primary)' }}
                                     />
                                 </AreaChart>
                             </ResponsiveContainer>
