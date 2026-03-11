@@ -105,74 +105,77 @@ export default function Analytics() {
             </motion.div>
 
             {/* Main Sections */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 w-full">
                 {/* Trend Chart */}
                 <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.4 }}
-                    className="lg:col-span-2 bg-white/[0.03] backdrop-blur-md border border-white/5 rounded-3xl p-8 shadow-2xl"
+                    className="lg:col-span-2 bg-white/[0.03] backdrop-blur-md border border-white/5 rounded-3xl p-6 md:p-8 shadow-2xl overflow-hidden flex flex-col"
                 >
-                    <div className="flex items-center justify-between mb-8">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
                         <div className="flex items-center gap-3">
-                            <div className="p-2 bg-primary/10 rounded-lg">
+                            <div className="p-2 bg-primary/10 rounded-lg shrink-0">
                                 <TrendingUp className="w-6 h-6 text-primary" />
                             </div>
                             <div>
                                 <h3 className="text-xl font-bold tracking-tight">Consistency Trend</h3>
-                                <p className="text-sm text-muted-foreground">Activities over the last 7 days</p>
+                                <p className="text-sm text-muted-foreground whitespace-nowrap">Activities over the last 7 days</p>
                             </div>
                         </div>
                     </div>
 
-                    <div className="h-[320px] w-full min-h-[320px]">
+                    {/* Permanent Chart Sizing Fix: Fixed aspect-video and min-height on container */}
+                    <div className="flex-grow w-full min-h-[300px] md:min-h-[320px] aspect-video sm:aspect-auto lg:aspect-video relative">
                         {isMounted && (
-                            <ResponsiveContainer width="100%" height="100%" minWidth={0} debounce={50}>
-                                <AreaChart data={trendData && trendData.length > 0 ? trendData : [{ date: new Date().toISOString(), count: 0 }]}>
-                                    <defs>
-                                        <linearGradient id="colorTrend" x1="0" y1="0" x2="0" y2="1">
-                                            <stop offset="5%" stopColor="white" stopOpacity={0.2} />
-                                            <stop offset="95%" stopColor="white" stopOpacity={0} />
-                                        </linearGradient>
-                                    </defs>
-                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
-                                    <XAxis
-                                        dataKey="date"
-                                        tickFormatter={(val) => new Date(val).toLocaleDateString('en-US', { weekday: 'short' })}
-                                        stroke="rgba(255,255,255,0.4)"
-                                        fontSize={10}
-                                        fontWeight="bold"
-                                        axisLine={false}
-                                        tickLine={false}
-                                    />
-                                    <YAxis
-                                        stroke="rgba(255,255,255,0.4)"
-                                        fontSize={10}
-                                        fontWeight="bold"
-                                        axisLine={false}
-                                        tickLine={false}
-                                    />
-                                    <Tooltip
-                                        contentStyle={{
-                                            backgroundColor: 'rgba(0,0,0,0.9)',
-                                            borderColor: 'rgba(255,255,255,0.1)',
-                                            borderRadius: '16px',
-                                            fontSize: '12px',
-                                            backdropFilter: 'blur(10px)',
-                                            boxShadow: '0 20px 50px rgba(0,0,0,0.5)'
-                                        }}
-                                    />
-                                    <Area
-                                        type="monotone"
-                                        dataKey="count"
-                                        stroke="white"
-                                        strokeWidth={4}
-                                        fillOpacity={1}
-                                        fill="url(#colorTrend)"
-                                        animationDuration={2000}
-                                    />
-                                </AreaChart>
-                            </ResponsiveContainer>
+                            <div className="absolute inset-0">
+                                <ResponsiveContainer width="100%" height="100%" minWidth={0}>
+                                    <AreaChart data={trendData && trendData.length > 0 ? trendData : [{ date: new Date().toISOString(), count: 0 }]}>
+                                        <defs>
+                                            <linearGradient id="colorTrend" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="5%" stopColor="white" stopOpacity={0.2} />
+                                                <stop offset="95%" stopColor="white" stopOpacity={0} />
+                                            </linearGradient>
+                                        </defs>
+                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
+                                        <XAxis
+                                            dataKey="date"
+                                            tickFormatter={(val) => new Date(val).toLocaleDateString('en-US', { weekday: 'short' })}
+                                            stroke="rgba(255,255,255,0.4)"
+                                            fontSize={10}
+                                            fontWeight="bold"
+                                            axisLine={false}
+                                            tickLine={false}
+                                        />
+                                        <YAxis
+                                            stroke="rgba(255,255,255,0.4)"
+                                            fontSize={10}
+                                            fontWeight="bold"
+                                            axisLine={false}
+                                            tickLine={false}
+                                        />
+                                        <Tooltip
+                                            contentStyle={{
+                                                backgroundColor: 'rgba(0,0,0,0.9)',
+                                                borderColor: 'rgba(255,255,255,0.1)',
+                                                borderRadius: '16px',
+                                                fontSize: '12px',
+                                                backdropFilter: 'blur(10px)',
+                                                boxShadow: '0 20px 50px rgba(0,0,0,0.5)'
+                                            }}
+                                        />
+                                        <Area
+                                            type="monotone"
+                                            dataKey="count"
+                                            stroke="white"
+                                            strokeWidth={4}
+                                            fillOpacity={1}
+                                            fill="url(#colorTrend)"
+                                            animationDuration={2000}
+                                        />
+                                    </AreaChart>
+                                </ResponsiveContainer>
+                            </div>
                         )}
                     </div>
                 </motion.div>
