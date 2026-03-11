@@ -24,10 +24,93 @@ const item = {
     show: { y: 0, opacity: 1 }
 };
 
+// Isolated Chart Component to ensure Hook stability
+const AnalyticsChart = ({ data, isMounted }) => {
+    const [chartSize, setChartSize] = useState({ width: 0, height: 0 });
+
+    const chartRef = (node) => {
+        if (node !== null) {
+            const resizeObserver = new ResizeObserver((entries) => {
+                for (let entry of entries) {
+                    const { width, height } = entry.contentRect;
+                    if (width > 0 && height > 0) {
+                        setChartSize({ width, height });
+                    }
+                }
+            });
+            resizeObserver.observe(node);
+        }
+    };
+
+    return (
+        <div ref={chartRef} className="w-full h-[320px] min-h-[300px] relative mt-4">
+            {isMounted && chartSize.width > 0 && (
+                <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart
+                        data={data && data.length > 0 ? data : [{ date: new Date().toISOString(), count: 0 }]}
+                        margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+                    >
+                        <defs>
+                            <linearGradient id="colorTrend" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor="#22C55E" stopOpacity={0.4} />
+                                <stop offset="95%" stopColor="#22C55E" stopOpacity={0} />
+                            </linearGradient>
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(128,128,128,0.1)" />
+                        <XAxis
+                            dataKey="date"
+                            tickFormatter={(val) => new Date(val).toLocaleDateString('en-US', { weekday: 'short' })}
+                            stroke="rgba(128,128,128,0.5)"
+                            fontSize={10}
+                            fontWeight="600"
+                            axisLine={false}
+                            tickLine={false}
+                            dy={10}
+                        />
+                        <YAxis
+                            stroke="rgba(128,128,128,0.5)"
+                            fontSize={10}
+                            fontWeight="600"
+                            axisLine={false}
+                            tickLine={false}
+                            dx={-10}
+                        />
+                        <Tooltip
+                            contentStyle={{
+                                backgroundColor: 'var(--card)',
+                                borderColor: 'var(--border)',
+                                borderRadius: '16px',
+                                fontSize: '12px',
+                                backdropFilter: 'blur(20px)',
+                                boxShadow: '0 25px 50px -12px rgba(0,0,0,0.2)',
+                                border: '1px solid var(--border)'
+                            }}
+                            itemStyle={{ color: 'var(--foreground)' }}
+                            cursor={{ stroke: 'var(--primary)', strokeWidth: 1, strokeDasharray: '4 4' }}
+                        />
+                        <Area
+                            type="monotone"
+                            dataKey="count"
+                            stroke="#22C55E"
+                            strokeWidth={3}
+                            fillOpacity={1}
+                            fill="url(#colorTrend)"
+                            animationDuration={1500}
+                            animationEasing="ease-in-out"
+                            dot={{ fill: '#22C55E', r: 4, strokeWidth: 2, stroke: 'var(--card)' }}
+                            activeDot={{ r: 6, strokeWidth: 0, fill: 'var(--primary)' }}
+                        />
+                    </AreaChart>
+                </ResponsiveContainer>
+            )}
+        </div>
+    );
+};
+
 export default function Analytics() {
     const [isMounted, setIsMounted] = useState(false);
+
     useEffect(() => {
-        // Double-layered mount check to ensure Recharts always finds a dimensioned container
         const timer = setTimeout(() => {
             requestAnimationFrame(() => {
                 setIsMounted(true);
@@ -52,21 +135,6 @@ export default function Analytics() {
         queryFn: () => getHeatmap(currentYear)
     });
 
-    const [chartSize, setChartSize] = useState({ width: 0, height: 0 });
-    const chartRef = (node) => {
-        if (node !== null) {
-            const resizeObserver = new ResizeObserver((entries) => {
-                for (let entry of entries) {
-                    const { width, height } = entry.contentRect;
-                    if (width > 0 && height > 0) {
-                        setChartSize({ width, height });
-                    }
-                }
-            });
-            resizeObserver.observe(node);
-        }
-    };
-
     if (summaryLoading || trendLoading || heatmapLoading) {
         return (
             <div className="flex items-center justify-center min-h-[calc(100vh-4rem)]">
@@ -81,7 +149,6 @@ export default function Analytics() {
         { label: 'Best Streak', value: `${summary?.best_streak || 0} Days`, icon: Flame, color: 'text-warning', bg: 'bg-warning/10' },
         { label: 'Overall Rate', value: `${summary?.completion_rate || 0}%`, icon: TrendingUp, color: 'text-achievement', bg: 'bg-achievement/10' },
     ];
-
 
     return (
         <div className="p-4 md:p-8 max-w-7xl mx-auto min-h-screen space-y-8 pb-20">
@@ -146,68 +213,7 @@ export default function Analytics() {
                         </div>
                     </div>
 
-                    {/* Permanent Chart Sizing Fix: Explicitly controlled by chartSize state */}
-                    <div ref={chartRef} className="w-full h-[320px] min-h-[300px] relative mt-4">
-                        {isMounted && chartSize.width > 0 && (
-                            <ResponsiveContainer width="100%" height="100%">
-                                <AreaChart
-                                    data={trendData && trendData.length > 0 ? trendData : [{ date: new Date().toISOString(), count: 0 }]}
-                                    margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
-                                >
-                                    <defs>
-                                        <linearGradient id="colorTrend" x1="0" y1="0" x2="0" y2="1">
-                                            <stop offset="5%" stopColor="#22C55E" stopOpacity={0.4} />
-                                            <stop offset="95%" stopColor="#22C55E" stopOpacity={0} />
-                                        </linearGradient>
-                                    </defs>
-                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(128,128,128,0.1)" />
-                                    <XAxis
-                                        dataKey="date"
-                                        tickFormatter={(val) => new Date(val).toLocaleDateString('en-US', { weekday: 'short' })}
-                                        stroke="rgba(128,128,128,0.5)"
-                                        fontSize={10}
-                                        fontWeight="600"
-                                        axisLine={false}
-                                        tickLine={false}
-                                        dy={10}
-                                    />
-                                    <YAxis
-                                        stroke="rgba(128,128,128,0.5)"
-                                        fontSize={10}
-                                        fontWeight="600"
-                                        axisLine={false}
-                                        tickLine={false}
-                                        dx={-10}
-                                    />
-                                    <Tooltip
-                                        contentStyle={{
-                                            backgroundColor: 'var(--card)',
-                                            borderColor: 'var(--border)',
-                                            borderRadius: '16px',
-                                            fontSize: '12px',
-                                            backdropFilter: 'blur(20px)',
-                                            boxShadow: '0 25px 50px -12px rgba(0,0,0,0.2)',
-                                            border: '1px solid var(--border)'
-                                        }}
-                                        itemStyle={{ color: 'var(--foreground)' }}
-                                        cursor={{ stroke: 'var(--primary)', strokeWidth: 1, strokeDasharray: '4 4' }}
-                                    />
-                                    <Area
-                                        type="monotone"
-                                        dataKey="count"
-                                        stroke="#22C55E"
-                                        strokeWidth={3}
-                                        fillOpacity={1}
-                                        fill="url(#colorTrend)"
-                                        animationDuration={1500}
-                                        animationEasing="ease-in-out"
-                                        dot={{ fill: '#22C55E', r: 4, strokeWidth: 2, stroke: 'var(--card)' }}
-                                        activeDot={{ r: 6, strokeWidth: 0, fill: 'var(--primary)' }}
-                                    />
-                                </AreaChart>
-                            </ResponsiveContainer>
-                        )}
-                    </div>
+                    <AnalyticsChart data={trendData} isMounted={isMounted} />
                 </motion.div>
 
                 {/* Heatmap Section */}
@@ -249,6 +255,7 @@ export default function Analytics() {
                                     <span>Jul</span>
                                     <span>Sep</span>
                                     <span>Nov</span>
+                                    <span>Dec</span>
                                 </div>
                                 <div className="flex gap-4">
                                     {/* Day Labels */}
