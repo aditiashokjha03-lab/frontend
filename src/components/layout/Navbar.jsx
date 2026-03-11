@@ -84,8 +84,8 @@ const Navbar = () => {
             <nav className="hidden md:flex flex-col w-64 bg-card border-r border-border h-screen fixed left-0 top-0 overflow-y-auto z-40 shadow-sm">
                 <div className="p-8 pb-4">
                     <Link to="/dashboard" className="flex items-center gap-3 font-semibold text-lg tracking-tight text-foreground">
-                        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary shadow-sm">
-                            <Flame className="h-5 w-5 text-primary-foreground" />
+                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 p-1 shadow-sm overflow-hidden">
+                            <img src="/logo.png" alt="HabitForge Logo" className="w-full h-full object-contain" />
                         </div>
                         HabitForge
                     </Link>
