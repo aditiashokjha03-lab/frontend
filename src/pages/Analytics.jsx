@@ -52,6 +52,21 @@ export default function Analytics() {
         queryFn: () => getHeatmap(currentYear)
     });
 
+    const [chartSize, setChartSize] = useState({ width: 0, height: 0 });
+    const chartRef = (node) => {
+        if (node !== null) {
+            const resizeObserver = new ResizeObserver((entries) => {
+                for (let entry of entries) {
+                    const { width, height } = entry.contentRect;
+                    if (width > 0 && height > 0) {
+                        setChartSize({ width, height });
+                    }
+                }
+            });
+            resizeObserver.observe(node);
+        }
+    };
+
     if (summaryLoading || trendLoading || heatmapLoading) {
         return (
             <div className="flex items-center justify-center min-h-[calc(100vh-4rem)]">
@@ -67,20 +82,6 @@ export default function Analytics() {
         { label: 'Overall Rate', value: `${summary?.completion_rate || 0}%`, icon: TrendingUp, color: 'text-achievement', bg: 'bg-achievement/10' },
     ];
 
-    const [chartSize, setChartSize] = useState({ width: 0, height: 0 });
-    const chartRef = (node) => {
-        if (node !== null) {
-            const resizeObserver = new ResizeObserver((entries) => {
-                for (let entry of entries) {
-                    const { width, height } = entry.contentRect;
-                    if (width > 0 && height > 0) {
-                        setChartSize({ width, height });
-                    }
-                }
-            });
-            resizeObserver.observe(node);
-        }
-    };
 
     return (
         <div className="p-4 md:p-8 max-w-7xl mx-auto min-h-screen space-y-8 pb-20">
