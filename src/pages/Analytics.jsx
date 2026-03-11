@@ -89,7 +89,7 @@ export default function Analytics() {
                         key={idx}
                         variants={item}
                         whileHover={{ y: -8, scale: 1.02 }}
-                        className="relative group overflow-hidden bg-white/[0.03] backdrop-blur-xl border border-white/10 rounded-3xl p-8 transition-all duration-500 hover:border-white/30 hover:shadow-2xl hover:shadow-white/5"
+                        className="relative group overflow-hidden bg-card backdrop-blur-xl border border-border rounded-3xl p-8 transition-all duration-500 hover:border-primary/30 hover:shadow-2xl hover:shadow-primary/5"
                     >
                         <div className="flex justify-between items-start mb-6">
                             <div className={`p-4 rounded-2xl ${stat.bg} bg-opacity-20`}>
@@ -116,7 +116,7 @@ export default function Analytics() {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.4 }}
-                    className="lg:col-span-2 bg-white/[0.03] backdrop-blur-md border border-white/5 rounded-3xl p-6 md:p-8 shadow-2xl overflow-hidden flex flex-col"
+                    className="lg:col-span-2 bg-card backdrop-blur-md border border-border rounded-3xl p-6 md:p-8 shadow-2xl overflow-hidden flex flex-col"
                 >
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
                         <div className="flex items-center gap-3">
@@ -198,7 +198,7 @@ export default function Analytics() {
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.5 }}
-                    className="bg-card/30 backdrop-blur-md border-2 border-white/5 rounded-3xl p-8 shadow-2xl flex flex-col"
+                    className="bg-card backdrop-blur-md border border-border rounded-3xl p-8 shadow-2xl flex flex-col"
                 >
                     <div className="flex items-center justify-between mb-10">
                         <div className="flex items-center gap-3">
@@ -247,7 +247,7 @@ export default function Analytics() {
                                                 <motion.div
                                                     key={i}
                                                     whileHover={{ scale: 1.5, zIndex: 20 }}
-                                                    className={`w-3 h-3 md:w-4 md:h-4 rounded-[2px] transition-colors duration-500 cursor-pointer border border-white/5 ${day.count === 0 ? 'bg-white/5 hover:bg-white/10' :
+                                                    className={`w-3 h-3 md:w-4 md:h-4 rounded-[2px] transition-colors duration-500 cursor-pointer border border-border/5 ${day.count === 0 ? 'bg-muted hover:bg-muted/80' :
                                                         day.count < 3 ? 'bg-success/30' :
                                                             day.count < 6 ? 'bg-success/60' : 'bg-success'
                                                         }`}
