@@ -48,3 +48,29 @@ The frontend communicates with the backend API at: `http://localhost:3001/api/v1
 
 ## Login Credentials
 Users can sign up for a new account or use existing test credentials if available in the Supabase instance.
+
+## Screenshots
+
+1. Landing Page
+![Landing preview](./media/Landing.jpeg)
+
+2. Dashboard
+![Dashboard preview](./media/Dashboard.jpeg)
+
+3. Habits Page
+![Habits preview](./media/Habits.jpeg)
+
+4. Focus
+![Focus timer preview](./media/Focus%20Timer.jpeg)
+
+5. Analytics
+![Analytics preview](./media/Analytics.jpeg)
+
+6. Challenges
+![Challenges preview](./media/Challenges.jpeg)
+
+7. Goals
+![Goals preview](./media/Goals.jpeg)
+
+8. Achievements
+![Trophies](./media/Trophies.jpeg)
