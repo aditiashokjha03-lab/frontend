@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getSummary, getTrend, getHeatmap } from '../api/analyticsApi';
-import { motion } from 'framer-motion';
+import { motion, useSpring, useTransform, animate } from 'framer-motion';
 import {
     AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts';
@@ -22,6 +22,52 @@ const container = {
 const item = {
     hidden: { y: 20, opacity: 0 },
     show: { y: 0, opacity: 1 }
+};
+
+// Animated Number Component
+const AnimatedNumber = ({ value }) => {
+    const [displayValue, setDisplayValue] = useState(0);
+    const numericValue = typeof value === 'string' ? parseFloat(value.replace(/[^0-9.]/g, '')) : value;
+    const suffix = typeof value === 'string' ? value.replace(/[0-9.]/g, '') : '';
+
+    useEffect(() => {
+        const controls = animate(0, numericValue, {
+            duration: 2,
+            ease: [0.16, 1, 0.3, 1], // Custom cubic-bezier for premium feel
+            onUpdate: (latest) => setDisplayValue(Math.floor(latest))
+        });
+        return () => controls.stop();
+    }, [numericValue]);
+
+    return (
+        <span className="tabular-nums">
+            {displayValue}{suffix}
+        </span>
+    );
+};
+
+// Custom Premium Tooltip Component
+const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+        return (
+            <motion.div
+                initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                className="bg-card/40 backdrop-blur-3xl border border-white/10 rounded-2xl p-4 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] ring-1 ring-white/5 transition-all duration-300"
+            >
+                <p className="text-[10px] font-black uppercase tracking-[0.25em] text-muted-foreground mb-2 px-0.5">
+                    {new Date(label).toLocaleDateString('en-US', { month: 'short', day: 'numeric', weekday: 'long' })}
+                </p>
+                <div className="flex items-center gap-3">
+                    <div className="w-2.5 h-2.5 rounded-full bg-success shadow-[0_0_15px_rgba(34,197,94,0.6)] animate-pulse" />
+                    <span className="text-2xl font-black text-foreground tabular-nums tracking-tighter">
+                        {payload[0].value} <span className="text-xs font-medium text-muted-foreground ml-0.5 uppercase tracking-widest">Acts</span>
+                    </span>
+                </div>
+            </motion.div>
+        );
+    }
+    return null;
 };
 
 // Isolated Chart Component to ensure Hook stability
@@ -48,46 +94,58 @@ const AnalyticsChart = ({ data, isMounted }) => {
                 <ResponsiveContainer width="100%" height="100%">
                     <AreaChart
                         data={data && data.length > 0 ? data : [{ date: new Date().toISOString(), count: 0 }]}
-                        margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+                        margin={{ top: 20, right: 10, left: 0, bottom: 0 }}
                     >
                         <defs>
                             <linearGradient id="colorTrend" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor="#22C55E" stopOpacity={0.4} />
+                                <stop offset="5%" stopColor="#22C55E" stopOpacity={0.6} />
+                                <stop offset="50%" stopColor="#22C55E" stopOpacity={0.1} />
                                 <stop offset="95%" stopColor="#22C55E" stopOpacity={0} />
                             </linearGradient>
+                            <mask id="chartMask">
+                                <rect x="0" y="0" width="100%" height="100%" fill="url(#maskGradient)" />
+                            </mask>
+                            <linearGradient id="maskGradient" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stopColor="white" />
+                                <stop offset="80%" stopColor="white" />
+                                <stop offset="100%" stopColor="black" />
+                            </linearGradient>
+                            <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
+                                <feGaussianBlur stdDeviation="4" result="blur" />
+                                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                            </filter>
                         </defs>
-                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(128,128,128,0.1)" />
+                        <CartesianGrid strokeDasharray="4 4" vertical={false} stroke="rgba(128,128,128,0.03)" />
                         <XAxis
                             dataKey="date"
                             tickFormatter={(val) => new Date(val).toLocaleDateString('en-US', { weekday: 'short' })}
-                            stroke="rgba(128,128,128,0.5)"
+                            stroke="rgba(128,128,128,0.2)"
                             fontSize={10}
-                            fontWeight="600"
+                            fontWeight="900"
                             axisLine={false}
                             tickLine={false}
-                            dy={10}
+                            dy={15}
+                            tick={{ translate: "uppercase" }}
                         />
-                        <YAxis
-                            stroke="rgba(128,128,128,0.5)"
-                            fontSize={10}
-                            fontWeight="600"
-                            axisLine={false}
-                            tickLine={false}
-                            dx={-10}
-                        />
+                        <YAxis hide />
                         <Tooltip
-                            contentStyle={{
-                                backgroundColor: 'var(--card)',
-                                borderColor: 'var(--border)',
-                                borderRadius: '16px',
-                                fontSize: '12px',
-                                backdropFilter: 'blur(20px)',
-                                boxShadow: '0 25px 50px -12px rgba(0,0,0,0.2)',
-                                border: '1px solid var(--border)'
-                            }}
-                            itemStyle={{ color: 'var(--foreground)' }}
-                            cursor={{ stroke: 'var(--primary)', strokeWidth: 1, strokeDasharray: '4 4' }}
+                            content={<CustomTooltip />}
+                            cursor={{ stroke: 'rgba(34,197,94,0.2)', strokeWidth: 2 }}
                         />
+
+                        {/* Area 1: The Glow Base */}
+                        <Area
+                            type="monotone"
+                            dataKey="count"
+                            stroke="rgba(34,197,94,0.6)"
+                            strokeWidth={10}
+                            fill="transparent"
+                            filter="url(#neonGlow)"
+                            animationDuration={2500}
+                            animationEasing="cubic-bezier(0.16, 1, 0.3, 1)"
+                        />
+
+                        {/* Area 2: The Actual Data Surface with Masking */}
                         <Area
                             type="monotone"
                             dataKey="count"
@@ -95,10 +153,22 @@ const AnalyticsChart = ({ data, isMounted }) => {
                             strokeWidth={3}
                             fillOpacity={1}
                             fill="url(#colorTrend)"
-                            animationDuration={1500}
-                            animationEasing="ease-in-out"
-                            dot={{ fill: '#22C55E', r: 4, strokeWidth: 2, stroke: 'var(--card)' }}
-                            activeDot={{ r: 6, strokeWidth: 0, fill: 'var(--primary)' }}
+                            mask="url(#chartMask)"
+                            animationDuration={2000}
+                            animationEasing="cubic-bezier(0.16, 1, 0.3, 1)"
+                            dot={{
+                                fill: '#22C55E',
+                                r: 3,
+                                strokeWidth: 2,
+                                stroke: 'var(--card)',
+                                className: "transition-all duration-500 hover:r-5"
+                            }}
+                            activeDot={{
+                                r: 6,
+                                strokeWidth: 0,
+                                fill: 'var(--primary)',
+                                className: "animate-ping"
+                            }}
                         />
                     </AreaChart>
                 </ResponsiveContainer>
@@ -184,7 +254,7 @@ export default function Analytics() {
                                 {stat.label}
                             </p>
                             <h3 className="text-4xl font-black mt-2 tracking-tighter">
-                                {stat.value}
+                                <AnimatedNumber value={stat.value} />
                             </h3>
                         </div>
                         <div className="absolute bottom-0 left-0 h-1 w-0 bg-primary group-hover:w-full transition-all duration-700" />
