@@ -41,7 +41,7 @@ The frontend is a modern, responsive web application built with React and Vite. 
    ```
 
 ## Deployment Link
-[Not currently deployed - Local Development Only]
+[Frontend Deployment](habitforge-track.vercel.app)
 
 ## Backend API Link
 The frontend communicates with the backend API at: `http://localhost:3001/api/v1`
