@@ -76,32 +76,37 @@ export default function CreateHabitModal({ isOpen, onClose, habitToEdit = null }
 
     return (
         <AnimatePresence>
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm p-4 sm:p-6">
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm p-4 overflow-hidden h-[100dvh]">
                 <motion.div
-                    initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                    initial={{ opacity: 0, scale: 0.95, y: 10 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                    className="relative w-full max-w-2xl max-h-[calc(100vh-2rem)] overflow-y-auto rounded-[32px] bg-card p-6 sm:p-10 shadow-2xl border border-border"
+                    exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                    className="relative w-full max-w-2xl bg-card rounded-[24px] shadow-2xl border border-border flex flex-col overflow-hidden max-h-full"
                 >
-                    <button onClick={onClose} className="absolute top-4 right-4 sm:top-6 sm:right-6 p-2 z-10 rounded-full bg-card hover:bg-muted transition-colors">
+                    <button onClick={onClose} className="absolute top-4 right-4 p-1.5 z-10 text-muted-foreground rounded-full hover:bg-muted transition-colors">
                         <X className="h-5 w-5" />
                     </button>
 
-                    <div className="flex items-center gap-4 mb-10">
-                        <div className="h-14 w-14 rounded-2xl bg-primary text-primary-foreground flex items-center justify-center shadow-lg shadow-primary/20">
-                            <Sparkles className="h-7 w-7" />
-                        </div>
-                        <div>
-                            <h2 className="text-3xl font-bold text-foreground tracking-tight">{habitToEdit ? 'Forge Your Habit' : 'New Habit'}</h2>
-                            <p className="text-sm font-medium text-muted-foreground">Define your path to personal growth.</p>
+                    {/* Compact Header */}
+                    <div className="px-6 pt-5 pb-3 flex flex-col border-b border-border/50 shrink-0">
+                        <div className="flex items-center gap-3">
+                            <div className="h-10 w-10 rounded-xl bg-primary text-primary-foreground flex items-center justify-center shadow-lg shadow-primary/20 shrink-0">
+                                <Sparkles className="h-5 w-5" />
+                            </div>
+                            <div>
+                                <h2 className="text-xl font-bold text-foreground tracking-tight leading-tight">{habitToEdit ? 'Edit Habit' : 'New Habit'}</h2>
+                                <p className="text-xs font-medium text-muted-foreground">Define your path to personal growth.</p>
+                            </div>
                         </div>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="space-y-8">
-                        {/* Name and Icon */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="space-y-2">
-                                <label className="text-sm font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                    {/* Compact Scrollable Form Body */}
+                    <form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-y-auto px-6 py-4 space-y-4 max-h-[calc(100vh-140px)] scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent">
+                        
+                        {/* Row 1: Name and Category */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-1.5">
+                                <label className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
                                     Habit Name
                                 </label>
                                 <input
@@ -109,137 +114,148 @@ export default function CreateHabitModal({ isOpen, onClose, habitToEdit = null }
                                     required
                                     value={formData.name}
                                     onChange={e => handleChange('name', e.target.value)}
-                                    className="w-full bg-muted/50 border border-border focus:border-primary focus:bg-card rounded-2xl px-6 py-4 font-semibold text-lg outline-none transition-all placeholder:text-muted-foreground"
+                                    className="w-full bg-muted/50 border border-border focus:border-primary focus:bg-card rounded-xl px-4 py-2 text-sm font-semibold outline-none transition-all placeholder:text-muted-foreground/50 h-10"
                                     placeholder="e.g. Morning Meditation"
                                 />
                             </div>
-
-                            <div className="space-y-2">
-                                <label className="text-sm font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
-                                    Icon Selection
+                            <div className="space-y-1.5">
+                                <label className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                                    <LayoutGrid className="h-3.5 w-3.5" /> Category
                                 </label>
-                                <div className="flex flex-wrap gap-2.5 p-3 bg-muted/50 rounded-2xl border border-border">
+                                <div className="flex flex-wrap gap-1.5">
+                                    {CATEGORIES.slice(0, 6).map(cat => ( // Show fewer initially to save space if needed, or use a select dropdown if it gets too crowded. For now, compact buttons.
+                                        <button
+                                            key={cat}
+                                            type="button"
+                                            onClick={() => handleChange('category', cat)}
+                                            className={`px-2.5 py-1 rounded-lg text-[10px] font-bold border transition-all ${formData.category === cat ? 'bg-primary border-primary text-primary-foreground shadow-sm' : 'bg-card border-border hover:bg-muted text-muted-foreground'}`}
+                                        >
+                                            {cat}
+                                        </button>
+                                    ))}
+                                    {/* Optional: Add a 'More' dropdown or keep it as is if it fits. 6 cats usually fit well. Let's show all but compactly */}
+                                     {CATEGORIES.slice(6).map(cat => (
+                                         <button
+                                             key={cat}
+                                             type="button"
+                                             onClick={() => handleChange('category', cat)}
+                                             className={`px-2.5 py-1 rounded-lg text-[10px] font-bold border transition-all hidden sm:inline-block ${formData.category === cat ? 'bg-primary border-primary text-primary-foreground shadow-sm' : 'bg-card border-border hover:bg-muted text-muted-foreground'}`}
+                                         >
+                                             {cat}
+                                         </button>
+                                     ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Row 2: Icons and Color */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                             <div className="space-y-1.5">
+                                <label className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                                    Icon
+                                </label>
+                                <div className="flex flex-wrap gap-1.5 p-1.5 bg-muted/30 rounded-xl border border-border/50">
                                     {EMOJIS.map(emoji => (
                                         <button
                                             key={emoji}
                                             type="button"
                                             onClick={() => handleChange('icon', emoji)}
-                                            className={`w-11 h-11 flex items-center justify-center rounded-xl text-xl transition-all ${formData.icon === emoji ? 'bg-primary text-primary-foreground shadow-md scale-110' : 'hover:bg-card hover:shadow-sm text-muted-foreground'}`}
+                                            className={`w-8 h-8 flex items-center justify-center rounded-lg text-lg transition-all ${formData.icon === emoji ? 'bg-primary text-primary-foreground shadow-sm scale-105' : 'hover:bg-card hover:shadow-sm text-muted-foreground'}`}
                                         >
                                             {emoji}
                                         </button>
                                     ))}
                                 </div>
                             </div>
-                        </div>
-
-                        {/* Category and Difficulty */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="space-y-3">
-                                <label className="text-sm font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
-                                    <LayoutGrid className="h-4 w-4" /> Category
+                             <div className="space-y-1.5">
+                                <label className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                                    <Palette className="h-3.5 w-3.5" /> Color Accent
                                 </label>
-                                <div className="grid grid-cols-3 gap-2">
-                                    {CATEGORIES.map(cat => (
+                                <div className="flex flex-wrap gap-2 pt-1">
+                                    {COLORS.map(color => (
                                         <button
-                                            key={cat}
+                                            key={color}
                                             type="button"
-                                            onClick={() => handleChange('category', cat)}
-                                            className={`px-3 py-2 rounded-xl text-xs font-bold border transition-all ${formData.category === cat ? 'bg-primary border-primary text-primary-foreground shadow-sm' : 'bg-card border-border hover:bg-muted text-muted-foreground'}`}
-                                        >
-                                            {cat}
-                                        </button>
+                                            onClick={() => handleChange('color', color)}
+                                            className={`w-6 h-6 rounded-full border-2 transition-all ${formData.color === color ? 'scale-125 border-card shadow-md ring-2 ring-primary ring-offset-1 ring-offset-background' : 'border-transparent opacity-70 hover:opacity-100 ring-1 ring-transparent hover:ring-border hover:ring-offset-1 hover:ring-offset-background'}`}
+                                            style={{ backgroundColor: color }}
+                                        />
                                     ))}
                                 </div>
                             </div>
+                        </div>
 
-                            <div className="space-y-3">
-                                <label className="text-sm font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
-                                    <Sparkles className="h-4 w-4" /> Difficulty
+                        {/* Row 3: Difficulty and Frequency & Target */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                             <div className="space-y-1.5">
+                                <label className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                                    <Sparkles className="h-3.5 w-3.5" /> Difficulty
                                 </label>
-                                <div className="grid grid-cols-2 gap-2">
+                                <div className="grid grid-cols-4 gap-1.5">
                                     {DIFFICULTIES.map(diff => (
                                         <button
                                             key={diff}
                                             type="button"
                                             onClick={() => handleChange('difficulty', diff)}
-                                            className={`px-4 py-3 rounded-2xl font-bold border transition-all ${formData.difficulty === diff ? 'bg-primary border-primary text-primary-foreground shadow-sm' : 'bg-card border-border hover:bg-muted text-muted-foreground'}`}
+                                            className={`py-1.5 rounded-lg text-[11px] font-bold border transition-all text-center ${formData.difficulty === diff ? 'bg-primary border-primary text-primary-foreground shadow-sm' : 'bg-card border-border hover:bg-muted text-muted-foreground'}`}
                                         >
                                             {diff}
                                         </button>
                                     ))}
                                 </div>
                             </div>
-                        </div>
 
-                        {/* Color Selection */}
-                        <div className="space-y-3">
-                            <label className="text-sm font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
-                                <Palette className="h-4 w-4" /> Custom Color
-                            </label>
-                            <div className="flex flex-wrap gap-3">
-                                {COLORS.map(color => (
-                                    <button
-                                        key={color}
-                                        type="button"
-                                        onClick={() => handleChange('color', color)}
-                                        className={`w-8 h-8 rounded-full border-4 transition-all ${formData.color === color ? 'scale-125 border-card shadow-xl' : 'border-transparent opacity-60 hover:opacity-100'}`}
-                                        style={{ backgroundColor: color }}
-                                    />
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Numeric Targets and Frequency */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
-                            <div className="space-y-2 md:col-span-1">
-                                <label className="text-sm font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
-                                    <Target className="h-4 w-4" /> Target Value
-                                </label>
-                                <input
-                                    type="number"
-                                    min="1"
-                                    value={formData.goal_value}
-                                    onChange={e => handleChange('goal_value', parseInt(e.target.value))}
-                                    className="w-full bg-muted/50 border-2 border-transparent focus:border-primary/30 rounded-2xl px-5 py-3 font-bold outline-none transition-all"
-                                />
-                            </div>
-
-                            <div className="md:col-span-2 flex items-center gap-4">
-                                <div className="flex-1 space-y-2">
-                                    <label className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Frequency</label>
-                                    <div className="flex bg-muted rounded-2xl p-1 border">
+                             <div className="flex items-end gap-3">
+                                 <div className="flex-1 space-y-1.5">
+                                    <label className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                                        Frequency
+                                    </label>
+                                    <div className="flex bg-muted/50 rounded-lg p-0.5 border border-border/50">
                                         {FREQUENCIES.map(freq => (
                                             <button
                                                 key={freq}
                                                 type="button"
                                                 onClick={() => handleChange('frequency', freq)}
-                                                className={`flex-1 py-2 rounded-xl text-sm font-bold transition-all ${formData.frequency === freq ? 'bg-card shadow-sm text-primary' : 'text-muted-foreground hover:bg-card/50'}`}
+                                                className={`flex-1 py-1.5 rounded-md text-[11px] font-bold transition-all ${formData.frequency === freq ? 'bg-card shadow-sm text-primary' : 'text-muted-foreground hover:bg-card/50'}`}
                                             >
                                                 {freq}
                                             </button>
                                         ))}
                                     </div>
                                 </div>
-
-                                <div className="space-y-2 pt-1">
-                                    <button
+                                <div className="w-20 space-y-1.5">
+                                     <label className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5 whitespace-nowrap">
+                                        <Target className="h-3.5 w-3.5" /> Goal
+                                    </label>
+                                    <input
+                                        type="number"
+                                        min="1"
+                                        value={formData.goal_value}
+                                        onChange={e => handleChange('goal_value', parseInt(e.target.value))}
+                                        className="w-full bg-muted/50 border border-border/50 focus:border-primary/50 rounded-lg px-2 text-center py-1.5 text-sm font-bold outline-none transition-all h-[34px]"
+                                    />
+                                </div>
+                                <div className="space-y-1.5 pb-[1px]">
+                                     <button
                                         type="button"
+                                        title="Toggle Reminder"
                                         onClick={() => handleChange('reminder_enabled', !formData.reminder_enabled)}
-                                        className={`p-3 rounded-2xl transition-all border-2 ${formData.reminder_enabled ? 'bg-primary/10 border-primary text-primary' : 'bg-muted/50 border-transparent text-muted-foreground'}`}
+                                        className={`p-2 rounded-lg transition-all border ${formData.reminder_enabled ? 'bg-primary/10 border-primary/30 text-primary' : 'bg-card border-border hover:bg-muted text-muted-foreground'}`}
                                     >
-                                        <Bell className={`h-6 w-6 ${formData.reminder_enabled ? 'animate-bounce' : ''}`} />
+                                        <Bell className={`h-4 w-4 ${formData.reminder_enabled ? 'animate-bounce' : ''}`} />
                                     </button>
                                 </div>
-                            </div>
+                             </div>
                         </div>
 
-                        <div className="flex justify-end gap-4 pt-10">
-                            <Button variant="ghost" onClick={onClose} type="button" className="px-8 font-semibold rounded-2xl text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Cancel</Button>
-                            <Button
+                        {/* Footer Buttons attached to the bottom */}
+                        <div className="flex justify-end gap-3 pt-4 border-t border-border/50 mt-auto shrink-0 mb-2">
+                             <Button variant="ghost" onClick={onClose} type="button" size="sm" className="px-5 text-xs font-semibold rounded-xl text-muted-foreground hover:bg-muted hover:text-foreground">Cancel</Button>
+                             <Button
                                 disabled={createMutation.isPending || updateMutation.isPending}
                                 type="submit"
-                                className="px-10 font-bold rounded-2xl shadow-xl shadow-primary/20 bg-primary hover:bg-primary-hover text-primary-foreground h-14 transition-all active:scale-95"
+                                size="sm"
+                                className="px-8 text-xs font-bold rounded-xl shadow-md shadow-primary/20 bg-primary hover:bg-primary-hover text-primary-foreground h-9 transition-all active:scale-95"
                             >
                                 {createMutation.isPending || updateMutation.isPending ? 'Forging...' : habitToEdit ? 'Save Changes' : 'Forging Habit'}
                             </Button>
