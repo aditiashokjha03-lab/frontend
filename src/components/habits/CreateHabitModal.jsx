@@ -76,14 +76,14 @@ export default function CreateHabitModal({ isOpen, onClose, habitToEdit = null }
 
     return (
         <AnimatePresence>
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm p-4 overflow-y-auto">
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm p-4 sm:p-6">
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                    className="relative w-full max-w-2xl rounded-[32px] bg-card p-10 shadow-2xl border border-border mt-10 mb-10"
+                    className="relative w-full max-w-2xl max-h-[calc(100vh-2rem)] overflow-y-auto rounded-[32px] bg-card p-6 sm:p-10 shadow-2xl border border-border"
                 >
-                    <button onClick={onClose} className="absolute top-6 right-6 p-2 rounded-full hover:bg-muted transition-colors">
+                    <button onClick={onClose} className="absolute top-4 right-4 sm:top-6 sm:right-6 p-2 z-10 rounded-full bg-card hover:bg-muted transition-colors">
                         <X className="h-5 w-5" />
                     </button>
 
