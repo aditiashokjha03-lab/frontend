@@ -1,13 +1,13 @@
-import { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useMemo, Suspense } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getSummary, getTrend, getHeatmap } from '../api/analyticsApi';
-import { motion, useSpring, useTransform, animate } from 'framer-motion';
-import {
-    AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
-} from 'recharts';
+import { motion, animate } from 'framer-motion';
 import {
     Activity, CheckCircle2, Flame, TrendingUp, Calendar, Info
 } from 'lucide-react';
+
+// Lazy loaded chart component
+const AnalyticsChart = React.lazy(() => import('../components/analytics/AnalyticsChart'));
 
 const container = {
     hidden: { opacity: 0 },
@@ -24,16 +24,20 @@ const item = {
     show: { y: 0, opacity: 1 }
 };
 
-// Animated Number Component
-const AnimatedNumber = ({ value }) => {
+// Animated Number Component - Memoized
+const AnimatedNumber = React.memo(({ value }) => {
     const [displayValue, setDisplayValue] = useState(0);
-    const numericValue = typeof value === 'string' ? parseFloat(value.replace(/[^0-9.]/g, '')) : value;
-    const suffix = typeof value === 'string' ? value.replace(/[0-9.]/g, '') : '';
+    const numericValue = useMemo(() => 
+        typeof value === 'string' ? parseFloat(value.replace(/[^0-9.]/g, '')) : value
+    , [value]);
+    const suffix = useMemo(() => 
+        typeof value === 'string' ? value.replace(/[0-9.]/g, '') : ''
+    , [value]);
 
     useEffect(() => {
         const controls = animate(0, numericValue, {
-            duration: 2,
-            ease: [0.16, 1, 0.3, 1], // Custom cubic-bezier for premium feel
+            duration: 1.5,
+            ease: [0.16, 1, 0.3, 1],
             onUpdate: (latest) => setDisplayValue(Math.floor(latest))
         });
         return () => controls.stop();
@@ -44,166 +48,48 @@ const AnimatedNumber = ({ value }) => {
             {displayValue}{suffix}
         </span>
     );
-};
+});
 
-// Custom Premium Tooltip Component
-const CustomTooltip = ({ active, payload, label }) => {
-    if (active && payload && payload.length) {
-        return (
-            <motion.div
-                initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                className="bg-card/40 backdrop-blur-3xl border border-white/10 rounded-2xl p-4 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] ring-1 ring-white/5 transition-all duration-300"
-            >
-                <p className="text-[10px] font-black uppercase tracking-[0.25em] text-muted-foreground mb-2 px-0.5">
-                    {new Date(label).toLocaleDateString('en-US', { month: 'short', day: 'numeric', weekday: 'long' })}
-                </p>
-                <div className="flex items-center gap-3">
-                    <div className="w-2.5 h-2.5 rounded-full bg-success shadow-[0_0_15px_rgba(34,197,94,0.6)] animate-pulse" />
-                    <span className="text-2xl font-black text-foreground tabular-nums tracking-tighter">
-                        {payload[0].value} <span className="text-xs font-medium text-muted-foreground ml-0.5 uppercase tracking-widest">Acts</span>
-                    </span>
-                </div>
-            </motion.div>
-        );
-    }
-    return null;
-};
-
-// Isolated Chart Component to ensure Hook stability
-const AnalyticsChart = ({ data, isMounted }) => {
-    const [chartSize, setChartSize] = useState({ width: 0, height: 0 });
-
-    const chartRef = (node) => {
-        if (node !== null) {
-            const resizeObserver = new ResizeObserver((entries) => {
-                for (let entry of entries) {
-                    const { width, height } = entry.contentRect;
-                    if (width > 0 && height > 0) {
-                        setChartSize({ width, height });
-                    }
-                }
-            });
-            resizeObserver.observe(node);
-        }
-    };
-
-    return (
-        <div ref={chartRef} className="w-full h-[320px] min-h-[300px] relative mt-4">
-            {isMounted && chartSize.width > 0 && (
-                <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart
-                        data={data && data.length > 0 ? data : [{ date: new Date().toISOString(), count: 0 }]}
-                        margin={{ top: 20, right: 10, left: 0, bottom: 0 }}
-                    >
-                        <defs>
-                            <linearGradient id="colorTrend" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor="#22C55E" stopOpacity={0.6} />
-                                <stop offset="50%" stopColor="#22C55E" stopOpacity={0.1} />
-                                <stop offset="95%" stopColor="#22C55E" stopOpacity={0} />
-                            </linearGradient>
-                            <mask id="chartMask">
-                                <rect x="0" y="0" width="100%" height="100%" fill="url(#maskGradient)" />
-                            </mask>
-                            <linearGradient id="maskGradient" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%" stopColor="white" />
-                                <stop offset="80%" stopColor="white" />
-                                <stop offset="100%" stopColor="black" />
-                            </linearGradient>
-                            <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
-                                <feGaussianBlur stdDeviation="4" result="blur" />
-                                <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                            </filter>
-                        </defs>
-                        <CartesianGrid strokeDasharray="4 4" vertical={false} stroke="rgba(128,128,128,0.03)" />
-                        <XAxis
-                            dataKey="date"
-                            tickFormatter={(val) => new Date(val).toLocaleDateString('en-US', { weekday: 'short' })}
-                            stroke="rgba(128,128,128,0.2)"
-                            fontSize={10}
-                            fontWeight="900"
-                            axisLine={false}
-                            tickLine={false}
-                            dy={15}
-                            tick={{ translate: "uppercase" }}
-                        />
-                        <YAxis hide />
-                        <Tooltip
-                            content={<CustomTooltip />}
-                            cursor={{ stroke: 'rgba(34,197,94,0.2)', strokeWidth: 2 }}
-                        />
-
-                        {/* Area 1: The Glow Base */}
-                        <Area
-                            type="monotone"
-                            dataKey="count"
-                            stroke="rgba(34,197,94,0.6)"
-                            strokeWidth={10}
-                            fill="transparent"
-                            filter="url(#neonGlow)"
-                            animationDuration={2500}
-                            animationEasing="cubic-bezier(0.16, 1, 0.3, 1)"
-                        />
-
-                        {/* Area 2: The Actual Data Surface with Masking */}
-                        <Area
-                            type="monotone"
-                            dataKey="count"
-                            stroke="#22C55E"
-                            strokeWidth={3}
-                            fillOpacity={1}
-                            fill="url(#colorTrend)"
-                            mask="url(#chartMask)"
-                            animationDuration={2000}
-                            animationEasing="cubic-bezier(0.16, 1, 0.3, 1)"
-                            dot={{
-                                fill: '#22C55E',
-                                r: 3,
-                                strokeWidth: 2,
-                                stroke: 'var(--card)',
-                                className: "transition-all duration-500 hover:r-5"
-                            }}
-                            activeDot={{
-                                r: 6,
-                                strokeWidth: 0,
-                                fill: 'var(--primary)',
-                                className: "animate-ping"
-                            }}
-                        />
-                    </AreaChart>
-                </ResponsiveContainer>
-            )}
-        </div>
-    );
-};
-
+// Loading Fallback for Chart
+const ChartLoading = () => (
+    <div className="w-full h-[320px] flex items-center justify-center bg-card/10 rounded-3xl animate-pulse">
+        <TrendingUp className="w-8 h-8 text-muted-foreground/20" />
+    </div>
+);
 export default function Analytics() {
     const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            requestAnimationFrame(() => {
-                setIsMounted(true);
-            });
-        }, 300);
-        return () => clearTimeout(timer);
+        requestAnimationFrame(() => {
+            setIsMounted(true);
+        });
     }, []);
 
     const { data: summary, isLoading: summaryLoading } = useQuery({
         queryKey: ['analytics-summary'],
-        queryFn: getSummary
+        queryFn: getSummary,
+        staleTime: 5 * 60 * 1000 // Cache for 5 minutes
     });
 
     const { data: trendData, isLoading: trendLoading } = useQuery({
         queryKey: ['analytics-trend', 7],
-        queryFn: () => getTrend(7)
+        queryFn: () => getTrend(7),
+        staleTime: 5 * 60 * 1000
     });
 
-    const currentYear = new Date().getFullYear();
+    const currentYear = useMemo(() => new Date().getFullYear(), []);
     const { data: heatmapData, isLoading: heatmapLoading } = useQuery({
         queryKey: ['analytics-heatmap', currentYear],
-        queryFn: () => getHeatmap(currentYear)
+        queryFn: () => getHeatmap(currentYear),
+        staleTime: 10 * 60 * 1000
     });
+
+    const stats = useMemo(() => [
+        { label: 'Active Habits', value: summary?.active_habits || 0, icon: Activity, color: 'text-primary', bg: 'bg-primary/10' },
+        { label: 'Total Check-ins', value: summary?.total_check_ins || 0, icon: CheckCircle2, color: 'text-success', bg: 'bg-success/10' },
+        { label: 'Best Streak', value: `${summary?.best_streak || 0} Days`, icon: Flame, color: 'text-warning', bg: 'bg-warning/10' },
+        { label: 'Overall Rate', value: `${summary?.completion_rate || 0}%`, icon: TrendingUp, color: 'text-achievement', bg: 'bg-achievement/10' },
+    ], [summary]);
 
     if (summaryLoading || trendLoading || heatmapLoading) {
         return (
@@ -212,13 +98,6 @@ export default function Analytics() {
             </div>
         );
     }
-
-    const stats = [
-        { label: 'Active Habits', value: summary?.active_habits || 0, icon: Activity, color: 'text-primary', bg: 'bg-primary/10' },
-        { label: 'Total Check-ins', value: summary?.total_check_ins || 0, icon: CheckCircle2, color: 'text-success', bg: 'bg-success/10' },
-        { label: 'Best Streak', value: `${summary?.best_streak || 0} Days`, icon: Flame, color: 'text-warning', bg: 'bg-warning/10' },
-        { label: 'Overall Rate', value: `${summary?.completion_rate || 0}%`, icon: TrendingUp, color: 'text-achievement', bg: 'bg-achievement/10' },
-    ];
 
     return (
         <div className="p-4 md:p-8 max-w-7xl mx-auto min-h-screen space-y-8 pb-20">
@@ -283,7 +162,9 @@ export default function Analytics() {
                         </div>
                     </div>
 
-                    <AnalyticsChart data={trendData} isMounted={isMounted} />
+                    <Suspense fallback={<ChartLoading />}>
+                        <AnalyticsChart data={trendData} />
+                    </Suspense>
                 </motion.div>
 
                 {/* Heatmap Section */}
@@ -303,16 +184,6 @@ export default function Analytics() {
                                 <p className="text-sm text-muted-foreground">Yearly contribution grid</p>
                             </div>
                         </div>
-                        <div className="flex items-center gap-2 text-[10px] text-muted-foreground uppercase font-bold tracking-widest bg-white/5 px-3 py-1.5 rounded-full">
-                            <span>Less</span>
-                            <div className="flex gap-1 mx-1">
-                                <div className="w-3 h-3 rounded-sm bg-muted" />
-                                <div className="w-3 h-3 rounded-sm bg-success/30" />
-                                <div className="w-3 h-3 rounded-sm bg-success/60" />
-                                <div className="w-3 h-3 rounded-sm bg-success" />
-                            </div>
-                            <span>More</span>
-                        </div>
                     </div>
 
                     <div className="flex-grow flex flex-col min-h-[150px]">
@@ -328,7 +199,6 @@ export default function Analytics() {
                                     <span>Dec</span>
                                 </div>
                                 <div className="flex gap-4">
-                                    {/* Day Labels */}
                                     <div className="flex flex-col justify-between text-[9px] text-muted-foreground font-bold uppercase py-1 h-[140px]">
                                         <span>Mon</span>
                                         <span>Wed</span>
@@ -354,17 +224,8 @@ export default function Analytics() {
                             </div>
                         ) : (
                             <div className="flex-grow flex flex-col items-center justify-center p-8 bg-white/2 rounded-2xl border-2 border-dashed border-white/5">
-                                <div className="text-center space-y-4">
-                                    <div className="p-4 bg-white/5 rounded-full inline-block">
-                                        <Info className="w-8 h-8 text-muted-foreground animate-pulse" />
-                                    </div>
-                                    <div className="space-y-1">
-                                        <p className="font-bold text-lg">Your legacy starts today</p>
-                                        <p className="text-sm text-muted-foreground max-w-[240px]">
-                                            Complete habits to visualize your streak progress here.
-                                        </p>
-                                    </div>
-                                </div>
+                                <Info className="w-8 h-8 text-muted-foreground" />
+                                <p className="font-bold text-lg mt-4">Your legacy starts today</p>
                             </div>
                         )}
                     </div>

@@ -1,4 +1,6 @@
-export default function TodayProgress({ habitsCount, completedCount }) {
+import React from 'react';
+
+const TodayProgress = React.memo(({ habitsCount, completedCount }) => {
     const percentage = habitsCount === 0 ? 0 : Math.round((completedCount / habitsCount) * 100);
 
     // Svg Circle attributes
@@ -38,4 +40,6 @@ export default function TodayProgress({ habitsCount, completedCount }) {
             </div>
         </div>
     );
-}
+});
+
+export default TodayProgress;

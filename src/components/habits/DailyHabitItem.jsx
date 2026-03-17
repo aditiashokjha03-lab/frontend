@@ -1,6 +1,7 @@
+import React from 'react';
 import { motion } from 'framer-motion';
 
-export default function DailyHabitItem({ habit, log, date, onToggle }) {
+const DailyHabitItem = React.memo(({ habit, log, date, onToggle }) => {
     const complete = log?.completed || false;
 
     const handleToggle = () => {
@@ -38,4 +39,6 @@ export default function DailyHabitItem({ habit, log, date, onToggle }) {
             </div>
         </div>
     );
-}
+});
+
+export default DailyHabitItem;

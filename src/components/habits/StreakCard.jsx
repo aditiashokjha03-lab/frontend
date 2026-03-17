@@ -1,4 +1,6 @@
-export default function StreakCard({ streak = 0, longestStreak = 0, heatmap = [] }) {
+import React from 'react';
+
+const StreakCard = React.memo(({ streak = 0, longestStreak = 0, heatmap = [] }) => {
     return (
         <div className="bg-card border border-border rounded-3xl p-8 flex flex-col shadow-sm">
             <div className="flex items-center mb-6">
@@ -27,4 +29,6 @@ export default function StreakCard({ streak = 0, longestStreak = 0, heatmap = []
             </div>
         </div>
     );
-}
+});
+
+export default StreakCard;
