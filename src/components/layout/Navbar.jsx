@@ -16,9 +16,9 @@ const NavLinks = ({ links, mobile = false, closeMenu }) => (
                 onClick={mobile ? closeMenu : undefined}
                 aria-label={`Navigate to ${link.label}`}
                 className={({ isActive }) =>
-                    `flex items-center gap-3 px-4 py-2.5 rounded-xl font-medium transition-all duration-200 ${isActive
-                        ? 'bg-primary text-primary-foreground shadow-sm'
-                        : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                    `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-all duration-200 ${isActive
+                        ? 'text-foreground bg-secondary/50'
+                        : 'text-muted-foreground hover:text-foreground hover:bg-muted/30'
                     }`
                 }
             >
@@ -34,7 +34,7 @@ const SidebarFooter = ({ theme, toggleTheme, signOut, profile, user, closeMenu }
         <button
             onClick={toggleTheme}
             aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-            className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-muted-foreground bg-muted/50 hover:bg-muted rounded-xl border border-border transition-all duration-200"
+            className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-muted-foreground bg-secondary/30 hover:bg-secondary/50 rounded-lg border border-border/40 transition-all duration-200"
         >
             {theme === 'dark' ? <Sun className="h-3.5 w-3.5" aria-hidden="true" /> : <Moon className="h-3.5 w-3.5" aria-hidden="true" />}
             {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
@@ -44,7 +44,7 @@ const SidebarFooter = ({ theme, toggleTheme, signOut, profile, user, closeMenu }
             type="button"
             onClick={signOut}
             aria-label="Sign out of your account"
-            className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-destructive bg-destructive/10 hover:bg-destructive/20 rounded-xl border border-destructive/30 transition-all duration-200"
+            className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-destructive/80 hover:text-destructive hover:bg-destructive/10 rounded-lg border border-destructive/10 transition-all duration-200"
         >
             <LogOut className="h-3.5 w-3.5" aria-hidden="true" />
             Sign out
@@ -84,7 +84,7 @@ const Navbar = () => {
     return (
         <>
             {/* Desktop Vertical Nav */}
-            <nav className="hidden md:flex flex-col w-64 bg-card border-r border-border h-screen fixed left-0 top-0 overflow-y-auto z-40 shadow-sm">
+            <nav className="hidden md:flex flex-col w-64 bg-background border-r border-border h-screen fixed left-0 top-0 overflow-y-auto z-40">
                 <div className="p-8 pb-4">
                     <Link to="/dashboard" aria-label="HabitForge Dashboard" className="flex items-center gap-3 font-semibold text-lg tracking-tight text-foreground">
                         <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-muted p-1 shadow-sm overflow-hidden">
@@ -116,7 +116,7 @@ const Navbar = () => {
             </nav>
 
             {/* Mobile Header (with hamburger) */}
-            <div className="md:hidden flex items-center justify-between p-4 bg-card border-b sticky top-0 z-40">
+            <div className="md:hidden flex items-center justify-between p-4 bg-background border-b border-border sticky top-0 z-40">
                 <Link to="/dashboard" className="flex items-center gap-2 font-bold text-xl tracking-tight">
                     <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-muted overflow-hidden border border-border">
                         <img src="/logo.png" alt="HabitForge Logo" className="w-full h-full object-contain" />

@@ -89,60 +89,61 @@ export default function Challenges() {
     return (
         <div className="p-6 md:p-12 max-w-7xl mx-auto space-y-12 min-h-screen">
             {/* Header Section */}
-            <div className="relative overflow-hidden rounded-[3rem] bg-card border border-border p-10 md:p-16 flex flex-col md:flex-row items-center gap-10 shadow-sm">
-                <div className="absolute -top-24 -right-24 h-96 w-96 bg-primary/5 rounded-full blur-3xl" />
-
-                <div className="relative z-10 flex-1 space-y-6 text-center md:text-left">
-                    <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest">
-                        <Trophy className="h-4 w-4" /> Season 1 Live
+            <div className="relative overflow-hidden rounded-[3.5rem] bg-card border border-white/5 p-12 md:p-20 flex flex-col md:flex-row items-center gap-16 shadow-2xl shadow-black/40">
+                <div className="absolute top-0 left-0 w-full h-full bg-primary/[0.02] -z-10" />
+                <div className="absolute -top-32 -right-32 h-[30rem] w-[30rem] bg-primary/5 rounded-full blur-[120px]" />
+ 
+                <div className="relative z-10 flex-1 space-y-8 text-center md:text-left">
+                    <div className="inline-flex items-center gap-3 bg-secondary/50 border border-white/5 px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-[0.25em] text-primary">
+                        <Trophy className="h-4 w-4" /> Season 1 Alpha
                     </div>
-                    <h1 className="text-4xl md:text-6xl font-black tracking-tighter leading-none">
-                        Rise to the <span className="text-primary italic">Challenge.</span>
+                    <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-[0.9]">
+                        Rise to the <span className="text-primary">Challenge.</span>
                     </h1>
-                    <p className="text-lg text-muted-foreground font-medium max-w-xl">
-                        Join epic community quests, push your limits, and climb the global leaderboards with thousands of others.
+                    <p className="text-lg text-muted-foreground/60 font-medium max-w-xl leading-relaxed">
+                        Join epic community quests, push your limits, and climb the global leaderboards with thousands of professionals.
                     </p>
-                    <div className="flex flex-wrap items-center gap-4 justify-center md:justify-start">
-                        <Button className="h-14 px-8 rounded-2xl font-black text-lg gap-2 shadow-xl shadow-primary/20 transition-transform hover:scale-105">
-                            <Plus className="h-5 w-5" /> Create Challenge
+                    <div className="flex flex-wrap items-center gap-6 justify-center md:justify-start pt-4">
+                        <Button className="h-16 px-10 rounded-xl bg-primary text-primary-foreground font-black uppercase tracking-[0.2em] text-[10px] shadow-2xl shadow-primary/20 transition-all hover:scale-[1.02] active:scale-[0.98]">
+                            <Plus className="h-5 w-5 mr-1" /> Create Challenge
                         </Button>
-                        <div className="flex -space-x-3 items-center">
+                        <div className="flex -space-x-4 items-center">
                             {[1, 2, 3, 4].map(i => (
-                                <div key={i} className="h-10 w-10 rounded-full border-4 border-card bg-muted flex items-center justify-center text-[10px] overflow-hidden">
+                                <div key={i} className="h-12 w-12 rounded-full border-4 border-card bg-secondary flex items-center justify-center overflow-hidden shadow-lg">
                                     <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i + 10}`} alt="user" />
                                 </div>
                             ))}
-                            <div className="pl-6 text-sm font-bold text-muted-foreground">+2.4k active</div>
+                            <div className="pl-8 text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground opacity-40">+2.4k active</div>
                         </div>
                     </div>
                 </div>
-
-                <div className="relative w-full md:w-1/3 flex justify-center">
+ 
+                <div className="relative w-full md:w-1/3 flex justify-center py-10">
                     <motion.div
-                        animate={{ rotate: [0, 5, -5, 0], y: [0, -10, 0] }}
-                        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                        className="text-[10rem] md:text-[12rem] filter drop-shadow-2xl select-none"
+                        animate={{ rotate: [0, 5, -5, 0], y: [0, -15, 0] }}
+                        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+                        className="text-[12rem] md:text-[15rem] filter drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] select-none opacity-80"
                     >
                         🏆
                     </motion.div>
                 </div>
             </div>
-
+ 
             {/* Search and Grid Section */}
-            <div className="space-y-8">
-                <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-                    <h2 className="text-3xl font-black tracking-tight flex items-center gap-3">
+            <div className="space-y-12">
+                <div className="flex flex-col md:flex-row items-center justify-between gap-10">
+                    <h2 className="text-4xl font-black tracking-tighter flex items-center gap-4">
                         Active Quests
-                        <span className="text-sm font-bold text-muted-foreground bg-muted px-3 py-1 rounded-full">{filteredChallenges.length} Total</span>
+                        <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] bg-secondary/50 border border-white/5 px-4 py-2 rounded-lg opacity-40">{filteredChallenges.length} Total</span>
                     </h2>
-                    <div className="relative w-full md:w-96 group">
-                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                    <div className="relative w-full md:w-[450px] group">
+                        <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors opacity-30 group-focus-within:opacity-100" />
                         <input
                             type="text"
                             placeholder="Explore quests by name..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="h-14 w-full bg-card border-2 border-border focus:border-primary/30 rounded-2xl pl-12 pr-6 font-bold outline-none transition-all shadow-sm group-hover:border-primary/10"
+                            className="h-16 w-full bg-secondary/30 border border-white/10 focus:border-primary/40 rounded-2xl pl-16 pr-8 font-black tracking-tight text-foreground outline-none transition-all shadow-inner placeholder:text-muted-foreground/30 placeholder:uppercase placeholder:text-[10px] placeholder:tracking-[0.2em]"
                         />
                     </div>
                 </div>

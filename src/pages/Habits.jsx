@@ -12,15 +12,15 @@ export default function Habits() {
         <div className="p-4 md:p-8 max-w-7xl mx-auto flex flex-col lg:flex-row gap-8 min-h-screen">
 
             {/* Left Column - Habit Grid */}
-            <div className="flex-1 space-y-8">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex-1 space-y-10">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pb-6 border-b border-white/5">
                     <div>
-                        <h1 className="text-4xl font-extrabold tracking-tight text-foreground">Your Habits</h1>
-                        <p className="text-muted-foreground mt-1 font-medium">Manage and track your daily system for success.</p>
+                        <h1 className="text-4xl font-black tracking-tighter text-foreground">Your Habits</h1>
+                        <p className="text-muted-foreground mt-2 font-medium text-sm opacity-60">Manage your daily systems and professional growth.</p>
                     </div>
                     <button
                         onClick={() => setModalOpen(true)}
-                        className="px-6 py-3 bg-primary text-primary-foreground rounded-2xl font-bold shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all active:scale-95 whitespace-nowrap"
+                        className="px-8 py-3.5 bg-primary text-primary-foreground rounded-xl font-black uppercase tracking-widest text-[10px] shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all whitespace-nowrap"
                     >
                         + New Habit
                     </button>
@@ -33,9 +33,10 @@ export default function Habits() {
                         ))}
                     </div>
                 ) : query.data?.length === 0 ? (
-                    <div className="border-2 border-dashed border-border rounded-3xl p-12 text-center text-muted-foreground bg-card/50">
-                        <p className="text-lg font-bold">No habits yet.</p>
-                        <p className="text-sm">Click + New Habit or use HabiTAI to build a plan.</p>
+                    <div className="bg-secondary/10 border border-white/5 rounded-[2rem] p-16 text-center text-muted-foreground transition-all">
+                        <div className="w-16 h-16 bg-secondary/50 rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl border border-white/5 opacity-50">🌱</div>
+                        <h3 className="text-xl font-black tracking-tighter text-foreground mb-2">No active habits</h3>
+                        <p className="text-sm font-medium opacity-60 max-w-xs mx-auto mb-8">Click the button above or consult HabiTAI to start your journey.</p>
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">

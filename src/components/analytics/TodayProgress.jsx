@@ -13,13 +13,11 @@ const TodayProgress = React.memo(({ habitsCount, completedCount }) => {
     else if (percentage >= 50) message = "Halfway there! Keep going.";
 
     return (
-        <div className="bg-card border rounded-3xl p-6 md:p-8 flex flex-col sm:flex-row items-center gap-6 md:gap-8 shadow-sm min-h-[140px] w-full transition-all duration-300">
-            <div className="relative w-44 h-44 flex items-center justify-center shrink-0">
-                {/* Background circle */}
+        <div className="bg-card border border-white/5 rounded-[2rem] p-10 flex flex-col sm:flex-row items-center gap-10 shadow-2xl shadow-black/40 transition-all duration-300">
+            <div className="relative w-40 h-40 flex items-center justify-center shrink-0">
                 <svg className="w-full h-full transform -rotate-90" viewBox="0 0 200 200">
-                    <circle cx="100" cy="100" r={radius} stroke="currentColor" strokeWidth="12" fill="transparent" className="text-muted" />
-                    {/* Progress circle */}
-                    <circle cx="100" cy="100" r={radius} stroke="currentColor" strokeWidth="12" fill="transparent"
+                    <circle cx="100" cy="100" r={radius} stroke="currentColor" strokeWidth="8" fill="transparent" className="text-secondary/50" />
+                    <circle cx="100" cy="100" r={radius} stroke="currentColor" strokeWidth="8" fill="transparent"
                         strokeDasharray={circumference}
                         strokeDashoffset={strokeDashoffset}
                         className="text-primary transition-all duration-1000 ease-out"
@@ -27,16 +25,19 @@ const TodayProgress = React.memo(({ habitsCount, completedCount }) => {
                     />
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center flex-col">
-                    <span className="text-3xl font-bold">{percentage}%</span>
+                    <span className="text-4xl font-black tracking-tighter">{percentage}%</span>
                 </div>
             </div>
-
+ 
             <div>
-                <h3 className="text-lg font-bold">Today's Progress</h3>
-                <p className="text-muted-foreground mt-1">
-                    {completedCount} of {habitsCount} habits completed
+                <h3 className="text-xl font-black tracking-tighter">Daily Progress</h3>
+                <p className="text-sm text-muted-foreground mt-2 font-medium opacity-80">
+                    {completedCount} of {habitsCount} habits completed today.
                 </p>
-                <p className="text-sm text-primary font-medium mt-2">{message}</p>
+                <div className="mt-6 flex items-center gap-2">
+                    <div className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+                    <p className="text-[10px] text-primary font-black uppercase tracking-[0.2em]">{message}</p>
+                </div>
             </div>
         </div>
     );

@@ -39,18 +39,18 @@ export default function Profile() {
     };
 
     return (
-        <div className="p-4 md:p-8 max-w-4xl mx-auto min-h-[calc(100vh-4rem)] space-y-8 pb-12">
-            <header className="relative bg-card border border-border rounded-[40px] p-10 shadow-xl shadow-primary/5 overflow-hidden group">
+        <div className="p-4 md:p-8 max-w-4xl mx-auto min-h-[calc(100vh-4rem)] space-y-12 pb-20">
+            <header className="relative bg-card border border-white/5 rounded-[3.5rem] p-12 md:p-16 shadow-2xl shadow-black/80 overflow-hidden group">
                 {/* Visual Background Decoration */}
-                <div className="absolute top-0 right-0 w-64 h-64 bg-muted rounded-full -mr-32 -mt-32 blur-3xl" />
-                <div className="absolute bottom-0 left-0 w-32 h-32 bg-muted rounded-full -ml-16 -mb-16 blur-2xl" />
+                <div className="absolute top-0 right-0 w-80 h-80 bg-primary/5 rounded-full -mr-32 -mt-32 blur-[100px]" />
+                <div className="absolute bottom-0 left-0 w-48 h-48 bg-primary/5 rounded-full -ml-16 -mb-16 blur-[80px]" />
 
                 <div className="relative flex flex-col items-center sm:flex-row gap-8">
                     {/* Avatar Customization Section */}
                     <div className="relative group/avatar">
-                        <Avatar className="w-40 h-40 ring-8 ring-muted shadow-2xl transition-all duration-500 group-hover/avatar:scale-105 group-hover/avatar:rotate-2">
-                            <AvatarImage src={currentAvatarUrl} alt={username} />
-                            <AvatarFallback className="text-4xl font-black bg-muted text-foreground uppercase">
+                        <Avatar className="w-48 h-48 ring-[12px] ring-secondary/50 shadow-2xl transition-all duration-700 group-hover/avatar:scale-[1.02] group-hover/avatar:rotate-1">
+                            <AvatarImage src={currentAvatarUrl} alt={username} className="object-cover" />
+                            <AvatarFallback className="text-5xl font-black bg-secondary text-foreground uppercase tracking-tighter">
                                 {username.charAt(0)}
                             </AvatarFallback>
                         </Avatar>
@@ -61,9 +61,9 @@ export default function Profile() {
                             whileHover={{ scale: 1.1 }}
                             animate={{ opacity: 1, scale: 1 }}
                             onClick={() => setIsEditingAvatar(!isEditingAvatar)}
-                            className="absolute bottom-2 right-2 p-3 bg-primary text-primary-foreground rounded-2xl shadow-xl opacity-0 group-hover/avatar:opacity-100 transition-all duration-300 z-10 border-4 border-card"
+                            className="absolute bottom-4 right-4 p-4 bg-primary text-primary-foreground rounded-2xl shadow-2xl opacity-0 group-hover/avatar:opacity-100 transition-all duration-500 z-10 border-[6px] border-card"
                         >
-                            <Edit className="w-4 h-4" />
+                            <Edit className="w-5 h-5" />
                         </motion.button>
 
                         {/* Updating Overlay */}
@@ -78,27 +78,27 @@ export default function Profile() {
                         )}
                     </div>
 
-                    <div className="text-center sm:text-left flex-1">
-                        <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-2">
-                            <h2 className="text-4xl font-black text-foreground tracking-tight">@{username}</h2>
-                            <div className="inline-flex px-3 py-1 rounded-full bg-primary text-primary-foreground text-[10px] font-black uppercase tracking-widest shadow-lg shadow-primary/20">
-                                Rank {profile?.level || 1}
+                    <div className="text-center sm:text-left flex-1 space-y-2">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                            <h2 className="text-5xl font-black text-foreground tracking-tighter">@{username}</h2>
+                            <div className="inline-flex px-4 py-1.5 rounded-lg bg-primary text-primary-foreground text-[10px] font-black uppercase tracking-[0.2em] shadow-2xl shadow-primary/20">
+                                Level {profile?.level || 1}
                             </div>
                         </div>
-                        <p className="text-sm font-bold text-muted-foreground mb-8">{user?.email}</p>
-
-                        <div className="flex gap-10 justify-center sm:justify-start">
-                            <div className="text-center">
-                                <span className="block font-black text-3xl text-foreground">{profile?.xp || 0}</span>
-                                <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">Exp Points</span>
+                        <p className="text-sm font-black text-muted-foreground opacity-30 tracking-widest uppercase pb-6">{user?.email}</p>
+ 
+                        <div className="flex gap-12 justify-center sm:justify-start pt-4">
+                            <div className="text-center sm:text-left">
+                                <span className="block font-black text-4xl text-foreground tracking-tighter">{profile?.xp || 0}</span>
+                                <span className="text-[9px] font-black text-muted-foreground uppercase tracking-[0.25em] opacity-40">Exp Points</span>
                             </div>
-                            <div className="text-center">
-                                <span className="block font-black text-3xl text-warning">{profile?.longest_streak || 0}</span>
-                                <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">Max Streak</span>
+                            <div className="text-center sm:text-left">
+                                <span className="block font-black text-4xl text-amber-500 tracking-tighter">{profile?.longest_streak || 0}</span>
+                                <span className="text-[9px] font-black text-muted-foreground uppercase tracking-[0.25em] opacity-40">Max Streak</span>
                             </div>
-                            <div className="text-center">
-                                <span className="block font-black text-3xl text-success">{profile?.level || 1}</span>
-                                <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">Milestone</span>
+                            <div className="text-center sm:text-left">
+                                <span className="block font-black text-4xl text-emerald-500 tracking-tighter">{profile?.level || 1}</span>
+                                <span className="text-[9px] font-black text-muted-foreground uppercase tracking-[0.25em] opacity-40">Milestone</span>
                             </div>
                         </div>
                     </div>
@@ -153,18 +153,21 @@ export default function Profile() {
 
             <div className="max-w-md mx-auto">
                 {/* Account Actions */}
-                <div className="bg-card border border-border rounded-[32px] p-10 shadow-sm space-y-8">
-                    <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
-                        System & Access
+                <div className="bg-card border border-white/5 rounded-[3rem] p-12 shadow-2xl shadow-black/60 space-y-10">
+                    <h3 className="text-2xl font-black text-foreground tracking-tighter text-center">
+                        System Access
                     </h3>
-                    <div className="p-6 bg-muted/50 rounded-2xl border border-border space-y-6">
-                        <p className="text-xs font-bold text-muted-foreground text-center uppercase tracking-widest leading-relaxed">
-                            Secured session for {user?.email}
+                    <div className="p-8 bg-secondary/10 rounded-2xl border border-white/5 space-y-8 flex flex-col items-center">
+                        <div className="w-16 h-16 bg-secondary/30 rounded-2xl flex items-center justify-center border border-white/5 opacity-40">
+                            <User className="w-8 h-8 text-muted-foreground" />
+                        </div>
+                        <p className="text-[10px] font-black text-muted-foreground/30 text-center uppercase tracking-[0.25em] leading-relaxed max-w-[200px]">
+                            Secure identity session verified for persistence.
                         </p>
                         <Button
                             variant="destructive"
                             onClick={signOut}
-                            className="w-full rounded-2xl h-14 shadow-lg shadow-destructive/20 font-bold text-sm bg-destructive hover:bg-destructive/90 text-destructive-foreground transition-all active:scale-95"
+                            className="w-full rounded-xl h-14 bg-rose-500/10 border border-rose-500/20 text-rose-500 font-black uppercase tracking-[0.2em] text-[10px] hover:bg-rose-500 hover:text-white transition-all active:scale-[0.98]"
                         >
                             <LogOut className="w-4 h-4 mr-2" />
                             Terminate Session

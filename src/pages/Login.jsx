@@ -32,49 +32,53 @@ export default function Login() {
 
     return (
         <div className="flex min-h-screen w-full flex-col bg-background">
-            <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
-                <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
-                    <Link to="/" className="flex items-center gap-2">
-                        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary">
-                            <Flame className="h-4 w-4 text-primary-foreground" />
+            <header className="sticky top-0 z-50 border-b border-white/5 bg-background/70 backdrop-blur-xl">
+                <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+                    <Link to="/" className="flex items-center gap-2.5">
+                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-secondary border border-white/10 overflow-hidden">
+                            <img src="/logo.png" alt="HabitForge Logo" className="w-full h-full object-contain" />
                         </div>
-                        <span className="text-xl font-bold text-foreground">HabitForge</span>
+                        <span className="text-lg font-bold tracking-tight text-foreground">HabitForge</span>
                     </Link>
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-4">
                         <button
                             onClick={toggleTheme}
-                            className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                            className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors"
                             aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
                         >
-                            {theme === 'dark' ? <Sun className="h-5 w-5" strokeWidth={2} /> : <Moon className="h-5 w-5" strokeWidth={2} />}
+                            {theme === 'dark' ? <Sun className="h-[18px] w-[18px]" strokeWidth={2} /> : <Moon className="h-[18px] w-[18px]" strokeWidth={2} />}
                         </button>
-                        <Link to="/signup" className="text-sm font-medium text-primary hover:underline">Sign up</Link>
+                        <Link to="/signup" className="text-sm font-semibold text-primary hover:text-primary/80 transition-colors">Sign up</Link>
                     </div>
                 </div>
             </header>
-        <div className="flex flex-1 w-full items-center justify-center p-4">
-            <div className="w-full max-w-md space-y-8 rounded-xl bg-card p-8 shadow-lg">
-                <div className="text-center">
-                    <h2 className="text-3xl font-bold">Welcome Back</h2>
-                    <p className="mt-2 text-muted-foreground">Log in to HabitForge</p>
-                </div>
+ 
+            <div className="flex flex-1 w-full items-center justify-center p-6">
+                <div className="w-full max-w-md space-y-10 rounded-[2rem] bg-card border border-white/5 p-12 shadow-2xl shadow-black/40 relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-[50px] -z-10" />
+                    <div className="text-center">
+                        <h2 className="text-4xl font-black tracking-tighter">Welcome Back</h2>
+                        <p className="mt-3 text-muted-foreground font-medium text-sm opacity-60">Log in to your professional habit forge.</p>
+                    </div>
 
                 {error && <div className="rounded-md bg-destructive/15 p-3 text-sm text-destructive">{error}</div>}
-
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <div>
-                        <label className="text-sm font-medium">Email</label>
-                        <input type="email" required value={email} onChange={e => setEmail(e.target.value)}
-                            className="mt-1 block w-full rounded-md border border-input bg-background px-3 py-2 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring" />
+ 
+                <form onSubmit={handleSubmit} className="space-y-8">
+                    <div className="space-y-5">
+                        <div className="space-y-1.5">
+                            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Email Address</label>
+                            <input type="email" required value={email} onChange={e => setEmail(e.target.value)}
+                                className="block w-full rounded-xl border border-white/10 bg-secondary/30 px-4 py-3 text-foreground placeholder:text-muted-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all font-medium" />
+                        </div>
+                        <div className="space-y-1.5">
+                            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Password</label>
+                            <input type="password" required value={password} onChange={e => setPassword(e.target.value)}
+                                className="block w-full rounded-xl border border-white/10 bg-secondary/30 px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" />
+                        </div>
                     </div>
-                    <div>
-                        <label className="text-sm font-medium">Password</label>
-                        <input type="password" required value={password} onChange={e => setPassword(e.target.value)}
-                            className="mt-1 block w-full rounded-md border border-input bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-ring" />
-                    </div>
-
-                    <button type="submit" disabled={loading} className="w-full rounded-md bg-primary p-2 text-primary-foreground">
-                        {loading ? 'Logging in...' : 'Log In'}
+ 
+                    <button type="submit" disabled={loading} className="w-full rounded-xl bg-primary py-3.5 text-sm font-black uppercase tracking-widest text-primary-foreground shadow-xl shadow-primary/20 transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50">
+                        {loading ? 'Authenticating...' : 'Sign In'}
                     </button>
                 </form>
 

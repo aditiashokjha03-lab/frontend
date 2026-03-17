@@ -1,9 +1,9 @@
 export default function DifficultyPill({ difficulty }) {
     const colors = {
-        easy: 'bg-success/10 text-success border-success/30',
-        medium: 'bg-warning/10 text-warning border-warning/30',
-        hard: 'bg-warning/15 text-warning border-warning/40',
-        expert: 'bg-destructive/10 text-destructive border-destructive/30'
+        easy: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20',
+        medium: 'bg-amber-500/10 text-amber-500 border-amber-500/20',
+        hard: 'bg-orange-600/10 text-orange-600 border-orange-600/20',
+        expert: 'bg-rose-500/10 text-rose-500 border-rose-500/20'
     };
 
     return (

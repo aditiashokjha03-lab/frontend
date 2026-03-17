@@ -10,16 +10,15 @@
   <!-- Font Optimization -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
   <noscript>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   </noscript>
 
-  <!-- Critical Path CSS -->
+  <!-- Minimal Skeleton for Initial Load -->
   <style>
-    :root { --background: 0 0% 100%; --foreground: 0 0% 0%; --primary: 0 0% 0%; }
-    @media (prefers-color-scheme: dark) { :root { --background: 0 0% 0%; --foreground: 210 40% 98%; --primary: 0 0% 100%; } }
-    body { background-color: hsl(var(--background)); color: hsl(var(--foreground)); font-family: 'Inter', system-ui, sans-serif; margin: 0; padding: 0; }
+    body { font-family: 'Inter', system-ui, sans-serif; margin: 0; padding: 0; }
     .hero-placeholder { min-height: 70vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 5rem 1rem; }
     .hero-h1 { font-size: 2.25rem; font-weight: 700; max-width: 48rem; line-height: 1.2; margin: 1.5rem 0; }
     @media (min-width: 768px) { .hero-h1 { font-size: 3.75rem; } }
@@ -101,7 +100,7 @@
       </div>
     </div>
   </div>
-  <script type="module" src="/src/main.jsx"></script>
+  <script type="module" src="/src/main.jsx" fetchpriority="high"></script>
 </body>
 
 </html>

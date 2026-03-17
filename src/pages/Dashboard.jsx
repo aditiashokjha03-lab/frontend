@@ -120,30 +120,27 @@ const Dashboard = () => {
 
     return (
         <div className="container py-8 max-w-5xl mx-auto space-y-8">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pb-2 border-b border-white/5">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight text-foreground">Focus & Forge</h1>
-                    <p className="text-muted-foreground mt-1">Your habits shape your future, {username}.</p>
+                    <h1 className="text-4xl font-black tracking-tighter text-foreground">Focus & Forge</h1>
+                    <p className="text-muted-foreground mt-2 font-medium text-sm">Your habits shape your future, {username}</p>
                 </div>
-
-                <div className="flex items-center gap-2 bg-card p-1.5 rounded-xl border border-border shadow-sm">
-                    <Button variant="ghost" size="icon" onClick={handlePrevDay} className="h-8 w-8 text-muted-foreground hover:bg-muted"><ChevronLeft className="h-4 w-4" /></Button>
-                    <div className="flex items-center gap-2 px-3 font-medium text-sm text-foreground tabular-nums min-w-[120px] justify-center">
-                        <CalendarIcon className="h-3.5 w-3.5 text-muted-foreground" />
+ 
+                <div className="flex items-center gap-1 bg-secondary/30 p-1 rounded-lg border border-white/5">
+                    <Button variant="ghost" size="icon" onClick={handlePrevDay} className="h-8 w-8 text-muted-foreground hover:text-foreground hover:bg-white/5"><ChevronLeft className="h-4 w-4" /></Button>
+                    <div className="flex items-center gap-2 px-4 font-bold text-xs uppercase tracking-widest text-foreground tabular-nums min-w-[140px] justify-center">
                         {isToday(selectedDate) ? 'Today' : format(selectedDate, 'MMM d, yyyy')}
                     </div>
-                    <Button variant="ghost" size="icon" onClick={handleNextDay} className="h-8 w-8 text-muted-foreground hover:bg-muted"><ChevronRight className="h-4 w-4" /></Button>
-                    {!isToday(selectedDate) && (
-                        <Button variant="outline" size="sm" onClick={handleToday} className="ml-2 h-8 text-xs font-semibold border-border text-muted-foreground hover:bg-muted hidden sm:flex">Today</Button>
-                    )}
+                    <Button variant="ghost" size="icon" onClick={handleNextDay} className="h-8 w-8 text-muted-foreground hover:text-foreground hover:bg-white/5"><ChevronRight className="h-4 w-4" /></Button>
                 </div>
             </div>
 
             {profile && (
-                <div className="w-full bg-card border border-border rounded-2xl p-6 shadow-sm space-y-4">
+                <div className="w-full bg-secondary/10 border border-white/5 rounded-[2rem] p-10 space-y-6 relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-[100px] -z-10" />
                     <XPBar xp={profile.xp} level={profile.level} />
-                    <p className="text-xs text-muted-foreground leading-relaxed max-w-2xl">
-                        You earn XP by completing habits and focus sessions. Filling this bar is a visible sign of your consistency growing over time.
+                    <p className="text-sm text-muted-foreground leading-relaxed max-w-2xl font-medium opacity-80">
+                        You earn XP by completing habits and focus sessions. This bar represents your professional consistency and growth.
                     </p>
                 </div>
             )}
@@ -158,21 +155,21 @@ const Dashboard = () => {
                     />
                 </div>
 
-                <div className="md:col-span-2 bg-card border border-border rounded-3xl p-8 shadow-sm min-h-[500px]">
-                    <div className="flex items-center justify-between mb-8">
-                        <h2 className="text-xl font-bold text-foreground flex items-center gap-2.5">
+                <div className="md:col-span-2 bg-card border border-white/5 rounded-[2rem] p-10 min-h-[500px] shadow-2xl shadow-black/20">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 items-center justify-between mb-10 gap-6">
+                        <h2 className="text-2xl font-black tracking-tighter text-foreground flex items-center gap-3">
                             Daily Checklist
-                            <span className="text-xs font-semibold text-muted-foreground bg-muted px-2.5 py-1 rounded-full">
+                            <span className="text-[10px] font-black tracking-[0.2em] uppercase text-muted-foreground bg-secondary/50 px-3 py-1 rounded-full border border-white/5">
                                 {completedCount}/{totalCount}
                             </span>
                         </h2>
-
-                        <div className="flex flex-wrap gap-1.5">
+ 
+                        <div className="flex flex-wrap gap-2 sm:justify-end">
                             {categories.map(cat => (
                                 <button
                                     key={cat}
                                     onClick={() => setSelectedCategory(cat)}
-                                    className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all duration-200 ${selectedCategory === cat ? 'bg-primary text-primary-foreground border-primary shadow-sm' : 'bg-card text-muted-foreground border-border hover:bg-muted'}`}
+                                    className={`px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest border transition-all duration-300 ${selectedCategory === cat ? 'bg-primary text-primary-foreground border-primary' : 'bg-secondary/30 text-muted-foreground border-white/5 hover:bg-secondary/50 hover:text-foreground'}`}
                                 >
                                     {cat}
                                 </button>

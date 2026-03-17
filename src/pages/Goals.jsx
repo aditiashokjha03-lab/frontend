@@ -118,37 +118,38 @@ export default function Goals() {
 
     return (
         <div className="p-4 md:p-8 max-w-7xl mx-auto min-h-screen space-y-8 pb-20">
-            <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div className="space-y-2">
-                    <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">
+            <header className="flex flex-col md:flex-row md:items-center justify-between gap-8 pb-10 border-b border-white/5">
+                <div className="space-y-3">
+                    <h1 className="text-4xl font-black tracking-tighter lg:text-5xl text-foreground">
                         My Goals
                     </h1>
-                    <p className="text-muted-foreground text-lg italic">
-                        Set long-term targets and track your journey to success.
+                    <p className="text-muted-foreground text-sm font-medium opacity-60 max-w-xl">
+                        Design your long-term objectives and track your evolution to mastery. Every milestone counts towards your legacy.
                     </p>
                 </div>
                 <Button
                     onClick={() => setIsAddOpen(true)}
-                    className="w-full md:w-auto rounded-xl h-12 px-6 shadow-lg shadow-primary/20"
+                    className="w-full md:w-auto rounded-xl bg-primary text-primary-foreground h-14 px-8 font-black uppercase tracking-[0.2em] text-[10px] shadow-2xl shadow-primary/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
                 >
-                    <Plus className="w-5 h-5 mr-2" />
-                    Add New Goal
+                    <Plus className="w-5 h-5 mr-1" />
+                    New Objective
                 </Button>
             </header>
 
             {!goals?.length ? (
-                <div className="flex flex-col items-center justify-center py-20 bg-card/50 border-2 border-dashed rounded-3xl space-y-6">
-                    <div className="p-6 bg-primary/10 rounded-full">
+                <div className="flex flex-col items-center justify-center py-24 bg-secondary/10 border border-white/5 rounded-[3.5rem] space-y-8 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-48 h-48 bg-primary/5 blur-[80px] -z-10" />
+                    <div className="p-8 bg-secondary/50 rounded-3xl border border-white/5 opacity-40">
                         <Target className="w-12 h-12 text-primary" />
                     </div>
-                    <div className="text-center">
-                        <h3 className="text-xl font-bold">No goals set yet</h3>
-                        <p className="text-muted-foreground mt-2 max-w-xs">
-                            Start your transformation by defining your first long-term objective.
+                    <div className="text-center space-y-2">
+                        <h3 className="text-2xl font-black tracking-tighter">No objectives defined</h3>
+                        <p className="text-sm text-muted-foreground font-medium opacity-60 max-w-xs mx-auto">
+                            Start your professional transformation by defining your first long-term objective.
                         </p>
                     </div>
-                    <Button variant="outline" onClick={() => setIsAddOpen(true)}>
-                        Create First Goal
+                    <Button onClick={() => setIsAddOpen(true)} className="h-14 px-10 rounded-xl bg-primary text-primary-foreground font-black uppercase tracking-[0.2em] text-[10px]">
+                        Initialize First Goal
                     </Button>
                 </div>
             ) : (
@@ -160,85 +161,86 @@ export default function Goals() {
                 >
                     {goals.map((goal) => {
                         const progress = Math.min((goal.current_value / goal.target_value) * 100, 100);
-
+ 
                         return (
                             <motion.div
                                 key={goal.id}
                                 variants={item}
-                                className="group bg-card/50 backdrop-blur-sm border-2 rounded-2xl p-6 transition-all duration-300 hover:border-primary/50 hover:shadow-xl shadow-sm flex flex-col"
+                                className="group bg-card border border-white/5 rounded-[2.5rem] p-10 transition-all duration-500 hover:border-white/10 shadow-2xl shadow-black/40 flex flex-col relative overflow-hidden"
                             >
-                                <div className="flex justify-between items-start mb-4">
-                                    <div className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${goal.status === 'completed' ? 'bg-success/10 text-success' :
-                                            goal.status === 'failed' ? 'bg-destructive/10 text-destructive' :
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-[60px] -z-10 group-hover:bg-primary/10 transition-all duration-500" />
+                                <div className="flex justify-between items-start mb-8">
+                                    <div className={`px-4 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-[0.2em] border border-white/5 ${goal.status === 'completed' ? 'bg-emerald-500/10 text-emerald-500' :
+                                            goal.status === 'failed' ? 'bg-rose-500/10 text-rose-500' :
                                                 'bg-primary/10 text-primary'
                                         }`}>
                                         {goal.status}
                                     </div>
                                     <button
                                         onClick={() => deleteGoal(goal.id)}
-                                        className="p-2 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-lg transition-colors"
+                                        className="p-2 text-muted-foreground hover:text-rose-500 hover:bg-rose-500/10 rounded-xl transition-all opacity-20 hover:opacity-100"
                                     >
                                         <Trash2 className="w-4 h-4" />
                                     </button>
                                 </div>
-
-                                <h3 className="text-xl font-bold truncate group-hover:text-primary transition-colors">
+ 
+                                <h3 className="text-2xl font-black tracking-tighter truncate group-hover:text-primary transition-colors">
                                     {goal.title}
                                 </h3>
-                                <p className="text-sm text-muted-foreground mt-2 mb-6 line-clamp-2 italic">
+                                <p className="text-[10px] font-black uppercase tracking-[0.1em] text-muted-foreground/40 mt-3 mb-8 line-clamp-2 leading-relaxed">
                                     {goal.description}
                                 </p>
-
-                                <div className="mt-auto space-y-4">
-                                    <div className="space-y-2">
-                                        <div className="flex justify-between text-xs font-medium">
-                                            <span>Progress</span>
-                                            <span className="text-primary font-bold">{Math.round(progress)}%</span>
+ 
+                                <div className="mt-auto space-y-6">
+                                    <div className="space-y-3">
+                                        <div className="flex justify-between text-[10px] font-black uppercase tracking-[0.2em] opacity-40">
+                                            <span>Evolution</span>
+                                            <span className="text-primary opacity-100">{Math.round(progress)}%</span>
                                         </div>
-                                        <div className="h-2.5 bg-muted rounded-full overflow-hidden">
+                                        <div className="h-1.5 bg-secondary/50 rounded-full overflow-hidden border border-white/5">
                                             <motion.div
                                                 initial={{ width: 0 }}
                                                 animate={{ width: `${progress}%` }}
-                                                className={`h-full rounded-full ${goal.status === 'completed' ? 'bg-success' : 'bg-primary'
+                                                className={`h-full shadow-[0_0_15px_rgba(37,99,235,0.3)] ${goal.status === 'completed' ? 'bg-emerald-500' : 'bg-primary'
                                                     }`}
                                             />
                                         </div>
-                                        <div className="flex justify-between text-[11px] text-muted-foreground">
+                                        <div className="flex justify-between text-[9px] font-black uppercase tracking-widest opacity-30 mt-2">
                                             <span>{goal.current_value} {goal.unit}</span>
-                                            <span>Goal: {goal.target_value} {goal.unit}</span>
+                                            <span>Target: {goal.target_value} {goal.unit}</span>
                                         </div>
                                     </div>
-
-                                    <div className="flex items-center gap-2 text-[11px] text-muted-foreground pt-2 border-t border-border/40">
-                                        <Calendar className="w-3 h-3" />
-                                        <span>Target: {new Date(goal.end_date).toLocaleDateString()}</span>
+ 
+                                    <div className="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest opacity-30 pt-6 border-t border-white/5">
+                                        <Calendar className="w-3.5 h-3.5" />
+                                        <span>Deadline: {new Date(goal.end_date).toLocaleDateString()}</span>
                                     </div>
-
+ 
                                     {goal.status === 'active' && (
                                         <Button
                                             variant="secondary"
-                                            className="w-full mt-2"
+                                            className="w-full mt-4 h-12 rounded-xl bg-secondary/50 border border-white/5 font-black uppercase tracking-[0.2em] text-[9px] hover:bg-secondary transition-all active:scale-[0.98]"
                                             onClick={() => {
                                                 setSelectedGoal(goal);
                                                 setIsUpdateOpen(true);
                                             }}
                                         >
                                             <TrendingUp className="w-4 h-4 mr-2" />
-                                            Update Progress
+                                            Record Progress
                                         </Button>
                                     )}
-
+ 
                                     {goal.status === 'completed' && (
-                                        <div className="flex items-center justify-center gap-2 py-2 bg-success/10 text-success rounded-lg text-sm font-bold mt-2">
+                                        <div className="flex items-center justify-center gap-2 py-3 bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] mt-4">
                                             <CheckCircle2 className="w-4 h-4" />
-                                            Goal Achieved
+                                            Mission Accomplished
                                         </div>
                                     )}
-
+ 
                                     {goal.status === 'failed' && (
-                                        <div className="flex items-center justify-center gap-2 py-2 bg-destructive/10 text-destructive rounded-lg text-sm font-bold mt-2">
+                                        <div className="flex items-center justify-center gap-2 py-3 bg-rose-500/10 text-rose-500 border border-rose-500/20 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] mt-4">
                                             <AlertCircle className="w-4 h-4" />
-                                            Goal Missed
+                                            Mission Terminated
                                         </div>
                                     )}
                                 </div>
