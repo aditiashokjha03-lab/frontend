@@ -14,6 +14,7 @@ const NavLinks = ({ links, mobile = false, closeMenu }) => (
                 key={link.to}
                 to={link.to}
                 onClick={mobile ? closeMenu : undefined}
+                aria-label={`Navigate to ${link.label}`}
                 className={({ isActive }) =>
                     `flex items-center gap-3 px-4 py-2.5 rounded-xl font-medium transition-all duration-200 ${isActive
                         ? 'bg-primary text-primary-foreground shadow-sm'
@@ -21,7 +22,7 @@ const NavLinks = ({ links, mobile = false, closeMenu }) => (
                     }`
                 }
             >
-                <link.icon size={20} />
+                <link.icon size={20} aria-hidden="true" />
                 {link.label}
             </NavLink>
         ))}
@@ -32,18 +33,20 @@ const SidebarFooter = ({ theme, toggleTheme, signOut, profile, user, closeMenu }
     <div className="p-4 border-t space-y-3">
         <button
             onClick={toggleTheme}
+            aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
             className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-muted-foreground bg-muted/50 hover:bg-muted rounded-xl border border-border transition-all duration-200"
         >
-            {theme === 'dark' ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
+            {theme === 'dark' ? <Sun className="h-3.5 w-3.5" aria-hidden="true" /> : <Moon className="h-3.5 w-3.5" aria-hidden="true" />}
             {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
         </button>
 
         <button
             type="button"
             onClick={signOut}
+            aria-label="Sign out of your account"
             className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-destructive bg-destructive/10 hover:bg-destructive/20 rounded-xl border border-destructive/30 transition-all duration-200"
         >
-            <LogOut className="h-3.5 w-3.5" />
+            <LogOut className="h-3.5 w-3.5" aria-hidden="true" />
             Sign out
         </button>
 
@@ -83,9 +86,9 @@ const Navbar = () => {
             {/* Desktop Vertical Nav */}
             <nav className="hidden md:flex flex-col w-64 bg-card border-r border-border h-screen fixed left-0 top-0 overflow-y-auto z-40 shadow-sm">
                 <div className="p-8 pb-4">
-                    <Link to="/dashboard" className="flex items-center gap-3 font-semibold text-lg tracking-tight text-foreground">
+                    <Link to="/dashboard" aria-label="HabitForge Dashboard" className="flex items-center gap-3 font-semibold text-lg tracking-tight text-foreground">
                         <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-muted p-1 shadow-sm overflow-hidden">
-                            <img src="/logo.png" alt="HabitForge Logo" className="w-full h-full object-contain" />
+                            <img src="/logo.png" alt="HabitForge Logo" className="w-full h-full object-contain" loading="lazy" />
                         </div>
                         HabitForge
                     </Link>
