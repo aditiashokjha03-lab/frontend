@@ -36,7 +36,7 @@ export default function LandingPage() {
                 <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
                     <div className="flex items-center gap-2">
                         <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary">
-                            <Flame className="h-4 w-4 text-primary-foreground" />
+                            <Flame className="h-4 w-4 text-primary-foreground" aria-hidden="true" />
                         </div>
                         <span className="text-xl font-bold text-foreground">HabitForge</span>
                     </div>
@@ -62,8 +62,8 @@ export default function LandingPage() {
             </header>
 
             {/* Hero Section */}
-            <main id="main-content">
-                <section className="mx-auto flex max-w-6xl flex-col items-center gap-8 px-4 py-20 text-center md:py-28" aria-labelledby="hero-heading">
+            <main id="main-content" className="flex-1">
+                <section className="mx-auto flex min-h-[70vh] max-w-6xl flex-col items-center justify-center gap-8 px-4 py-20 text-center md:py-28" aria-labelledby="hero-heading">
                     <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm font-medium text-primary">
                         <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
                         Build habits that stick

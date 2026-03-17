@@ -37,6 +37,20 @@ export default defineConfig({
       }
     })
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+          'vendor-ui': ['lucide-react', 'framer-motion', 'clsx', 'tailwind-merge'],
+          'vendor-charts': ['recharts'],
+          'vendor-utils': ['date-fns', 'axios', 'idb-keyval'],
+        },
+      },
+    },
+    reportCompressedSize: false,
+    chunkSizeWarningLimit: 1000,
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
