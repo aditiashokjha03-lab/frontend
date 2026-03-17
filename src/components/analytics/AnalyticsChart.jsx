@@ -32,6 +32,9 @@ const AnalyticsChart = ({ data }) => {
         data && data.length > 0 ? data : [{ date: new Date().toISOString(), count: 0 }]
     , [data]);
 
+    // Prevent rendering if data is not yet available to avoid layout jumps
+    if (!data || data.length === 0) return <div className="w-full h-[320px] mt-4 bg-muted/5 rounded-3xl animate-pulse" />;
+
     return (
         <div className="w-full h-[320px] min-h-[300px] relative mt-4">
             <ResponsiveContainer width="100%" height="100%">

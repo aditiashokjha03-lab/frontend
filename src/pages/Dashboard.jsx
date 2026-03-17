@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useHabits } from '../hooks/useHabits';
 import { useLogs } from '../hooks/useLogs';
@@ -43,24 +43,30 @@ const Dashboard = () => {
     const bestStreakHabit = [...habits].sort((a, b) => (b.longest_streak || 0) - (a.longest_streak || 0))[0];
 
     const [selectedCategory, setSelectedCategory] = useState('All');
-    const categories = ['All', ...new Set(habits.map(h => h.category).filter(Boolean))];
+    const categories = useMemo(() => ['All', ...new Set(habits.map(h => h.category).filter(Boolean))], [habits]);
 
-    const habitsForSelectedDay = selectedCategory === 'All'
-        ? habits
-        : habits.filter(h => h.category === selectedCategory);
+    const habitsForSelectedDay = useMemo(() => 
+        selectedCategory === 'All'
+            ? habits
+            : habits.filter(h => h.category === selectedCategory)
+    , [habits, selectedCategory]);
 
-    const visibleHabitIds = new Set(habitsForSelectedDay.map(h => h.id));
-    const completedCount = logs.filter(l => l.completed && visibleHabitIds.has(l.habit_id)).length;
-    const totalCount = habitsForSelectedDay.length;
+    const { completedCount, totalCount } = useMemo(() => {
+        const visibleHabitIds = new Set(habitsForSelectedDay.map(h => h.id));
+        return {
+            completedCount: logs.filter(l => l.completed && visibleHabitIds.has(l.habit_id)).length,
+            totalCount: habitsForSelectedDay.length
+        };
+    }, [logs, habitsForSelectedDay]);
 
-    const handlePrevDay = () => setSelectedDate(subDays(selectedDate, 1));
-    const handleNextDay = () => setSelectedDate(addDays(selectedDate, 1));
-    const handleToday = () => setSelectedDate(new Date());
+    const handlePrevDay = useCallback(() => setSelectedDate(prev => subDays(prev, 1)), []);
+    const handleNextDay = useCallback(() => setSelectedDate(prev => addDays(prev, 1)), []);
+    const handleToday = useCallback(() => setSelectedDate(new Date()), []);
 
-    const getLogForHabit = (habitId) => logs.find(l => l.habit_id === habitId);
+    const getLogForHabit = useCallback((habitId) => logs.find(l => l.habit_id === habitId), [logs]);
 
-    const onToggle = async (habitId, date, status) => {
-        mutation.mutate({ habit_id: habitId, log_date: date, ...status }, {
+    const onToggle = useCallback((habitId, status) => {
+        mutation.mutate({ habit_id: habitId, log_date: dateStr, ...status }, {
             onSuccess: () => {
                 if (profile?.id) {
                     fetchProfile(profile.id);
@@ -73,7 +79,7 @@ const Dashboard = () => {
                 console.error('Dashboard: upsertLog onError:', err);
             }
         });
-    };
+    }, [mutation, dateStr, profile?.id, user?.id, fetchProfile, checkAndUnlockBadges]);
 
     useEffect(() => {
         if (!profile) return;
@@ -195,7 +201,7 @@ const Dashboard = () => {
                                             habit={habit}
                                             log={getLogForHabit(habit.id)}
                                             date={dateStr}
-                                            onToggle={(habitId, status) => onToggle(habitId, dateStr, status)}
+                                            onToggle={onToggle}
                                         />
                                     </motion.div>
                                 ))}
