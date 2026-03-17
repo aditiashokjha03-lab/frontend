@@ -35,8 +35,8 @@ export default function LandingPage() {
             <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
                 <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
                     <div className="flex items-center gap-2">
-                        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary">
-                            <Flame className="h-4 w-4 text-primary-foreground" aria-hidden="true" />
+                        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-muted overflow-hidden">
+                            <img src="/logo.png" alt="HabitForge Logo" className="w-full h-full object-contain" />
                         </div>
                         <span className="text-xl font-bold text-foreground">HabitForge</span>
                     </div>
@@ -52,9 +52,9 @@ export default function LandingPage() {
                             <Link to="/login">Sign in</Link>
                         </Button>
                         <Button asChild>
-                            <Link to="/signup">
+                            <Link to="/signup" className="flex items-center">
                                 Get started
-                                <ArrowRight className="ml-1 h-4 w-4" />
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="ml-1"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
                             </Link>
                         </Button>
                     </div>
@@ -65,7 +65,20 @@ export default function LandingPage() {
             <main id="main-content" className="flex-1">
                 <section className="mx-auto flex min-h-[70vh] max-w-6xl flex-col items-center justify-center gap-8 px-4 py-20 text-center md:py-28" aria-labelledby="hero-heading">
                     <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm font-medium text-primary">
-                        <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
+                        <svg 
+                            width="14" 
+                            height="14" 
+                            viewBox="0 0 24 24" 
+                            fill="none" 
+                            stroke="currentColor" 
+                            strokeWidth="2.5" 
+                            strokeLinecap="round" 
+                            strokeLinejoin="round" 
+                            aria-hidden="true"
+                        >
+                            <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+                            <path d="M5 3v4" /><path d="M3 5h4" /><path d="M21 17v4" /><path d="M19 19h4" />
+                        </svg>
                         Build habits that stick
                     </div>
                     <h1 id="hero-heading" className="max-w-3xl text-balance text-4xl font-bold leading-tight tracking-tight text-foreground md:text-6xl md:leading-tight">
@@ -77,9 +90,9 @@ export default function LandingPage() {
                     </p>
                     <div className="flex items-center gap-4">
                         <Button size="lg" asChild aria-label="Start for free and sign up">
-                            <Link to="/signup">
+                            <Link to="/signup" className="flex items-center">
                                 Start for free
-                                <ArrowRight className="ml-1 h-4 w-4" aria-hidden="true" />
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="ml-1"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
                             </Link>
                         </Button>
                         <Button size="lg" variant="outline" asChild aria-label="Sign in to your account">
@@ -155,8 +168,8 @@ export default function LandingPage() {
             <footer className="border-t border-border bg-background">
                 <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-6">
                     <div className="flex items-center gap-2">
-                        <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary">
-                            <Flame className="h-3.5 w-3.5 text-primary-foreground" />
+                        <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-muted overflow-hidden border border-border">
+                            <img src="/logo.png" alt="HabitForge Logo" className="w-full h-full object-contain" />
                         </div>
                         <span className="text-sm font-semibold text-foreground">HabitForge</span>
                     </div>

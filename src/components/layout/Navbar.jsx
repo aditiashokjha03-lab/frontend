@@ -118,8 +118,8 @@ const Navbar = () => {
             {/* Mobile Header (with hamburger) */}
             <div className="md:hidden flex items-center justify-between p-4 bg-card border-b sticky top-0 z-40">
                 <Link to="/dashboard" className="flex items-center gap-2 font-bold text-xl tracking-tight">
-                    <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-foreground">
-                        <Flame className="h-3.5 w-3.5 text-background" />
+                    <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-muted overflow-hidden border border-border">
+                        <img src="/logo.png" alt="HabitForge Logo" className="w-full h-full object-contain" />
                     </div>
                     HabitForge
                 </Link>
@@ -161,8 +161,8 @@ const Navbar = () => {
                         >
                             <div className="px-6 pb-4">
                                 <Link to="/dashboard" onClick={closeMenu} className="flex items-center gap-2.5 font-bold text-xl tracking-tight">
-                                    <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-foreground">
-                                        <Flame className="h-4 w-4 text-background" />
+                                    <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-muted overflow-hidden border border-border">
+                                        <img src="/logo.png" alt="HabitForge Logo" className="w-full h-full object-contain" />
                                     </div>
                                     HabitForge
                                 </Link>

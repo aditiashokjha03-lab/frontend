@@ -8,12 +8,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- Font Optimization -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" as="style"
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"
-    media="print" onload="this.media='all'">
+  <!-- Critical Path CSS -->
+  <style>
+    :root { --background: 0 0% 100%; --foreground: 0 0% 0%; --primary: 0 0% 0%; }
+    @media (prefers-color-scheme: dark) { :root { --background: 0 0% 0%; --foreground: 210 40% 98%; --primary: 0 0% 100%; } }
+    body { background-color: hsl(var(--background)); color: hsl(var(--foreground)); font-family: 'Inter', system-ui, sans-serif; margin: 0; padding: 0; }
+    .hero-placeholder { min-height: 70vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 5rem 1rem; }
+    .hero-h1 { font-size: 2.25rem; font-weight: 700; max-width: 48rem; line-height: 1.2; margin: 1.5rem 0; }
+    @media (min-width: 768px) { .hero-h1 { font-size: 3.75rem; } }
+  </style>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- SEO Metadata -->
   <title>HabitForge | Build Better Habits & Track Your Progress</title>
@@ -67,7 +72,30 @@
 </head>
 
 <body>
-  <div id="root"></div>
+  <div id="root">
+    <!-- Instant Header Skeleton -->
+    <div style="height: 64px; border-bottom: 1px solid hsl(var(--foreground) / 0.1); display: flex; align-items: center; justify-content: space-between; padding: 0 1rem;">
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <div style="height: 36px; width: 36px; background: hsl(var(--primary)); border-radius: 0.75rem;"></div>
+        <div style="height: 1.25rem; width: 6rem; background: hsl(var(--foreground) / 0.1); border-radius: 4px;"></div>
+      </div>
+      <div style="display: flex; gap: 0.5rem;">
+        <div style="height: 36px; width: 4rem; background: hsl(var(--foreground) / 0.05); border-radius: 0.5rem;"></div>
+        <div style="height: 36px; width: 6rem; background: hsl(var(--primary)); border-radius: 0.5rem;"></div>
+      </div>
+    </div>
+    
+    <!-- Instant Hero Skeleton -->
+    <div class="hero-placeholder">
+      <div style="height: 2rem; width: 12rem; background: hsl(var(--primary) / 0.05); border: 1px solid hsl(var(--primary) / 0.1); border-radius: 9999px; margin-bottom: 2rem;"></div>
+      <h1 class="hero-h1">Small steps lead to <span style="color: hsl(var(--primary));">big transformations</span></h1>
+      <p style="max-width: 32rem; color: hsl(var(--foreground) / 0.6); line-height: 1.6; margin: 0 auto;">HabitForge is a professional habit tracker designed to help you build powerful streaks and stay motivated.</p>
+      <div style="display: flex; gap: 1rem; margin-top: 2.5rem; justify-content: center;">
+        <div style="height: 3.5rem; width: 11rem; background: hsl(var(--primary)); border-radius: 0.75rem;"></div>
+        <div style="height: 3.5rem; width: 9rem; border: 1px solid hsl(var(--foreground) / 0.1); border-radius: 0.75rem;"></div>
+      </div>
+    </div>
+  </div>
   <script type="module" src="/src/main.jsx"></script>
 </body>
 
