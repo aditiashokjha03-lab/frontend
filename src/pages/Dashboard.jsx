@@ -120,23 +120,23 @@ const Dashboard = () => {
 
     return (
         <div className="container py-8 max-w-5xl mx-auto space-y-8">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pb-2 border-b border-white/5">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pb-2 border-b border-border">
                 <div>
                     <h1 className="text-4xl font-black tracking-tighter text-foreground">Focus & Forge</h1>
                     <p className="text-muted-foreground mt-2 font-medium text-sm">Your habits shape your future, {username}</p>
                 </div>
  
-                <div className="flex items-center gap-1 bg-secondary/30 p-1 rounded-lg border border-white/5">
-                    <Button variant="ghost" size="icon" onClick={handlePrevDay} className="h-8 w-8 text-muted-foreground hover:text-foreground hover:bg-white/5"><ChevronLeft className="h-4 w-4" /></Button>
+                <div className="flex items-center gap-1 bg-secondary/30 p-1 rounded-lg border border-border">
+                    <Button variant="ghost" size="icon" onClick={handlePrevDay} className="h-8 w-8 text-muted-foreground hover:text-foreground hover:bg-muted/50"><ChevronLeft className="h-4 w-4" /></Button>
                     <div className="flex items-center gap-2 px-4 font-bold text-xs uppercase tracking-widest text-foreground tabular-nums min-w-[140px] justify-center">
                         {isToday(selectedDate) ? 'Today' : format(selectedDate, 'MMM d, yyyy')}
                     </div>
-                    <Button variant="ghost" size="icon" onClick={handleNextDay} className="h-8 w-8 text-muted-foreground hover:text-foreground hover:bg-white/5"><ChevronRight className="h-4 w-4" /></Button>
+                    <Button variant="ghost" size="icon" onClick={handleNextDay} className="h-8 w-8 text-muted-foreground hover:text-foreground hover:bg-muted/50"><ChevronRight className="h-4 w-4" /></Button>
                 </div>
             </div>
 
             {profile && (
-                <div className="w-full bg-secondary/10 border border-white/5 rounded-[2rem] p-10 space-y-6 relative overflow-hidden group">
+                <div className="w-full bg-secondary/10 border border-border rounded-[2rem] p-10 space-y-6 relative overflow-hidden group">
                     <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-[100px] -z-10" />
                     <XPBar xp={profile.xp} level={profile.level} />
                     <p className="text-sm text-muted-foreground leading-relaxed max-w-2xl font-medium opacity-80">
@@ -155,11 +155,11 @@ const Dashboard = () => {
                     />
                 </div>
 
-                <div className="md:col-span-2 bg-card border border-white/5 rounded-[2rem] p-10 min-h-[500px] shadow-2xl shadow-black/20">
+                <div className="md:col-span-2 bg-card border border-border rounded-[2rem] p-10 min-h-[500px] shadow-2xl shadow-black/5">
                     <div className="grid grid-cols-1 sm:grid-cols-2 items-center justify-between mb-10 gap-6">
                         <h2 className="text-2xl font-black tracking-tighter text-foreground flex items-center gap-3">
                             Daily Checklist
-                            <span className="text-[10px] font-black tracking-[0.2em] uppercase text-muted-foreground bg-secondary/50 px-3 py-1 rounded-full border border-white/5">
+                            <span className="text-[10px] font-black tracking-[0.2em] uppercase text-muted-foreground bg-secondary/50 px-3 py-1 rounded-full border border-border">
                                 {completedCount}/{totalCount}
                             </span>
                         </h2>
@@ -169,7 +169,7 @@ const Dashboard = () => {
                                 <button
                                     key={cat}
                                     onClick={() => setSelectedCategory(cat)}
-                                    className={`px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest border transition-all duration-300 ${selectedCategory === cat ? 'bg-primary text-primary-foreground border-primary' : 'bg-secondary/30 text-muted-foreground border-white/5 hover:bg-secondary/50 hover:text-foreground'}`}
+                                    className={`px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest border transition-all duration-300 ${selectedCategory === cat ? 'bg-primary text-primary-foreground border-primary' : 'bg-secondary/30 text-muted-foreground border-border hover:bg-secondary/50 hover:text-foreground'}`}
                                 >
                                     {cat}
                                 </button>

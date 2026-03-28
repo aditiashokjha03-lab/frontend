@@ -3,15 +3,108 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" href="/logo.png" type="image/x-icon">
+  <link rel="icon" href="/logo.png" type="image/png">
+  <link rel="apple-touch-icon" href="/logo.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HabitForge</title>
-  <script type="module" crossorigin src="/assets/index-DlRSpYkX.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-COifHeN1.css">
+
+  <!-- Font Optimization -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  </noscript>
+
+  <!-- Minimal Skeleton for Initial Load -->
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; margin: 0; padding: 0; }
+    .hero-placeholder { min-height: 70vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 5rem 1rem; }
+    .hero-h1 { font-size: 2.25rem; font-weight: 700; max-width: 48rem; line-height: 1.2; margin: 1.5rem 0; }
+    @media (min-width: 768px) { .hero-h1 { font-size: 3.75rem; } }
+  </style>
+
+  <!-- SEO Metadata -->
+  <title>HabitForge | Build Better Habits & Track Your Progress</title>
+  <meta name="description"
+    content="HabitForge is a powerful habit tracker that helps you build streaks, track progress with analytics, and stay motivated with achievements. Start your journey today." />
+  <meta name="keywords"
+    content="habit tracker, streak tracking, productivity app, daily habits, goal setting, progress analytics" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://habit-forge-example.com/" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://habit-forge-example.com/" />
+  <meta property="og:title" content="HabitForge | Build Better Habits & Track Your Progress" />
+  <meta property="og:description"
+    content="Track your daily habits, build powerful streaks, and see your progress with beautiful analytics. HabitForge makes self-improvement rewarding." />
+  <meta property="og:image" content="https://habit-forge-example.com/logo.png" />
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://habit-forge-example.com/" />
+  <meta property="twitter:title" content="HabitForge | Build Better Habits & Track Your Progress" />
+  <meta property="twitter:description"
+    content="Track your daily habits, build powerful streaks, and see your progress with beautiful analytics. HabitForge makes self-improvement rewarding." />
+  <meta property="twitter:image" content="https://habit-forge-example.com/logo.png" />
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "HabitForge",
+      "url": "https://habit-forge-example.com/",
+      "description": "HabitForge is a powerful habit tracker that helps you build streaks, track progress with analytics, and stay motivated with achievements.",
+      "applicationCategory": "HealthApplication, Productivity",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Daily Habit Tracking",
+        "Streak Tracking",
+        "Achievements & Badges",
+        "Progress Analytics",
+        "Focus Timer"
+      ]
+    }
+  </script>
+  <script type="module" crossorigin src="/assets/index-DZcL6ILj.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/vendor-react-BhMCSKyy.js">
+  <link rel="modulepreload" crossorigin href="/assets/vendor-ui-DD22vCir.js">
+  <link rel="modulepreload" crossorigin href="/assets/vendor-utils-BKVyhWa3.js">
+  <link rel="stylesheet" crossorigin href="/assets/index-CUS2pl9S.css">
 <link rel="manifest" href="/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/registerSW.js"></script></head>
 
 <body>
-  <div id="root"></div>
+  <div id="root">
+    <!-- Instant Header Skeleton -->
+    <div style="height: 64px; border-bottom: 1px solid hsl(var(--foreground) / 0.1); display: flex; align-items: center; justify-content: space-between; padding: 0 1rem;">
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <div style="height: 36px; width: 36px; background: hsl(var(--primary)); border-radius: 0.75rem;"></div>
+        <div style="height: 1.25rem; width: 6rem; background: hsl(var(--foreground) / 0.1); border-radius: 4px;"></div>
+      </div>
+      <div style="display: flex; gap: 0.5rem;">
+        <div style="height: 36px; width: 4rem; background: hsl(var(--foreground) / 0.05); border-radius: 0.5rem;"></div>
+        <div style="height: 36px; width: 6rem; background: hsl(var(--primary)); border-radius: 0.5rem;"></div>
+      </div>
+    </div>
+    
+    <!-- Instant Hero Skeleton -->
+    <div class="hero-placeholder">
+      <div style="height: 2rem; width: 12rem; background: hsl(var(--primary) / 0.05); border: 1px solid hsl(var(--primary) / 0.1); border-radius: 9999px; margin-bottom: 2rem;"></div>
+      <h1 class="hero-h1">Small steps lead to <span style="color: hsl(var(--primary));">big transformations</span></h1>
+      <p style="max-width: 32rem; color: hsl(var(--foreground) / 0.6); line-height: 1.6; margin: 0 auto;">HabitForge is a professional habit tracker designed to help you build powerful streaks and stay motivated.</p>
+      <div style="display: flex; gap: 1rem; margin-top: 2.5rem; justify-content: center;">
+        <div style="height: 3.5rem; width: 11rem; background: hsl(var(--primary)); border-radius: 0.75rem;"></div>
+        <div style="height: 3.5rem; width: 9rem; border: 1px solid hsl(var(--foreground) / 0.1); border-radius: 0.75rem;"></div>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>

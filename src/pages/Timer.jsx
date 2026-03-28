@@ -56,7 +56,7 @@ export default function Timer() {
                     </svg>
                     <div className="absolute inset-0 flex flex-col items-center justify-center">
                         <span className="text-8xl font-black text-foreground tracking-tighter tabular-nums">{mins}:{secs}</span>
-                        <div className="flex items-center gap-2 mt-4 px-4 py-1.5 bg-secondary/50 border border-white/5 rounded-lg">
+                        <div className="flex items-center gap-2 mt-4 px-4 py-1.5 bg-secondary/50 border border-border rounded-lg">
                             <div className={`w-2 h-2 rounded-full animate-pulse ${status === 'running' ? 'bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]' : 'bg-amber-500'}`} />
                             <span className="text-[9px] font-black text-muted-foreground uppercase tracking-[0.2em]">{status}</span>
                         </div>
@@ -69,7 +69,7 @@ export default function Timer() {
                         <>
                             <div className="space-y-3">
                                 <label className="text-[9px] font-black text-muted-foreground uppercase tracking-[0.25em] ml-1 opacity-40">Focus Intent</label>
-                                <select value={selectedHabit} onChange={e => setSelectedHabit(e.target.value)} className="w-full h-14 px-5 border border-white/5 rounded-2xl bg-secondary/30 text-[10px] font-black uppercase tracking-[0.1em] text-foreground outline-none focus:border-primary/40 transition-all appearance-none cursor-pointer">
+                                <select value={selectedHabit} onChange={e => setSelectedHabit(e.target.value)} className="w-full h-14 px-5 border border-border rounded-2xl bg-secondary/30 text-[10px] font-black uppercase tracking-[0.1em] text-foreground outline-none focus:border-primary/40 transition-all appearance-none cursor-pointer">
                                     <option value="">Mindful Focus Session</option>
                                     {habits.map(h => <option key={h.id} value={h.id}>{h.name.toUpperCase()}</option>)}
                                 </select>
@@ -78,15 +78,15 @@ export default function Timer() {
                             <div className="flex flex-wrap gap-3">
                                 {[5, 15, 25, 45, 60].map(m => (
                                     <button key={m} onClick={() => setDuration(m)}
-                                        className={`px-5 h-10 rounded-xl border border-white/5 text-[9px] font-black uppercase tracking-widest transition-all duration-500 ${duration === m ? 'bg-primary text-primary-foreground border-primary shadow-xl shadow-primary/20 scale-105' : 'bg-secondary/20 text-muted-foreground hover:bg-secondary/40'}`}>
+                                        className={`px-5 h-10 rounded-xl border border-border text-[9px] font-black uppercase tracking-widest transition-all duration-500 ${duration === m ? 'bg-primary text-primary-foreground border-primary shadow-xl shadow-primary/20 scale-105' : 'bg-secondary/20 text-muted-foreground hover:bg-secondary/40'}`}>
                                         {m}m
                                     </button>
                                 ))}
                             </div>
  
-                            <div className="flex items-center justify-between p-5 border border-white/5 rounded-2xl bg-secondary/20">
+                            <div className="flex items-center justify-between p-5 border border-border rounded-2xl bg-secondary/20">
                                 <div className="flex items-center gap-4 text-[9px] font-black text-muted-foreground uppercase tracking-[0.15em] opacity-60">
-                                    <input type="checkbox" checked={tickEnabled} onChange={handleMuteToggle} className="w-4 h-4 rounded border-white/10 bg-secondary/50 text-primary focus:ring-primary ring-offset-card" />
+                                    <input type="checkbox" checked={tickEnabled} onChange={handleMuteToggle} className="w-4 h-4 rounded border-border bg-secondary/50 text-primary focus:ring-primary ring-offset-card" />
                                     Aural Frequency
                                 </div>
                                 {tickEnabled && (
@@ -102,7 +102,7 @@ export default function Timer() {
                         <div className="flex flex-col w-full gap-6">
                             <div className="flex gap-4 w-full">
                                 {status === 'running' ? (
-                                    <button onClick={pauseTimer} className="flex-1 h-14 rounded-xl bg-secondary/50 border border-white/5 text-foreground font-black uppercase tracking-[0.15em] text-[10px] hover:bg-secondary transition-all active:scale-95">
+                                    <button onClick={pauseTimer} className="flex-1 h-14 rounded-xl bg-secondary/50 border border-border text-foreground font-black uppercase tracking-[0.15em] text-[10px] hover:bg-secondary transition-all active:scale-95">
                                         Suspend
                                     </button>
                                 ) : (

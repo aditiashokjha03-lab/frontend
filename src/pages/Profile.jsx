@@ -40,7 +40,7 @@ export default function Profile() {
 
     return (
         <div className="p-4 md:p-8 max-w-4xl mx-auto min-h-[calc(100vh-4rem)] space-y-12 pb-20">
-            <header className="relative bg-card border border-white/5 rounded-[3.5rem] p-12 md:p-16 shadow-2xl shadow-black/80 overflow-hidden group">
+            <header className="relative bg-card border border-border rounded-[3.5rem] p-12 md:p-16 shadow-2xl shadow-black/5 overflow-hidden group">
                 {/* Visual Background Decoration */}
                 <div className="absolute top-0 right-0 w-80 h-80 bg-primary/5 rounded-full -mr-32 -mt-32 blur-[100px]" />
                 <div className="absolute bottom-0 left-0 w-48 h-48 bg-primary/5 rounded-full -ml-16 -mb-16 blur-[80px]" />
@@ -153,12 +153,12 @@ export default function Profile() {
 
             <div className="max-w-md mx-auto">
                 {/* Account Actions */}
-                <div className="bg-card border border-white/5 rounded-[3rem] p-12 shadow-2xl shadow-black/60 space-y-10">
+                <div className="bg-card border border-border rounded-[3rem] p-12 shadow-2xl shadow-black/5 space-y-10">
                     <h3 className="text-2xl font-black text-foreground tracking-tighter text-center">
                         System Access
                     </h3>
-                    <div className="p-8 bg-secondary/10 rounded-2xl border border-white/5 space-y-8 flex flex-col items-center">
-                        <div className="w-16 h-16 bg-secondary/30 rounded-2xl flex items-center justify-center border border-white/5 opacity-40">
+                    <div className="p-8 bg-secondary/10 rounded-2xl border border-border space-y-8 flex flex-col items-center">
+                        <div className="w-16 h-16 bg-secondary/30 rounded-2xl flex items-center justify-center border border-border opacity-40">
                             <User className="w-8 h-8 text-muted-foreground" />
                         </div>
                         <p className="text-[10px] font-black text-muted-foreground/30 text-center uppercase tracking-[0.25em] leading-relaxed max-w-[200px]">

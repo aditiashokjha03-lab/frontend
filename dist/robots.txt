@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /habits
+Disallow: /timer
+Disallow: /analytics
+Disallow: /challenges
+Disallow: /goals
+Disallow: /achievements
+Disallow: /profile
+
+Sitemap: https://habit-forge-example.com/sitemap.xml

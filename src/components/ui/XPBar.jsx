@@ -13,7 +13,7 @@ export default function XPBar({ xp, level }) {
                 </span>
                 <span className="text-muted-foreground/40">{xp} / {xpNeededForNextLevel} XP</span>
             </div>
-            <div className="h-1.5 w-full bg-secondary/50 rounded-full overflow-hidden border border-white/5">
+            <div className="h-1.5 w-full bg-secondary/50 rounded-full overflow-hidden border border-border">
                 <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${progress}%` }}

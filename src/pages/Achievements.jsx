@@ -29,8 +29,8 @@ export default function Achievements() {
             </div>
  
             {data?.length === 0 ? (
-                <div className="border border-white/5 p-16 text-center rounded-[2rem] bg-secondary/10 shadow-2xl shadow-black/20 flex flex-col items-center max-w-2xl mx-auto">
-                    <div className="w-20 h-20 rounded-3xl bg-secondary/30 flex items-center justify-center text-4xl mb-6 border border-white/5">🌱</div>
+                <div className="border border-border p-16 text-center rounded-[2rem] bg-secondary/10 shadow-2xl shadow-black/5 flex flex-col items-center max-w-2xl mx-auto">
+                    <div className="w-20 h-20 rounded-3xl bg-secondary/30 flex items-center justify-center text-4xl mb-6 border border-border">🌱</div>
                     <h3 className="font-bold text-foreground text-2xl tracking-tight mb-2">No achievements yet.</h3>
                     <p className="text-sm text-muted-foreground font-medium">Keep tracking your daily habits to earn badges.</p>
                 </div>
@@ -44,14 +44,14 @@ export default function Achievements() {
                                 key={ach.id}
                                 className={`group bg-card rounded-[2rem] p-6 flex flex-col items-center text-center transition-all duration-500 min-h-[280px] justify-between border
                                     ${isUnlocked 
-                                        ? 'border-white/5 shadow-xl shadow-black/10 hover:shadow-[0_0_30px_-5px_hsl(var(--primary)/0.2)] hover:border-primary/30 hover:-translate-y-1.5' 
-                                        : 'border-white/[0.02] opacity-50 grayscale shadow-none'
+                                        ? 'border-border shadow-xl shadow-black/5 hover:shadow-[0_0_30px_-5px_hsl(var(--primary)/0.2)] hover:border-primary/30 hover:-translate-y-1.5' 
+                                        : 'border-border/10 opacity-50 grayscale shadow-none'
                                     }
                                 `}
                             >
                                 <div className="flex flex-col items-center gap-6 w-full mt-4">
                                     <div className={`w-20 h-20 rounded-full flex items-center justify-center text-4xl transition-transform duration-500 ease-out group-hover:scale-110
-                                        ${isUnlocked ? 'bg-secondary/50 border border-white/10 shadow-inner' : 'bg-transparent'}
+                                        ${isUnlocked ? 'bg-secondary/50 border border-border shadow-inner' : 'bg-transparent'}
                                     `}>
                                         {ach.icon_url || '🎖️'}
                                     </div>
@@ -62,7 +62,7 @@ export default function Achievements() {
                                     </div>
                                 </div>
  
-                                <div className="mt-8 pt-5 border-t border-white/5 w-full">
+                                <div className="mt-8 pt-5 border-t border-border w-full">
                                     {isUnlocked ? (
                                         <div className="flex justify-center">
                                             <span className="text-[10px] font-black uppercase tracking-[0.15em] text-emerald-500 bg-emerald-500/10 px-4 py-1.5 rounded-lg border border-emerald-500/20 shadow-[0_0_10px_-2px_rgba(16,185,129,0.3)] transition-colors group-hover:bg-emerald-500/20 group-hover:border-emerald-500/30">Unlocked</span>

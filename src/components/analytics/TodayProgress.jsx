@@ -13,7 +13,7 @@ const TodayProgress = React.memo(({ habitsCount, completedCount }) => {
     else if (percentage >= 50) message = "Halfway there! Keep going.";
 
     return (
-        <div className="bg-card border border-white/5 rounded-[2rem] p-10 flex flex-col sm:flex-row items-center gap-10 shadow-2xl shadow-black/40 transition-all duration-300">
+        <div className="bg-card border border-border rounded-[2rem] p-10 flex flex-col sm:flex-row items-center gap-10 shadow-2xl shadow-black/5 transition-all duration-300">
             <div className="relative w-40 h-40 flex items-center justify-center shrink-0">
                 <svg className="w-full h-full transform -rotate-90" viewBox="0 0 200 200">
                     <circle cx="100" cy="100" r={radius} stroke="currentColor" strokeWidth="8" fill="transparent" className="text-secondary/50" />

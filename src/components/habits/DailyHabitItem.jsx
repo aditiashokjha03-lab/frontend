@@ -12,14 +12,14 @@ const DailyHabitItem = React.memo(({ habit, log, date, onToggle }) => {
         <div className={`p-6 border rounded-2xl flex items-center gap-6 transition-all duration-300
             ${complete 
                 ? 'bg-secondary/40 border-primary/20' 
-                : 'bg-secondary/10 border-white/5 hover:border-white/10 hover:bg-secondary/20'}
+                : 'bg-secondary/10 border-border hover:border-border hover:bg-secondary/20'}
         `}>
             <button
                 onClick={handleToggle}
                 className={`w-12 h-12 shrink-0 rounded-xl border flex items-center justify-center transition-all duration-300
                     ${complete 
                         ? 'bg-primary border-primary text-primary-foreground shadow-lg shadow-primary/20' 
-                        : 'bg-background border-white/10 text-transparent hover:border-primary/50'}
+                        : 'bg-background border-border text-transparent hover:border-primary/50'}
                 `}
             >
                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">

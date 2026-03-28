@@ -32,10 +32,10 @@ export default function LandingPage() {
     return (
         <div className="min-h-screen bg-background">
             {/* Header */}
-            <header className="sticky top-0 z-50 border-b border-white/5 bg-background/70 backdrop-blur-xl">
+            <header className="sticky top-0 z-50 border-b border-border bg-background/70 backdrop-blur-xl">
                 <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
                     <div className="flex items-center gap-2.5">
-                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-secondary border border-white/10 overflow-hidden">
+                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-secondary border border-border overflow-hidden">
                             <img src="/logo.png" alt="HabitForge Logo" className="w-full h-full object-contain" />
                         </div>
                         <span className="text-lg font-bold tracking-tight text-foreground">HabitForge</span>
@@ -43,7 +43,7 @@ export default function LandingPage() {
                     <div className="flex items-center gap-4">
                         <button
                             onClick={toggleTheme}
-                            className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors"
+                            className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
                             aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
                         >
                             {theme === 'dark' ? <Sun className="h-[18px] w-[18px]" strokeWidth={2} /> : <Moon className="h-[18px] w-[18px]" strokeWidth={2} />}
@@ -59,7 +59,7 @@ export default function LandingPage() {
             {/* Hero Section */}
             <main id="main-content" className="flex-1">
                 <section className="mx-auto flex min-h-[85vh] max-w-6xl flex-col items-center justify-center gap-10 px-6 py-20 text-center" aria-labelledby="hero-heading">
-                    <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-bold tracking-widest uppercase text-muted-foreground">
+                    <div className="inline-flex items-center gap-2 rounded-full border border-border bg-muted/50 px-4 py-1.5 text-xs font-bold tracking-widest uppercase text-muted-foreground">
                         <Sparkles className="h-3.5 w-3.5 text-primary" />
                         Build habits that stick
                     </div>
@@ -74,7 +74,7 @@ export default function LandingPage() {
                         <Button size="lg" className="h-14 px-10 text-lg font-bold rounded-2xl shadow-[0_0_30px_-5px_hsl(var(--primary)/0.4)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_0_40px_-5px_hsl(var(--primary)/0.6)]" asChild aria-label="Start for free and sign up">
                             <Link to="/signup">Start for free</Link>
                         </Button>
-                        <Button size="lg" variant="outline" className="h-14 px-10 text-lg font-bold rounded-2xl border-white/10 transition-all duration-500 hover:bg-white/5 hover:border-white/20" asChild aria-label="Sign in to your account">
+                        <Button size="lg" variant="outline" className="h-14 px-10 text-lg font-bold rounded-2xl border-border transition-all duration-500 hover:bg-muted/50 hover:border-primary/30" asChild aria-label="Sign in to your account">
                             <Link to="/login">Sign in</Link>
                         </Button>
                     </div>

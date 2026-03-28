@@ -89,12 +89,12 @@ export default function Challenges() {
     return (
         <div className="p-6 md:p-12 max-w-7xl mx-auto space-y-12 min-h-screen">
             {/* Header Section */}
-            <div className="relative overflow-hidden rounded-[3.5rem] bg-card border border-white/5 p-12 md:p-20 flex flex-col md:flex-row items-center gap-16 shadow-2xl shadow-black/40">
+            <div className="relative overflow-hidden rounded-[3.5rem] bg-card border border-border p-12 md:p-20 flex flex-col md:flex-row items-center gap-16 shadow-2xl shadow-black/5">
                 <div className="absolute top-0 left-0 w-full h-full bg-primary/[0.02] -z-10" />
                 <div className="absolute -top-32 -right-32 h-[30rem] w-[30rem] bg-primary/5 rounded-full blur-[120px]" />
  
                 <div className="relative z-10 flex-1 space-y-8 text-center md:text-left">
-                    <div className="inline-flex items-center gap-3 bg-secondary/50 border border-white/5 px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-[0.25em] text-primary">
+                    <div className="inline-flex items-center gap-3 bg-secondary/50 border border-border px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-[0.25em] text-primary">
                         <Trophy className="h-4 w-4" /> Season 1 Alpha
                     </div>
                     <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-[0.9]">
@@ -134,7 +134,7 @@ export default function Challenges() {
                 <div className="flex flex-col md:flex-row items-center justify-between gap-10">
                     <h2 className="text-4xl font-black tracking-tighter flex items-center gap-4">
                         Active Quests
-                        <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] bg-secondary/50 border border-white/5 px-4 py-2 rounded-lg opacity-40">{filteredChallenges.length} Total</span>
+                        <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] bg-secondary/50 border border-border px-4 py-2 rounded-lg opacity-40">{filteredChallenges.length} Total</span>
                     </h2>
                     <div className="relative w-full md:w-[450px] group">
                         <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors opacity-30 group-focus-within:opacity-100" />
@@ -143,7 +143,7 @@ export default function Challenges() {
                             placeholder="Explore quests by name..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="h-16 w-full bg-secondary/30 border border-white/10 focus:border-primary/40 rounded-2xl pl-16 pr-8 font-black tracking-tight text-foreground outline-none transition-all shadow-inner placeholder:text-muted-foreground/30 placeholder:uppercase placeholder:text-[10px] placeholder:tracking-[0.2em]"
+                            className="h-16 w-full bg-secondary/30 border border-border focus:border-primary/40 rounded-2xl pl-16 pr-8 font-black tracking-tight text-foreground outline-none transition-all shadow-inner placeholder:text-muted-foreground/30 placeholder:uppercase placeholder:text-[10px] placeholder:tracking-[0.2em]"
                         />
                     </div>
                 </div>

@@ -10,7 +10,7 @@ const CustomTooltip = React.memo(({ active, payload, label }) => {
             <motion.div
                 initial={{ opacity: 0, y: 10, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                className="bg-card/40 backdrop-blur-3xl border border-white/10 rounded-2xl p-4 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] ring-1 ring-white/5 transition-all duration-300"
+                className="bg-card/40 backdrop-blur-3xl border border-border rounded-2xl p-4 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] ring-1 ring-border transition-all duration-300"
             >
                 <p className="text-[10px] font-black uppercase tracking-[0.25em] text-muted-foreground mb-2 px-0.5">
                     {new Date(label).toLocaleDateString('en-US', { month: 'short', day: 'numeric', weekday: 'long' })}

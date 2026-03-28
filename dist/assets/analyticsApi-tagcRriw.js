@@ -1,0 +1,1 @@
+import{b as s}from"./index-DZcL6ILj.js";const e=async()=>{const{data:a}=await s.get("analytics/summary");return a},r=async a=>{const{data:t}=await s.get(`analytics/heatmap?year=${a}`);return t},c=async a=>{const{data:t}=await s.get(`analytics/trend?days=${a}`);return t};export{e as a,r as b,c as g};

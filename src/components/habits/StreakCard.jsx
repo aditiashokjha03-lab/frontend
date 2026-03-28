@@ -2,9 +2,9 @@ import React from 'react';
 
 const StreakCard = React.memo(({ streak = 0, longestStreak = 0, heatmap = [] }) => {
     return (
-        <div className="bg-card border border-white/5 rounded-[2rem] p-10 flex flex-col shadow-2xl shadow-black/40 relative overflow-hidden">
+        <div className="bg-card border border-border rounded-[2rem] p-10 flex flex-col shadow-2xl shadow-black/5 relative overflow-hidden">
             <div className="flex items-center mb-10">
-                <div className="mr-6 flex items-center justify-center text-3xl bg-secondary/50 h-20 w-20 rounded-2xl text-foreground border border-white/5">
+                <div className="mr-6 flex items-center justify-center text-3xl bg-secondary/50 h-20 w-20 rounded-2xl text-foreground border border-border">
                     🔥
                 </div>
                 <div>
@@ -13,13 +13,13 @@ const StreakCard = React.memo(({ streak = 0, longestStreak = 0, heatmap = [] }) 
                 </div>
             </div>
  
-            <div className="pt-8 border-t border-white/5">
+            <div className="pt-8 border-t border-border">
                 <p className="text-[9px] text-muted-foreground/50 font-black uppercase tracking-[0.3em] mb-4">Activity Heatmap</p>
                 <div className="flex gap-2 justify-between">
                     {heatmap.map((active, i) => (
                         <div
                             key={i}
-                            className={`flex-1 h-10 rounded-lg border transition-all duration-300 ${active ? 'bg-primary/80 border-primary/50 shadow-lg shadow-primary/20' : 'bg-secondary/20 border-white/5'}`}
+                            className={`flex-1 h-10 rounded-lg border transition-all duration-300 ${active ? 'bg-primary/80 border-primary/50 shadow-lg shadow-primary/20' : 'bg-secondary/20 border-border'}`}
                         />
                     ))}
                 </div>

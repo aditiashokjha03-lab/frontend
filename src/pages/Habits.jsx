@@ -13,7 +13,7 @@ export default function Habits() {
 
             {/* Left Column - Habit Grid */}
             <div className="flex-1 space-y-10">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pb-6 border-b border-white/5">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pb-6 border-b border-border">
                     <div>
                         <h1 className="text-4xl font-black tracking-tighter text-foreground">Your Habits</h1>
                         <p className="text-muted-foreground mt-2 font-medium text-sm opacity-60">Manage your daily systems and professional growth.</p>
@@ -33,8 +33,8 @@ export default function Habits() {
                         ))}
                     </div>
                 ) : query.data?.length === 0 ? (
-                    <div className="bg-secondary/10 border border-white/5 rounded-[2rem] p-16 text-center text-muted-foreground transition-all">
-                        <div className="w-16 h-16 bg-secondary/50 rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl border border-white/5 opacity-50">🌱</div>
+                    <div className="bg-secondary/10 border border-border rounded-[2rem] p-16 text-center text-muted-foreground transition-all">
+                        <div className="w-16 h-16 bg-secondary/50 rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl border border-border opacity-50">🌱</div>
                         <h3 className="text-xl font-black tracking-tighter text-foreground mb-2">No active habits</h3>
                         <p className="text-sm font-medium opacity-60 max-w-xs mx-auto mb-8">Click the button above or consult HabiTAI to start your journey.</p>
                     </div>

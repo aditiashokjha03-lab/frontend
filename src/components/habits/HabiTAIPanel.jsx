@@ -27,7 +27,7 @@ function SuggestionCard({ suggestion, sessionId, onAdd }) {
     };
  
     return (
-        <div className="bg-card border border-white/5 rounded-[2rem] p-6 text-sm flex flex-col gap-4 shadow-2xl shadow-black/40 relative overflow-hidden group transition-all duration-300 hover:border-white/10">
+        <div className="bg-card border border-border rounded-[2rem] p-6 text-sm flex flex-col gap-4 shadow-2xl shadow-black/5 relative overflow-hidden group transition-all duration-300 hover:border-border">
             <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 blur-[40px] -z-10 group-hover:bg-primary/10 transition-all duration-500" />
             <div className="flex justify-between items-start">
                 <h4 className="font-black tracking-tighter text-foreground text-base leading-tight">{suggestion.name}</h4>
@@ -35,7 +35,7 @@ function SuggestionCard({ suggestion, sessionId, onAdd }) {
             </div>
             <p className="text-muted-foreground/60 leading-relaxed text-xs font-medium">{suggestion.description}</p>
  
-            <div className="flex items-center justify-between mt-2 pt-4 border-t border-white/5">
+            <div className="flex items-center justify-between mt-2 pt-4 border-t border-border">
                 <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] opacity-40">
                     {suggestion.frequency}
                 </span>
@@ -48,7 +48,7 @@ function SuggestionCard({ suggestion, sessionId, onAdd }) {
             </div>
  
             {expanded && (
-                <div className="bg-secondary/30 p-4 rounded-xl text-xs italic text-foreground font-medium border border-white/5 animate-in fade-in duration-300">
+                <div className="bg-secondary/30 p-4 rounded-xl text-xs italic text-foreground font-medium border border-border animate-in fade-in duration-300">
                     {suggestion.why}
                 </div>
             )}
@@ -77,8 +77,8 @@ export default function HabiTAIPanel() {
     };
  
     return (
-        <div className="border border-white/5 rounded-[2.5rem] flex flex-col h-full bg-secondary/10 overflow-hidden shadow-2xl shadow-black/40">
-            <div className="p-8 border-b border-white/5 bg-card relative overflow-hidden">
+        <div className="border border-border rounded-[2.5rem] flex flex-col h-full bg-secondary/10 overflow-hidden shadow-2xl shadow-black/5">
+            <div className="p-8 border-b border-border bg-card relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-achievement/5 blur-[50px] -z-10" />
                 <div className="flex items-center gap-4">
                     <div className="h-12 w-12 rounded-2xl bg-achievement/10 text-achievement flex items-center justify-center border border-achievement/20 shadow-xl shadow-achievement/10">
@@ -95,7 +95,7 @@ export default function HabiTAIPanel() {
                 <div className="space-y-6">
                     <div>
                         <label className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] ml-1">Focus Area</label>
-                        <select value={category} onChange={e => setCategory(e.target.value)} className="w-full mt-2 p-4 text-sm border border-white/10 rounded-xl bg-secondary/30 shadow-inner focus:ring-2 ring-primary/20 outline-none transition-all font-medium appearance-none">
+                        <select value={category} onChange={e => setCategory(e.target.value)} className="w-full mt-2 p-4 text-sm border border-border rounded-xl bg-secondary/30 shadow-inner focus:ring-2 ring-primary/20 outline-none transition-all font-medium appearance-none">
                             <option>Fitness</option>
                             <option>Mental Health</option>
                             <option>Learning</option>
@@ -113,7 +113,7 @@ export default function HabiTAIPanel() {
                             value={description}
                             onChange={e => setDescription(e.target.value)}
                             maxLength={200}
-                            className="w-full mt-2 p-4 text-sm border border-white/10 rounded-[1.5rem] resize-none bg-secondary/30 shadow-inner focus:ring-2 ring-primary/20 outline-none placeholder:text-muted-foreground/30 font-medium transition-all"
+                            className="w-full mt-2 p-4 text-sm border border-border rounded-[1.5rem] resize-none bg-secondary/30 shadow-inner focus:ring-2 ring-primary/20 outline-none placeholder:text-muted-foreground/30 font-medium transition-all"
                             rows={4}
                             placeholder="I want to wake up earlier and build a productive morning routine..."
                         />
@@ -139,7 +139,7 @@ export default function HabiTAIPanel() {
                         ))}
                         <button
                             onClick={handleGenerate}
-                            className="w-full py-2 text-[10px] font-black uppercase tracking-widest border border-white/5 rounded-lg hover:bg-white/5 transition-all opacity-40 hover:opacity-100"
+                            className="w-full py-2 text-[10px] font-black uppercase tracking-widest border border-border rounded-lg hover:bg-muted/50 transition-all opacity-40 hover:opacity-100"
                         >
                             Regenerate
                         </button>
@@ -147,11 +147,11 @@ export default function HabiTAIPanel() {
                 )}
  
                 {/* History Accordion placeholder */}
-                <div className="mt-4 pt-10 border-t border-white/5">
+                <div className="mt-4 pt-10 border-t border-border">
                     <h3 className="font-black tracking-tighter text-[10px] uppercase text-muted-foreground mb-4 opacity-40">Recent Sessions</h3>
                     <div className="space-y-3">
                         {historyQuery.data?.map(sess => (
-                            <div key={sess.id} className="text-xs p-4 bg-card border border-white/5 rounded-xl shadow-sm">
+                            <div key={sess.id} className="text-xs p-4 bg-card border border-border rounded-xl shadow-sm">
                                 <span className="font-black uppercase text-[9px] text-primary tracking-widest block mb-1">{sess.goal_category}</span> 
                                 <span className="text-muted-foreground font-medium line-clamp-1 opacity-60">{sess.goal_description}</span>
                             </div>

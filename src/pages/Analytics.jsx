@@ -101,7 +101,7 @@ export default function Analytics() {
 
     return (
         <div className="p-4 md:p-8 max-w-7xl mx-auto min-h-screen space-y-8 pb-20">
-            <header className="space-y-3 pb-8 border-b border-white/5">
+            <header className="space-y-3 pb-8 border-b border-border">
                 <h1 className="text-4xl font-black tracking-tighter lg:text-5xl text-foreground">
                     Performance Analytics
                 </h1>
@@ -121,11 +121,11 @@ export default function Analytics() {
                         key={idx}
                         variants={item}
                         whileHover={{ y: -4, scale: 1.01 }}
-                        className="relative group overflow-hidden bg-card border border-white/5 rounded-[2rem] p-8 shadow-2xl shadow-black/40 transition-all duration-500 hover:border-white/10"
+                        className="relative group overflow-hidden bg-card border border-border rounded-[2rem] p-8 shadow-2xl shadow-black/5 transition-all duration-500 hover:border-border"
                     >
                         <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 blur-[40px] -z-10 group-hover:bg-primary/10 transition-all duration-500" />
                         <div className="flex justify-between items-start mb-6">
-                            <div className={`p-4 rounded-xl ${stat.bg} bg-opacity-10 border border-white/5`}>
+                            <div className={`p-4 rounded-xl ${stat.bg} bg-opacity-10 border border-border`}>
                                 <stat.icon className={`w-6 h-6 ${stat.color} filter drop-shadow-sm`} />
                             </div>
                         </div>
@@ -148,12 +148,12 @@ export default function Analytics() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 }}
-                    className="lg:col-span-2 bg-card border border-white/5 rounded-[2.5rem] p-8 md:p-10 shadow-2xl shadow-black/40 overflow-hidden flex flex-col relative"
+                    className="lg:col-span-2 bg-card border border-border rounded-[2.5rem] p-8 md:p-10 shadow-2xl shadow-black/5 overflow-hidden flex flex-col relative"
                 >
                     <div className="absolute top-0 left-0 w-64 h-64 bg-primary/5 blur-[100px] -z-10" />
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-10 gap-4">
                         <div className="flex items-center gap-4">
-                            <div className="p-3 bg-primary/10 rounded-xl border border-white/5 shrink-0">
+                            <div className="p-3 bg-primary/10 rounded-xl border border-border shrink-0">
                                 <TrendingUp className="w-6 h-6 text-primary" />
                             </div>
                             <div>
@@ -174,12 +174,12 @@ export default function Analytics() {
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.5 }}
-                    className="bg-card border border-white/5 rounded-[2.5rem] p-10 shadow-2xl shadow-black/40 flex flex-col relative overflow-hidden"
+                    className="bg-card border border-border rounded-[2.5rem] p-10 shadow-2xl shadow-black/5 flex flex-col relative overflow-hidden"
                 >
                     <div className="absolute bottom-0 right-0 w-48 h-48 bg-emerald-500/5 blur-[80px] -z-10" />
                     <div className="flex items-center justify-between mb-12">
                         <div className="flex items-center gap-4">
-                            <div className="p-3 bg-emerald-500/10 rounded-xl border border-white/5 shrink-0">
+                            <div className="p-3 bg-emerald-500/10 rounded-xl border border-border shrink-0">
                                 <Calendar className="w-6 h-6 text-emerald-500" />
                             </div>
                             <div>
@@ -214,7 +214,7 @@ export default function Analytics() {
                                                 <motion.div
                                                     key={i}
                                                     whileHover={{ scale: 1.5, zIndex: 20 }}
-                                                    className={`w-3.5 h-3.5 rounded-[2px] transition-colors duration-500 cursor-pointer border border-white/5 ${day.count === 0 ? 'bg-secondary/30 hover:bg-secondary/50' :
+                                                    className={`w-3.5 h-3.5 rounded-[2px] transition-colors duration-500 cursor-pointer border border-border ${day.count === 0 ? 'bg-secondary/30 hover:bg-secondary/50' :
                                                         day.count < 3 ? 'bg-emerald-500/20' :
                                                             day.count < 6 ? 'bg-emerald-500/50' : 'bg-emerald-500'
                                                         }`}
@@ -226,7 +226,7 @@ export default function Analytics() {
                                 </div>
                             </div>
                         ) : (
-                            <div className="flex-grow flex flex-col items-center justify-center p-8 bg-secondary/10 rounded-3xl border border-white/5">
+                            <div className="flex-grow flex flex-col items-center justify-center p-8 bg-secondary/10 rounded-3xl border border-border">
                                 <Info className="w-8 h-8 text-muted-foreground" />
                                 <p className="font-bold text-lg mt-4">Your legacy starts today</p>
                             </div>

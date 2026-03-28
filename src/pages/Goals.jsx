@@ -118,7 +118,7 @@ export default function Goals() {
 
     return (
         <div className="p-4 md:p-8 max-w-7xl mx-auto min-h-screen space-y-8 pb-20">
-            <header className="flex flex-col md:flex-row md:items-center justify-between gap-8 pb-10 border-b border-white/5">
+            <header className="flex flex-col md:flex-row md:items-center justify-between gap-8 pb-10 border-b border-border">
                 <div className="space-y-3">
                     <h1 className="text-4xl font-black tracking-tighter lg:text-5xl text-foreground">
                         My Goals
@@ -137,9 +137,9 @@ export default function Goals() {
             </header>
 
             {!goals?.length ? (
-                <div className="flex flex-col items-center justify-center py-24 bg-secondary/10 border border-white/5 rounded-[3.5rem] space-y-8 relative overflow-hidden">
+                <div className="flex flex-col items-center justify-center py-24 bg-secondary/10 border border-border rounded-[3.5rem] space-y-8 relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-48 h-48 bg-primary/5 blur-[80px] -z-10" />
-                    <div className="p-8 bg-secondary/50 rounded-3xl border border-white/5 opacity-40">
+                    <div className="p-8 bg-secondary/50 rounded-3xl border border-border opacity-40">
                         <Target className="w-12 h-12 text-primary" />
                     </div>
                     <div className="text-center space-y-2">
@@ -166,11 +166,11 @@ export default function Goals() {
                             <motion.div
                                 key={goal.id}
                                 variants={item}
-                                className="group bg-card border border-white/5 rounded-[2.5rem] p-10 transition-all duration-500 hover:border-white/10 shadow-2xl shadow-black/40 flex flex-col relative overflow-hidden"
+                                className="group bg-card border border-border rounded-[2.5rem] p-10 transition-all duration-500 hover:border-border shadow-2xl shadow-black/5 flex flex-col relative overflow-hidden"
                             >
                                 <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-[60px] -z-10 group-hover:bg-primary/10 transition-all duration-500" />
                                 <div className="flex justify-between items-start mb-8">
-                                    <div className={`px-4 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-[0.2em] border border-white/5 ${goal.status === 'completed' ? 'bg-emerald-500/10 text-emerald-500' :
+                                    <div className={`px-4 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-[0.2em] border border-border ${goal.status === 'completed' ? 'bg-emerald-500/10 text-emerald-500' :
                                             goal.status === 'failed' ? 'bg-rose-500/10 text-rose-500' :
                                                 'bg-primary/10 text-primary'
                                         }`}>
@@ -197,7 +197,7 @@ export default function Goals() {
                                             <span>Evolution</span>
                                             <span className="text-primary opacity-100">{Math.round(progress)}%</span>
                                         </div>
-                                        <div className="h-1.5 bg-secondary/50 rounded-full overflow-hidden border border-white/5">
+                                        <div className="h-1.5 bg-secondary/50 rounded-full overflow-hidden border border-border">
                                             <motion.div
                                                 initial={{ width: 0 }}
                                                 animate={{ width: `${progress}%` }}
@@ -211,7 +211,7 @@ export default function Goals() {
                                         </div>
                                     </div>
  
-                                    <div className="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest opacity-30 pt-6 border-t border-white/5">
+                                    <div className="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest opacity-30 pt-6 border-t border-border">
                                         <Calendar className="w-3.5 h-3.5" />
                                         <span>Deadline: {new Date(goal.end_date).toLocaleDateString()}</span>
                                     </div>
@@ -219,7 +219,7 @@ export default function Goals() {
                                     {goal.status === 'active' && (
                                         <Button
                                             variant="secondary"
-                                            className="w-full mt-4 h-12 rounded-xl bg-secondary/50 border border-white/5 font-black uppercase tracking-[0.2em] text-[9px] hover:bg-secondary transition-all active:scale-[0.98]"
+                                            className="w-full mt-4 h-12 rounded-xl bg-secondary/50 border border-border font-black uppercase tracking-[0.2em] text-[9px] hover:bg-secondary transition-all active:scale-[0.98]"
                                             onClick={() => {
                                                 setSelectedGoal(goal);
                                                 setIsUpdateOpen(true);
